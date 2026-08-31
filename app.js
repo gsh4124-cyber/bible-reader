@@ -30,6 +30,8 @@ const chapterSelect = $("#chapterSelect");
 const chapterTitle = $("#chapterTitle");
 const versesEl = $("#verses");
 const statusEl = $("#status");
+const prevButtons = [$("#prevChapter"), $("#prevChapterBottom")];
+const nextButtons = [$("#nextChapter"), $("#nextChapterBottom")];
 
 const cache = new Map();
 let state = restoreLocation();
@@ -99,6 +101,22 @@ function setError(message) {
   statusEl.textContent = message;
 }
 
+function updateNavigationState(bookData = currentBookData) {
+  if (!bookData) return;
+  const chapterCount = bookData.chapters.length;
+  const atStart = state.bookIndex === 0 && state.chapter === 1;
+  const atEnd = state.bookIndex === BOOKS.length - 1 && state.chapter === chapterCount;
+
+  prevButtons.forEach((button) => {
+    button.disabled = atStart;
+    button.setAttribute("aria-disabled", String(atStart));
+  });
+  nextButtons.forEach((button) => {
+    button.disabled = atEnd;
+    button.setAttribute("aria-disabled", String(atEnd));
+  });
+}
+
 function renderVerses(bookData) {
   const book = BOOKS[state.bookIndex];
   const chapter = bookData.chapters.find((item) => Number(item.chapter) === state.chapter);
@@ -132,6 +150,7 @@ function renderVerses(bookData) {
 
   statusEl.hidden = true;
   versesEl.replaceChildren(fragment);
+  updateNavigationState(bookData);
 }
 
 async function copyVerse(element, verse) {
@@ -160,7 +179,7 @@ async function loadCurrent({ scrollTop = true } = {}) {
     setupChapterSelect(currentBookData);
     renderVerses(currentBookData);
     saveLocation();
-    if (scrollTop) window.scrollTo({ top: 0, behavior: "instant" });
+    if (scrollTop) window.scrollTo({ top: 0, behavior: "auto" });
   } catch (error) {
     console.error(error);
     setError("본문을 불러오지 못했습니다. 인터넷 연결을 확인한 뒤 다시 시도해 주세요.");
@@ -203,10 +222,10 @@ function setupControls() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  [$("#prevChapter"), $("#prevChapterBottom")].forEach((button) =>
+  prevButtons.forEach((button) =>
     button.addEventListener("click", () => moveChapter(-1))
   );
-  [$("#nextChapter"), $("#nextChapterBottom")].forEach((button) =>
+  nextButtons.forEach((button) =>
     button.addEventListener("click", () => moveChapter(1))
   );
 
@@ -218,8 +237,14 @@ function setupControls() {
   document.addEventListener("keydown", (event) => {
     const tag = document.activeElement?.tagName;
     if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
-    if (event.key === "ArrowLeft") moveChapter(-1);
-    if (event.key === "ArrowRight") moveChapter(1);
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      moveChapter(-1);
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      moveChapter(1);
+    }
   });
 }
 
