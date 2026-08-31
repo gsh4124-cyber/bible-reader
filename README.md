@@ -2,13 +2,22 @@
 
 PC에서 성경 본문 자체를 가장 편하게 읽기 위한 개인사용 우선 웹도구입니다.
 
-## 운영 소속
+## 저장소 역할
 
-- 상위: 황제 Vault `자동 사업운영/바이브코딩/성경 읽기 웹서비스/`
-- 실제 코드 저장소: `gsh4124-cyber/bible-reader`
-- 표준 로컬 위치: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/성경 읽기 웹서비스/bible-reader`
-- 부모 `hwangje-vault`에서는 이 하위 코드 저장소 경로를 ignore하고, `bible-reader` 자체 GitHub 저장소로 독립 관리합니다.
-- 현재 기술 상태는 저장소 루트 `PROJECT_STATUS.md`를 기준으로 회수합니다.
+이 `gsh4124-cyber/bible-reader` 저장소가 성경 읽기 웹도구의 **실제 코드와 현재 상태 인계 원본**입니다.
+
+- 상위 영역: 황제 Vault `자동 사업운영/바이브코딩/`
+- 초기 결정·권리 검토: `자동 사업운영/바이브코딩/00 본부/성경_읽기_웹서비스_후보.md`
+- 현재 상태 인계: `PROJECT_STATUS.md`
+- ChatGPT 실행창: `성경 홈페이지 본부`
+
+별도의 `성경 읽기 웹서비스/` Vault 폴더를 두지 않고 이 저장소를 바이브코딩 바로 아래에 연결합니다.
+
+## 표준 로컬 경로
+
+`C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/bible-reader`
+
+부모 `hwangje-vault`는 이 로컬 폴더를 `.gitignore`로 제외하며, `bible-reader` 자체 Git 이력은 이 저장소에서 독립 관리합니다.
 
 ## 1차 방향
 
