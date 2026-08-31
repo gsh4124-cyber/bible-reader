@@ -11,9 +11,16 @@
   <header class="topbar">
     <div class="brand">성경</div>
 
-    <div class="selectors" aria-label="성경 위치 선택">
-      <select id="bookSelect" aria-label="성경책"></select>
-      <select id="chapterSelect" aria-label="장"></select>
+    <div class="location-controls" aria-label="성경 위치 선택">
+      <div class="testament-tabs" role="group" aria-label="구약 신약 분류">
+        <button type="button" class="testament-button active" data-testament="all" aria-pressed="true">전체</button>
+        <button type="button" class="testament-button" data-testament="old" aria-pressed="false">구약</button>
+        <button type="button" class="testament-button" data-testament="new" aria-pressed="false">신약</button>
+      </div>
+      <div class="selectors">
+        <select id="bookSelect" aria-label="성경책"></select>
+        <select id="chapterSelect" aria-label="장"></select>
+      </div>
     </div>
 
     <div class="toolbar">
@@ -28,6 +35,18 @@
 
   <main>
     <section class="reader-shell">
+      <form id="searchForm" class="search-box" role="search">
+        <input id="searchInput" type="search" autocomplete="off" placeholder="성경 전체에서 단어나 문장 검색" aria-label="성경 전체 검색" />
+        <button id="searchButton" type="submit">검색</button>
+      </form>
+      <section id="searchPanel" class="search-panel" hidden aria-label="검색 결과">
+        <div class="search-panel-head">
+          <p id="searchSummary" class="search-summary"></p>
+          <button id="closeSearch" type="button" class="search-close">닫기</button>
+        </div>
+        <div id="searchResults" class="search-results"></div>
+      </section>
+
       <div class="chapter-heading">
         <p class="translation-label">개역한글 1961</p>
         <h1 id="chapterTitle">요한복음 3장</h1>
