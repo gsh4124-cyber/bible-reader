@@ -85,6 +85,11 @@ button {
 }
 
 button:hover { background: var(--hover); }
+button:disabled {
+  cursor: default;
+  opacity: .38;
+}
+button:disabled:hover { background: transparent; }
 
 .icon-button { min-width: 40px; }
 .text-button { min-width: 44px; }
