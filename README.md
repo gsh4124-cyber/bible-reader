@@ -6,7 +6,8 @@ PC에서 성경 본문 자체를 가장 편하게 읽기 위한 개인사용 우
 
 - 상위: 황제 Vault `자동 사업운영/바이브코딩/성경 읽기 웹서비스/`
 - 실제 코드 저장소: `gsh4124-cyber/bible-reader`
-- 표준 로컬 위치: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/코드자산/bible-reader`
+- 표준 로컬 위치: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/성경 읽기 웹서비스/bible-reader`
+- 부모 `hwangje-vault`에서는 이 하위 코드 저장소 경로를 ignore하고, `bible-reader` 자체 GitHub 저장소로 독립 관리합니다.
 - 현재 기술 상태는 저장소 루트 `PROJECT_STATUS.md`를 기준으로 회수합니다.
 
 ## 1차 방향
