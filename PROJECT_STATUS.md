@@ -1,16 +1,18 @@
-# PROJECT STATUS
+# PROJECT STATUS — bible-reader
 
-Updated: 2026-08-31
+- 마지막 갱신: 2026-09-01
+- 저장소 역할: 성경 읽기 웹도구의 코드·기술상태·현재 운영상태 인계 원본
+- 상위 영역: 황제 Vault `자동 사업운영/바이브코딩/`
+- ChatGPT 실행창: `성경 홈페이지 본부`
+- 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/bible-reader`
 
-## Purpose
-
-PC에서 실제로 반복 사용하고 싶은 성경 읽기 페이지를 먼저 만든다. 개인사용 품질이 우선이며 공개 서비스·광고·사업화는 후속 Gate다.
-
-## Current stage
+## 현재 단계
 
 **MVP v0.4 기능 확장 / 빠른 책 찾기 + KRV·KJV 병렬 비교 구현 / 실제 PC 브라우저 사용검수 대기**
 
-## Implemented
+현재는 개인사용 품질이 우선이며 공개 서비스·광고·사업화는 후속 Gate다.
+
+## 구현 완료
 
 - 정적 HTML/CSS/JavaScript 구조
 - 개역한글 1961 권별 JSON lazy loading
@@ -25,11 +27,11 @@ PC에서 실제로 반복 사용하고 싶은 성경 읽기 페이지를 먼저 
 - 글자 크기 / 본문 폭 / 라이트·다크 모드
 - 절 클릭 복사
 - 마지막 읽던 위치와 읽기 설정 로컬 저장
-- **비교 버튼으로 개역한글 1961 + King James Version 나란히 보기**
+- 개역한글 1961 + King James Version 병렬 보기
 - 병렬보기에서 절 번호 기준 좌우 정렬
 - 비교 모드 선택 로컬 저장
 
-## Translation / rights
+## 번역본·권리
 
 ### KRV 1961
 - 기본 한국어 역본
@@ -39,17 +41,17 @@ PC에서 실제로 반복 사용하고 싶은 성경 읽기 페이지를 먼저 
 - 공개 서비스 전 공식 본문과 무결성 최종 교차검수 필요
 
 ### KJV
-- v0.4 비교 기능 검증용 두 번째 역본
+- v0.4 비교 기능용 두 번째 역본
 - Public Domain 기반
 - 현재 데이터: `aruljohn/Bible-kjv`
-- KRV와 같은 `book → chapters → verses` 구조라 별도 서버 없이 병렬 로딩
-- 공개 서비스 단계에서는 배포 지역에 따른 KJV 관련 권리/표시 이슈를 다시 최종 검수
+- KRV와 같은 `book → chapters → verses` 구조로 별도 서버 없이 병렬 로딩
+- 공개 서비스 단계에서는 배포 지역에 따른 권리·표시 이슈 최종 검수
 
 ### Korean Bible 1910
 - eBible.org가 Public Domain으로 명시한 한국어 비교 후보
 - 향후 한국어↔한국어 비교 품질을 높일 때 연결 후보
 
-## Competitor UX benchmark — 2026-08-31
+## 경쟁 UX에서 우선 수용한 방향 — 2026-08-31
 
 Bible.com(YouVersion), Bible Gateway, Blue Letter Bible, 대한성서공회 웹 성경의 읽기·탐색 패턴을 비교했다.
 
@@ -66,7 +68,7 @@ Bible.com(YouVersion), Bible Gateway, Blue Letter Bible, 대한성서공회 웹 
 - 서버 동기화가 필요한 개인 데이터
 - 권리 검증 전 현대 한국어 번역본
 
-## QA completed
+## QA 완료
 
 - 66권 selector 및 책 간 장 이동 로직 검토
 - 창세기 1장 / 요한계시록 마지막 장 이동 경계 처리
@@ -74,10 +76,10 @@ Bible.com(YouVersion), Bible Gateway, Blue Letter Bible, 대한성서공회 웹 
 - 구약 39권 / 신약 27권 경계 검토
 - 검색 결과 이동과 구약·신약 필터 충돌 처리
 - 빠른 구절 이동 시 실제 장·절 존재 확인
-- KJV 데이터의 `John.json`이 현재 비교 adapter가 사용하는 장·절 구조와 호환됨을 확인
+- KJV `John.json`이 현재 비교 adapter 구조와 호환됨을 확인
 - KJV 데이터 저장소 default branch가 `master`임을 확인
 
-## Not implemented yet
+## 아직 미구현
 
 - 한국어 두 역본 나란히 비교
 - 북마크
@@ -88,13 +90,20 @@ Bible.com(YouVersion), Bible Gateway, Blue Letter Bible, 대한성서공회 웹 
 - 공개 배포
 - 모바일 세부 QA
 
-## Next
+## 다음 행동
 
 1. 실제 PC 브라우저에서 v0.4 실행
 2. 책 이름 빠른 찾기 체감 확인
-3. KRV·KJV 병렬보기의 폭·행간·절 정렬 실제 확인
+3. KRV·KJV 병렬보기 폭·행간·절 정렬 실제 확인
 4. 키워드 검색 및 주소 바로가기 속도·동작 확인
 5. 첫 실제사용 피드백 반영
 6. 로컬 북마크·하이라이트 추가 여부 판단
-7. Korean Bible 1910을 실제 연결해 한국어↔한국어 비교 옵션 확장 검토
+7. Korean Bible 1910 연결 여부 검토
 8. 개인사용 반복 테스트 후 공개 서비스 여부 판단
+
+## 관련 Vault
+
+- `자동 사업운영/바이브코딩/_INDEX.md`
+- `자동 사업운영/바이브코딩/00 본부/성경_읽기_웹서비스_후보.md` — 초기 결정·권리 검토 기록
+
+> 별도의 `성경 읽기 웹서비스/` Vault 상태 폴더는 만들지 않는다. 현재 제품 상태는 이 `PROJECT_STATUS.md`에 합쳐 유지한다.
