@@ -13,7 +13,12 @@ const BOOKS = [
   ["디모데전서", "1Timothy"], ["디모데후서", "2Timothy"], ["디도서", "Titus"], ["빌레몬서", "Philemon"], ["히브리서", "Hebrews"],
   ["야고보서", "James"], ["베드로전서", "1Peter"], ["베드로후서", "2Peter"], ["요한일서", "1John"], ["요한이서", "2John"],
   ["요한삼서", "3John"], ["유다서", "Jude"], ["요한계시록", "Revelation"]
-].map(([ko, file], index) => ({ ko, file, index }));
+].map(([ko, file], index) => ({
+  ko,
+  file,
+  index,
+  testament: index < 39 ? "old" : "new"
+}));
 
 const TRANSLATIONS = {
   krv1961: {
@@ -32,10 +37,21 @@ const versesEl = $("#verses");
 const statusEl = $("#status");
 const prevButtons = [$("#prevChapter"), $("#prevChapterBottom")];
 const nextButtons = [$("#nextChapter"), $("#nextChapterBottom")];
+const testamentButtons = [...document.querySelectorAll(".testament-button")];
+const searchForm = $("#searchForm");
+const searchInput = $("#searchInput");
+const searchButton = $("#searchButton");
+const searchPanel = $("#searchPanel");
+const searchSummary = $("#searchSummary");
+const searchResults = $("#searchResults");
 
 const cache = new Map();
+const SEARCH_LIMIT = 100;
+const SEARCH_BATCH_SIZE = 6;
 let state = restoreLocation();
 let currentBookData = null;
+let activeTestament = "all";
+let searchRun = 0;
 
 function restoreLocation() {
   try {
@@ -54,14 +70,52 @@ function saveLocation() {
   localStorage.setItem("bible-reader-location", JSON.stringify(state));
 }
 
+function booksForTestament(testament = activeTestament) {
+  return testament === "all" ? BOOKS : BOOKS.filter((book) => book.testament === testament);
+}
+
+function updateTestamentButtons() {
+  testamentButtons.forEach((button) => {
+    const active = button.dataset.testament === activeTestament;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
 function setupBookSelect() {
-  BOOKS.forEach((book, index) => {
+  bookSelect.innerHTML = "";
+  booksForTestament().forEach((book) => {
     const option = document.createElement("option");
-    option.value = index;
+    option.value = book.index;
     option.textContent = book.ko;
     bookSelect.append(option);
   });
   bookSelect.value = String(state.bookIndex);
+}
+
+function ensureBookVisible() {
+  const book = BOOKS[state.bookIndex];
+  if (activeTestament !== "all" && book.testament !== activeTestament) {
+    activeTestament = "all";
+    updateTestamentButtons();
+    setupBookSelect();
+  }
+}
+
+async function setTestament(testament) {
+  if (!['all', 'old', 'new'].includes(testament) || testament === activeTestament) return;
+  activeTestament = testament;
+  updateTestamentButtons();
+
+  const visibleBooks = booksForTestament();
+  if (!visibleBooks.some((book) => book.index === state.bookIndex)) {
+    state.bookIndex = visibleBooks[0].index;
+    state.chapter = 1;
+    setupBookSelect();
+    await loadCurrent();
+    return;
+  }
+  setupBookSelect();
 }
 
 async function fetchBook(book) {
@@ -171,6 +225,7 @@ async function copyVerse(element, verse) {
 }
 
 async function loadCurrent({ scrollTop = true } = {}) {
+  ensureBookVisible();
   const book = BOOKS[state.bookIndex];
   bookSelect.value = String(state.bookIndex);
   setLoading();
@@ -208,6 +263,111 @@ async function moveChapter(delta) {
   await loadCurrent();
 }
 
+function renderSearchResults(results, query, failedBooks) {
+  searchResults.innerHTML = "";
+  searchPanel.hidden = false;
+
+  if (!results.length) {
+    searchSummary.textContent = `“${query}” 검색 결과가 없습니다.${failedBooks ? ` (${failedBooks}권 로딩 실패)` : ""}`;
+    return;
+  }
+
+  const limited = results.length >= SEARCH_LIMIT;
+  searchSummary.textContent = `“${query}” ${results.length}${limited ? "+" : ""}개 결과${failedBooks ? ` · ${failedBooks}권 로딩 실패` : ""}`;
+
+  const fragment = document.createDocumentFragment();
+  results.slice(0, SEARCH_LIMIT).forEach((result) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "search-result";
+
+    const ref = document.createElement("strong");
+    ref.textContent = `${result.book.ko} ${result.chapter}:${result.verse}`;
+
+    const text = document.createElement("span");
+    text.textContent = result.text;
+
+    button.append(ref, text);
+    button.addEventListener("click", () => goToSearchResult(result));
+    fragment.append(button);
+  });
+  searchResults.append(fragment);
+}
+
+async function searchBible(query) {
+  const normalized = query.trim().toLocaleLowerCase("ko-KR");
+  if (!normalized) return;
+
+  const run = ++searchRun;
+  searchPanel.hidden = false;
+  searchResults.innerHTML = "";
+  searchSummary.textContent = `“${query.trim()}” 검색 준비 중…`;
+  searchButton.disabled = true;
+  searchInput.disabled = true;
+
+  const results = [];
+  let failedBooks = 0;
+
+  try {
+    for (let start = 0; start < BOOKS.length && results.length < SEARCH_LIMIT; start += SEARCH_BATCH_SIZE) {
+      if (run !== searchRun) return;
+      const batch = BOOKS.slice(start, start + SEARCH_BATCH_SIZE);
+      searchSummary.textContent = `“${query.trim()}” 검색 중… ${Math.min(start + batch.length, BOOKS.length)}/${BOOKS.length}권`;
+
+      const loaded = await Promise.all(batch.map(async (book) => {
+        try {
+          return { book, data: await fetchBook(book) };
+        } catch (error) {
+          console.error(error);
+          failedBooks += 1;
+          return null;
+        }
+      }));
+
+      loaded.filter(Boolean).forEach(({ book, data }) => {
+        if (results.length >= SEARCH_LIMIT) return;
+        data.chapters.forEach((chapter) => {
+          if (results.length >= SEARCH_LIMIT) return;
+          chapter.verses.forEach((verse) => {
+            if (results.length >= SEARCH_LIMIT) return;
+            if (String(verse.text).toLocaleLowerCase("ko-KR").includes(normalized)) {
+              results.push({
+                book,
+                chapter: Number(chapter.chapter),
+                verse: Number(verse.verse),
+                text: verse.text
+              });
+            }
+          });
+        });
+      });
+    }
+
+    if (run === searchRun) renderSearchResults(results, query.trim(), failedBooks);
+  } finally {
+    if (run === searchRun) {
+      searchButton.disabled = false;
+      searchInput.disabled = false;
+      searchInput.focus();
+    }
+  }
+}
+
+async function goToSearchResult(result) {
+  state.bookIndex = result.book.index;
+  state.chapter = result.chapter;
+  await loadCurrent();
+  searchPanel.hidden = true;
+
+  requestAnimationFrame(() => {
+    const target = versesEl.querySelector(`[data-verse="${result.verse}"]`);
+    if (!target) return;
+    target.classList.add("searched");
+    target.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => target.classList.remove("searched"), 1800);
+  });
+}
+
 function setupControls() {
   bookSelect.addEventListener("change", async () => {
     state.bookIndex = Number(bookSelect.value);
@@ -222,6 +382,10 @@ function setupControls() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
+  testamentButtons.forEach((button) => {
+    button.addEventListener("click", () => setTestament(button.dataset.testament));
+  });
+
   prevButtons.forEach((button) =>
     button.addEventListener("click", () => moveChapter(-1))
   );
@@ -234,6 +398,17 @@ function setupControls() {
   $("#widthToggle").addEventListener("click", toggleWidth);
   $("#themeToggle").addEventListener("click", toggleTheme);
 
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    searchBible(searchInput.value);
+  });
+  $("#closeSearch").addEventListener("click", () => {
+    searchRun += 1;
+    searchPanel.hidden = true;
+    searchButton.disabled = false;
+    searchInput.disabled = false;
+  });
+
   document.addEventListener("keydown", (event) => {
     const tag = document.activeElement?.tagName;
     if (["INPUT", "TEXTAREA", "SELECT"].includes(tag)) return;
@@ -244,6 +419,10 @@ function setupControls() {
     if (event.key === "ArrowRight") {
       event.preventDefault();
       moveChapter(1);
+    }
+    if (event.key === "/") {
+      event.preventDefault();
+      searchInput.focus();
     }
   });
 }
@@ -283,6 +462,7 @@ function toggleTheme() {
 }
 
 restoreReadingPreferences();
+updateTestamentButtons();
 setupBookSelect();
 setupControls();
 loadCurrent({ scrollTop: false });
