@@ -18,6 +18,8 @@
         <button type="button" class="testament-button" data-testament="new" aria-pressed="false">신약</button>
       </div>
       <div class="selectors">
+        <input id="bookFinder" class="book-finder" list="bookList" autocomplete="off" placeholder="책 이름" aria-label="성경책 빠른 찾기" />
+        <datalist id="bookList"></datalist>
         <select id="bookSelect" aria-label="성경책"></select>
         <select id="chapterSelect" aria-label="장"></select>
       </div>
@@ -26,6 +28,7 @@
     <div class="toolbar">
       <button id="prevChapter" class="icon-button" title="이전 장 (←)">←</button>
       <button id="nextChapter" class="icon-button" title="다음 장 (→)">→</button>
+      <button id="compareToggle" class="text-button" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
       <button id="fontDown" class="text-button" title="글자 작게">가−</button>
       <button id="fontUp" class="text-button" title="글자 크게">가+</button>
       <button id="widthToggle" class="text-button" title="본문 폭 변경">폭</button>
@@ -52,8 +55,19 @@
         <h1 id="chapterTitle">요한복음 3장</h1>
       </div>
 
-      <div id="status" class="status">본문을 불러오는 중…</div>
-      <article id="verses" class="verses" aria-live="polite"></article>
+      <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교">
+        <div class="compare-head">
+          <div><strong>개역한글 1961</strong><span>한국어</span></div>
+          <div><strong>King James Version</strong><span>영어 · Public Domain</span></div>
+        </div>
+        <div id="compareStatus" class="compare-status"></div>
+        <div id="compareRows" class="compare-rows"></div>
+      </section>
+
+      <div id="singleReader">
+        <div id="status" class="status">본문을 불러오는 중…</div>
+        <article id="verses" class="verses" aria-live="polite"></article>
+      </div>
 
       <nav class="chapter-nav" aria-label="장 이동">
         <button id="prevChapterBottom">← 이전 장</button>
@@ -64,10 +78,12 @@
 
   <footer>
     <p>성경전서 개역한글판 · 대한성서공회</p>
-    <p class="source-note">1차 MVP는 공개 검증용 데이터 소스를 사용하며, 공개 서비스 전 본문 무결성을 다시 검수합니다.</p>
+    <p class="source-note">비교 역본: King James Version · Public Domain. 1차 MVP는 공개 검증용 데이터 소스를 사용하며, 공개 서비스 전 본문 무결성을 다시 검수합니다.</p>
   </footer>
 
   <script src="app.js" defer></script>
   <script src="reference.js" defer></script>
+  <script src="book-finder.js" defer></script>
+  <script src="compare.js" defer></script>
 </body>
 </html>
