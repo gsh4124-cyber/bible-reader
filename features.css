@@ -66,8 +66,6 @@
 .verse.verse-picked { border-radius: 8px; }
 .compare-row.verse-picked { transition: background .2s ease, box-shadow .2s ease; }
 
-.page-side-nav { display:none !important; }
-
 .ad-slot {
   display: none;
   align-items: center;
