@@ -20,11 +20,13 @@
 
 .chapter-heading {
   display: grid;
-  grid-template-columns: minmax(110px, 1fr) auto minmax(110px, 1fr);
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 22px;
-  width: min(960px, 100%);
+  width: 100%;
   margin: 0 auto 30px;
+  padding: 0 0 22px;
+  border-bottom: 1px solid var(--line);
 }
 
 .chapter-heading h1 {
@@ -34,7 +36,7 @@
 
 .title-chapter-nav {
   min-width: 108px;
-  padding: 9px 13px;
+  padding: 10px 14px;
   color: var(--muted);
   background: transparent;
   white-space: nowrap;
@@ -47,12 +49,12 @@
 
 #prevChapterTitle {
   grid-column: 1;
-  justify-self: end;
+  justify-self: start;
 }
 
 #nextChapterTitle {
   grid-column: 3;
-  justify-self: start;
+  justify-self: end;
 }
 
 @media (max-width: 1250px) {
@@ -65,6 +67,7 @@
   .chapter-heading {
     grid-template-columns: auto 1fr auto;
     gap: 8px;
+    padding-bottom: 16px;
   }
   .title-chapter-nav {
     min-width: 42px;
