@@ -35,15 +35,11 @@
 
       <div class="toolbar" aria-label="읽기 도구">
         <button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
-        <details class="view-menu">
-          <summary>보기</summary>
-          <div class="view-menu-panel" aria-label="보기 설정">
-            <button id="fontDown" class="text-button" title="글자 작게">가−</button>
-            <button id="fontUp" class="text-button" title="글자 크게">가+</button>
-            <button id="widthToggle" class="text-button" title="본문 폭 변경">폭</button>
-            <button id="themeToggle" class="icon-button" title="밝기 전환">◐</button>
-          </div>
-        </details>
+        <span class="tool-separator" aria-hidden="true"></span>
+        <button id="fontDown" class="toolbar-compact" title="글자 작게" aria-label="글자 작게">가−</button>
+        <button id="fontUp" class="toolbar-compact" title="글자 크게" aria-label="글자 크게">가+</button>
+        <button id="widthToggle" class="toolbar-compact" title="본문 폭 변경" aria-label="본문 폭 변경">폭</button>
+        <button id="themeToggle" class="toolbar-compact icon-button" title="밝기 전환" aria-label="밝기 전환">◐</button>
       </div>
     </div>
   </header>
@@ -56,8 +52,18 @@
   <main>
     <section class="reader-shell">
       <section class="daily-strip" aria-label="오늘의 말씀">
-        <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button"><span class="daily-kicker">오늘의 성구</span><strong id="dailyVerseRef">말씀을 준비하는 중…</strong><span id="dailyVerseText" class="daily-text"></span><span class="daily-action">본문에서 보기 →</span></button>
-        <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button"><span class="daily-kicker">오늘 읽어볼 장</span><strong id="dailyChapterRef">오늘의 장을 준비하는 중…</strong><span class="daily-text">짧게라도 한 장을 천천히 읽어보세요.</span><span class="daily-action">이 장 읽기 →</span></button>
+        <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button">
+          <span class="daily-kicker">오늘의 성구</span>
+          <strong id="dailyVerseRef">말씀을 준비하는 중…</strong>
+          <span id="dailyVerseText" class="daily-text"></span>
+          <span class="daily-action">본문 보기 →</span>
+        </button>
+        <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button">
+          <span class="daily-kicker">오늘의 읽기</span>
+          <strong id="dailyChapterRef">오늘의 장을 준비하는 중…</strong>
+          <span class="daily-chapter-copy">한 장 천천히 읽기</span>
+          <span class="daily-action">바로 읽기 →</span>
+        </button>
       </section>
 
       <aside class="ad-slot ad-slot-top" data-ad-slot="top" aria-label="광고 영역"><span>광고</span></aside>
