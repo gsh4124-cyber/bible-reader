@@ -21,7 +21,7 @@
 .chapter-heading {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
-  align-items: center;
+  align-items: end;
   gap: 22px;
   width: 100%;
   margin: 0 auto 30px;
@@ -31,7 +31,9 @@
 
 .chapter-heading h1 {
   grid-column: 2;
+  align-self: center;
   text-align: center;
+  transform: translateY(-9px);
 }
 
 .title-chapter-nav {
@@ -71,6 +73,7 @@
     gap: 8px;
     padding-bottom: 12px;
   }
+  .chapter-heading h1 { transform: translateY(-5px); }
   .title-chapter-nav {
     min-width: 42px;
     width: 42px;
