@@ -10,23 +10,27 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="topbar-inner">
-      <div class="testament-tabs" role="group" aria-label="구약 신약 분류">
+    <div class="topbar-inner centered-nav">
+      <div class="legacy-testament-tabs" aria-hidden="true">
         <button type="button" class="testament-button active" data-testament="all" aria-pressed="true">전체</button>
         <button type="button" class="testament-button" data-testament="old" aria-pressed="false">구약</button>
         <button type="button" class="testament-button" data-testament="new" aria-pressed="false">신약</button>
       </div>
 
       <div class="location-controls" aria-label="성경 위치 선택">
-        <div class="selectors">
-          <input id="bookFinder" class="book-finder" list="bookList" autocomplete="off" placeholder="책 찾기" aria-label="성경책 빠른 찾기" />
+        <select id="testamentSelect" class="testament-select" aria-label="성경 범위">
+          <option value="all">전체</option>
+          <option value="old">구약</option>
+          <option value="new">신약</option>
+        </select>
+        <select id="bookSelect" aria-label="성경책"></select>
+        <select id="chapterSelect" aria-label="장"></select>
+        <select id="verseSelect" aria-label="절"><option value="">절</option></select>
+        <form id="searchForm" class="top-search" role="search">
+          <input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="책 이름 · 단어 · 요 3:16" aria-label="책 찾기, 성경 검색 또는 구절 바로가기" />
           <datalist id="bookList"></datalist>
-          <select id="bookSelect" aria-label="성경책"></select>
-          <select id="chapterSelect" aria-label="장"></select>
-          <select id="verseSelect" aria-label="절">
-            <option value="">절</option>
-          </select>
-        </div>
+          <button id="searchButton" type="submit">검색</button>
+        </form>
         <div class="chapter-arrows" aria-label="장 이동">
           <button id="prevChapter" class="icon-button nav-arrow" title="이전 장 (←)">←</button>
           <button id="nextChapter" class="icon-button nav-arrow" title="다음 장 (→)">→</button>
@@ -51,26 +55,12 @@
   <main>
     <section class="reader-shell">
       <section class="daily-strip" aria-label="오늘의 말씀">
-        <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button">
-          <span class="daily-kicker">오늘의 성구</span>
-          <strong id="dailyVerseRef">말씀을 준비하는 중…</strong>
-          <span id="dailyVerseText" class="daily-text"></span>
-          <span class="daily-action">본문에서 보기 →</span>
-        </button>
-        <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button">
-          <span class="daily-kicker">오늘 읽어볼 장</span>
-          <strong id="dailyChapterRef">오늘의 장을 준비하는 중…</strong>
-          <span class="daily-text">짧게라도 한 장을 천천히 읽어보세요.</span>
-          <span class="daily-action">이 장 읽기 →</span>
-        </button>
+        <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button"><span class="daily-kicker">오늘의 성구</span><strong id="dailyVerseRef">말씀을 준비하는 중…</strong><span id="dailyVerseText" class="daily-text"></span><span class="daily-action">본문에서 보기 →</span></button>
+        <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button"><span class="daily-kicker">오늘 읽어볼 장</span><strong id="dailyChapterRef">오늘의 장을 준비하는 중…</strong><span class="daily-text">짧게라도 한 장을 천천히 읽어보세요.</span><span class="daily-action">이 장 읽기 →</span></button>
       </section>
 
       <aside class="ad-slot ad-slot-top" data-ad-slot="top" aria-label="광고 영역"><span>광고</span></aside>
 
-      <form id="searchForm" class="search-box" role="search">
-        <input id="searchInput" type="search" autocomplete="off" placeholder="단어 검색 또는 요 3:16 · 롬 8:28 입력" aria-label="성경 검색 또는 구절 바로가기" />
-        <button id="searchButton" type="submit">검색</button>
-      </form>
       <section id="searchPanel" class="search-panel" hidden aria-label="검색 결과">
         <div class="search-panel-head"><p id="searchSummary" class="search-summary"></p><button id="closeSearch" type="button" class="search-close">닫기</button></div>
         <div id="searchResults" class="search-results"></div>
@@ -99,6 +89,7 @@
   <script src="app.js" defer></script>
   <script src="reference.js" defer></script>
   <script src="book-finder.js" defer></script>
+  <script src="testament-select.js" defer></script>
   <script src="daily.js" defer></script>
   <script src="annotations-data.js" defer></script>
   <script src="annotations.js" defer></script>
