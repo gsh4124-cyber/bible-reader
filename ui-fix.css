@@ -19,7 +19,7 @@
   justify-content:space-between;
   width:100%;
   min-height:92px;
-  margin:20px auto 34px;
+  margin:46px auto 34px;
   padding:16px 0 18px;
   border-bottom:1px solid var(--line);
 }
@@ -55,7 +55,7 @@
 @media (max-width:760px) {
   .chapter-heading {
     min-height:76px;
-    margin:14px auto 26px;
+    margin:28px auto 26px;
     padding:12px 0 14px;
   }
   .chapter-heading h1 {
