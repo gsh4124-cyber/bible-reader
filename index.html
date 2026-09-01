@@ -32,13 +32,13 @@
     <section id="searchPanel" class="search-panel" hidden><div class="search-panel-head"><p id="searchSummary" class="search-summary"></p><button id="closeSearch" type="button" class="search-close">닫기</button></div><div id="searchResults" class="search-results"></div></section>
     <div class="chapter-heading"><button id="prevChapterTitle" class="title-chapter-nav" type="button">← 이전 장</button><h1 id="chapterTitle">요한복음 3장</h1><button id="nextChapterTitle" class="title-chapter-nav" type="button">다음 장 →</button></div>
 
-    <div class="reader-view-controls" aria-label="보기 방식"><span>보기 방식</span><div class="reader-view-buttons"><button id="singlePageView" type="button" class="reader-view-button active" aria-pressed="true">한 면 보기</button><button id="dualPageView" type="button" class="reader-view-button" aria-pressed="false">양면 보기</button></div></div>
+    <div class="reader-view-controls" aria-label="보기 방식"><div class="reader-view-buttons"><button id="singlePageView" type="button" class="reader-view-button active" aria-pressed="true">한 면 보기</button><button id="dualPageView" type="button" class="reader-view-button" aria-pressed="false">양면 보기</button></div></div>
 
     <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교">
       <div class="compare-head compare-head-selects">
-        <div class="compare-translation-block"><select id="leftTranslation" aria-label="왼쪽 비교 역본"></select><span id="leftTranslationMeta"></span></div>
+        <div class="compare-translation-block"><select id="leftTranslation" aria-label="왼쪽 비교 역본"></select></div>
         <button id="swapTranslations" type="button" class="swap-button" title="좌우 역본 바꾸기">⇄</button>
-        <div class="compare-translation-block"><select id="rightTranslation" aria-label="오른쪽 비교 역본"></select><span id="rightTranslationMeta"></span></div>
+        <div class="compare-translation-block"><select id="rightTranslation" aria-label="오른쪽 비교 역본"></select></div>
       </div>
       <div id="compareStatus" class="compare-status"></div><div id="compareRows" class="compare-rows"></div>
     </section>
