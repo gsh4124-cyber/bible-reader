@@ -46,6 +46,24 @@
   font-size: 12px;
 }
 
+#verseSelect {
+  min-width: 78px;
+}
+
+.verse.verse-picked,
+.compare-row.verse-picked {
+  background: color-mix(in srgb, #f3cf62 28%, var(--hover));
+  box-shadow: inset 4px 0 0 #c79f2b;
+}
+
+.verse.verse-picked {
+  border-radius: 8px;
+}
+
+.compare-row.verse-picked {
+  transition: background .2s ease, box-shadow .2s ease;
+}
+
 .ad-slot {
   display: none;
   align-items: center;
@@ -108,6 +126,7 @@ body[data-ads="enabled"] .ad-slot {
   .daily-strip { grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px; }
   .daily-card { min-height: 0; padding: 13px 14px; }
   .daily-text { font-size: 14px; }
+  #verseSelect { min-width: 70px; }
   .section-heading { padding-left: 34px; }
   .verse-note { margin-left: 34px; }
 }
