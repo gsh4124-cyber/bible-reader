@@ -41,17 +41,22 @@
   }
 
   function openRecordNoteEditor({id,title,onSaved}){
+    document.querySelector('.record-note-backdrop')?.remove();
     document.querySelector('.record-note-editor')?.remove();
+    const backdrop=document.createElement('div'); backdrop.className='record-note-backdrop';
     const editor=document.createElement('div'); editor.className='verse-note-editor record-note-editor';
     const heading=document.createElement('strong'); heading.textContent=`메모 · ${title}`;
     const textarea=document.createElement('textarea'); textarea.value=recordNote(id); textarea.placeholder='메모를 입력하세요';
     const actions=document.createElement('div'); actions.className='verse-note-actions';
+    const close=()=>{editor.remove();backdrop.remove();};
     actions.append(
-      button('저장',()=>{saveRecordNote(id,textarea.value);editor.remove();onSaved?.();}),
-      button('메모 삭제',()=>{saveRecordNote(id,'');editor.remove();onSaved?.();}),
-      button('취소',()=>editor.remove())
+      button('저장',()=>{saveRecordNote(id,textarea.value);close();onSaved?.();}),
+      button('메모 삭제',()=>{saveRecordNote(id,'');close();onSaved?.();}),
+      button('취소',close)
     );
-    editor.append(heading,textarea,actions); document.body.append(editor); requestAnimationFrame(()=>textarea.focus());
+    backdrop.addEventListener('click',close);
+    editor.addEventListener('click',event=>event.stopPropagation());
+    editor.append(heading,textarea,actions); backdrop.append(editor); document.body.append(backdrop); requestAnimationFrame(()=>textarea.focus());
   }
 
   function noteBlock(id){
@@ -69,28 +74,34 @@
     }catch(_){target.textContent='본문을 불러오지 못했습니다.';}
   }
 
-  function savedEntries(){
+  function verseEntries(filter){
     return Object.entries(readJson(MARKS_KEY)).map(([key,mark])=>{
       const [tr,book,chapter,verse]=key.split(':');
       return {key,mark,tr,bookIndex:Number(book),chapter:Number(chapter),verse:Number(verse)};
-    }).filter(item=>item.mark?.bookmark).sort((a,b)=>a.bookIndex-b.bookIndex||a.chapter-b.chapter||a.verse-b.verse);
+    }).filter(filter).sort((a,b)=>a.bookIndex-b.bookIndex||a.chapter-b.chapter||a.verse-b.verse);
   }
+  function savedEntries(){ return verseEntries(item=>item.mark?.bookmark); }
+  function highlightEntries(){ return verseEntries(item=>item.mark?.highlight); }
 
-  function renderSaved(panel){
+  function renderVerseRecords(panel, mode){
     const list=panel.querySelector('.notebook-list'); if(!list) return;
-    const entries=savedEntries(); list.innerHTML='';
-    if(!entries.length){list.innerHTML='<p class="notebook-empty">저장한 성구가 없습니다.</p>';return;}
+    const entries=mode==='highlight' ? highlightEntries() : savedEntries(); list.innerHTML='';
+    const empty=mode==='highlight'?'하이라이트한 성구가 없습니다.':'저장한 성구가 없습니다.';
+    if(!entries.length){list.innerHTML=`<p class="notebook-empty">${empty}</p>`;return;}
     entries.forEach(item=>{
-      const id=`verse:${item.key}`;
-      const card=document.createElement('article'); card.className='notebook-item saved-record-item';
+      const id=`${mode==='highlight'?'highlight':'verse'}:${item.key}`;
+      const card=document.createElement('article'); card.className=`notebook-item ${mode==='highlight'?'highlight-record-item':'saved-record-item'}`;
       const ref=document.createElement('strong'); ref.textContent=`${BOOKS[item.bookIndex]?.ko||''} ${item.chapter}:${item.verse}`;
       const body=document.createElement('p'); body.className='saved-verse-text'; body.textContent=item.mark.savedText||'본문을 불러오는 중…'; fillVerseText(item,body);
       const note=noteBlock(id);
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
-      actions.append(button('구절로 이동',()=>goToVerse(item)),button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:ref.textContent,onSaved:()=>renderSaved(panel)})));
+      actions.append(button('구절로 이동',()=>goToVerse(item)),button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:ref.textContent,onSaved:()=>renderVerseRecords(panel,mode)})));
       card.append(ref,body); if(note) card.append(note); card.append(actions); list.append(card);
     });
   }
+
+  function renderSaved(panel){ renderVerseRecords(panel,'saved'); }
+  function renderHighlights(panel){ renderVerseRecords(panel,'highlight'); }
 
   function chapterEntries(){
     return Object.entries(readJson(CHAPTERS_KEY)).map(([key,item])=>({key,...item})).sort((a,b)=>(a.bookIndex-b.bookIndex)||(a.chapter-b.chapter));
@@ -153,7 +164,7 @@
       tabs.querySelectorAll('button:not([hidden])').forEach(b=>{const active=b===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
       if(notesTab){notesTab.classList.remove('active');notesTab.setAttribute('aria-selected','false');}
     }
-    highlightTab?.addEventListener('click',()=>setTimeout(()=>select(highlightTab),0));
+    highlightTab?.addEventListener('click',()=>setTimeout(()=>{select(highlightTab);renderHighlights(panel);},0));
     savedTab?.addEventListener('click',()=>setTimeout(()=>{select(savedTab);renderSaved(panel);},0));
     chapterTab.addEventListener('click',()=>{select(chapterTab);renderChapters(panel);});
 
