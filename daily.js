@@ -4,6 +4,7 @@
   const verseTextEl = document.querySelector("#dailyVerseText");
   const chapterCard = document.querySelector("#dailyChapterCard");
   const chapterRefEl = document.querySelector("#dailyChapterRef");
+  const chapterTextEl = document.querySelector("#dailyChapterText");
   if (!verseCard || !verseRefEl || !verseTextEl || !chapterCard || !chapterRefEl) return;
 
   const DAILY_VERSES = [
@@ -66,20 +67,21 @@
     const [bookName, chapter, verse] = versePick;
     const book = findBook(bookName);
     verseRefEl.textContent = `${bookName} ${chapter}:${verse}`;
-    verseTextEl.textContent = "본문을 불러오는 중…";
+    verseTextEl.textContent = "말씀을 불러오는 중…";
 
     if (book) {
       try {
         const data = await fetchBook(book);
         const chapterData = data.chapters.find((item) => Number(item.chapter) === chapter);
         const verseData = chapterData?.verses.find((item) => Number(item.verse) === verse);
-        verseTextEl.textContent = verseData?.text || "오늘의 말씀을 본문에서 확인해 보세요.";
+        verseTextEl.textContent = verseData?.text || "오늘의 성구를 본문에서 읽어보세요.";
       } catch (_) {
-        verseTextEl.textContent = "오늘의 말씀을 본문에서 확인해 보세요.";
+        verseTextEl.textContent = "오늘의 성구를 본문에서 읽어보세요.";
       }
     }
 
     chapterRefEl.textContent = `${chapterPick[0]} ${chapterPick[1]}장`;
+    if (chapterTextEl) chapterTextEl.textContent = `${chapterPick[0]} ${chapterPick[1]}장을 천천히 읽으며 묵상해 보세요.`;
     verseCard.addEventListener("click", () => goTo(bookName, chapter, verse));
     chapterCard.addEventListener("click", () => goTo(chapterPick[0], chapterPick[1]));
   }
