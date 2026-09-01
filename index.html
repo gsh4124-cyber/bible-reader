@@ -31,10 +31,6 @@
           <datalist id="bookList"></datalist>
           <button id="searchButton" type="submit">검색</button>
         </form>
-        <div class="chapter-arrows" aria-label="장 이동">
-          <button id="prevChapter" class="icon-button nav-arrow" title="이전 장 (←)">←</button>
-          <button id="nextChapter" class="icon-button nav-arrow" title="다음 장 (→)">→</button>
-        </div>
       </div>
 
       <div class="toolbar" aria-label="읽기 도구">
@@ -51,6 +47,11 @@
       </div>
     </div>
   </header>
+
+  <nav class="page-side-nav" aria-label="장 이동">
+    <button id="prevChapter" class="side-arrow side-arrow-left" title="이전 장 (←)" aria-label="이전 장">←</button>
+    <button id="nextChapter" class="side-arrow side-arrow-right" title="다음 장 (→)" aria-label="다음 장">→</button>
+  </nav>
 
   <main>
     <section class="reader-shell">
