@@ -27,16 +27,16 @@
 .compare-panel.stacked .compare-head-selects{grid-template-columns:1fr auto 1fr}
 .compare-panel.stacked .compare-row{grid-template-columns:1fr;gap:0}.compare-panel.stacked .compare-cell:first-child{border-right:0;border-bottom:1px dashed var(--line)}
 
-/* 절 도구: 평소에는 숨기고 해당 절에 마우스를 올릴 때만 조용히 노출한다. */
-.verse-actions-trigger{position:absolute;right:4px;top:3px;min-width:30px;padding:2px 7px;border-color:transparent;color:var(--muted);background:transparent;opacity:0;transition:opacity .15s ease}
-.verse:hover .verse-actions-trigger,.verse:focus-within .verse-actions-trigger{opacity:1}
-.verse-actions-trigger:hover{border-color:var(--line);background:var(--panel)}
+/* 절 도구: 오른쪽에 항상 은은하게 보여 기능을 발견할 수 있게 하고, hover/focus 때 또렷하게 노출한다. */
+.verse{padding-right:48px}
+.verse-actions-trigger{position:absolute;right:8px;top:50%;z-index:3;display:flex;align-items:center;justify-content:center;width:30px;height:30px;min-width:30px;padding:0;border:1px solid color-mix(in srgb,var(--line) 72%,transparent);border-radius:999px;color:var(--muted);background:color-mix(in srgb,var(--panel) 72%,transparent);font:700 18px/1 system-ui,sans-serif;opacity:.5;transform:translateY(-50%);transition:opacity .15s ease,background .15s ease,border-color .15s ease,color .15s ease}
+.verse:hover .verse-actions-trigger,.verse:focus-within .verse-actions-trigger,.verse-actions-trigger:hover{opacity:1;color:var(--text);border-color:var(--line);background:var(--panel)}
 .verse-action-popover{position:absolute;z-index:80;display:flex;gap:4px;padding:5px;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:0 8px 28px rgba(0,0,0,.12);backdrop-filter:blur(12px)}
 .verse-action-popover button{padding:7px 10px;white-space:nowrap;border-color:transparent;color:var(--text);background:transparent}
 .verse-action-popover button:hover{border-color:var(--line);background:var(--hover)}
 .verse.user-highlight{background:color-mix(in srgb,#e6c85f 22%,var(--bg));box-shadow:inset 3px 0 0 color-mix(in srgb,#b89522 70%,var(--verse-number))}
-.verse.user-bookmarked::before{content:'◆';position:absolute;right:11px;top:9px;color:var(--verse-number);font-size:9px}
-.verse.user-bookmarked .verse-actions-trigger{right:27px}
+.verse.user-bookmarked::before{content:'◆';position:absolute;right:13px;top:8px;z-index:4;color:var(--verse-number);font-size:9px}
+.verse.user-bookmarked .verse-actions-trigger{right:32px}
 
 /* 집중 읽기: 조작은 상단에 남기되 부가 콘텐츠를 치워 본문 호흡을 넓힌다. */
 .focus-tool{min-width:52px}
@@ -69,6 +69,7 @@ body.focus-reading .chapter-nav{margin-top:38px}
   #singleReader.dual-page{width:100%;margin-left:0;transform:none}#singleReader.dual-page .verses{column-count:1;column-rule:0;padding-inline:0}
   .compare-head-selects{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}.compare-head-selects .compare-translation-block{padding:0 4px}.compare-head-selects .compare-translation-block select{min-width:0;width:100%;padding-right:24px;font-size:12px}
   .compare-row .compare-cell:nth-child(2){padding-left:30px}
-  .verse-actions-trigger{opacity:.55}
+  .verse{padding-right:42px}
+  .verse-actions-trigger{right:5px;opacity:.72}
   .verse-action-popover{max-width:calc(100vw - 24px);flex-wrap:wrap}
 }
