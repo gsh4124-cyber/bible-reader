@@ -35,19 +35,14 @@
 
       <div class="toolbar" aria-label="읽기 도구">
         <button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
-        <span class="tool-separator" aria-hidden="true"></span>
-        <button id="fontDown" class="toolbar-compact" title="글자 작게" aria-label="글자 작게">가−</button>
-        <button id="fontUp" class="toolbar-compact" title="글자 크게" aria-label="글자 크게">가+</button>
-        <button id="widthToggle" class="toolbar-compact" title="본문 폭 변경" aria-label="본문 폭 변경">폭</button>
-        <button id="themeToggle" class="toolbar-compact icon-button" title="밝기 전환" aria-label="밝기 전환">◐</button>
+        <span class="toolbar-divider" aria-hidden="true"></span>
+        <button id="fontDown" class="quick-tool" title="글자 작게">가−</button>
+        <button id="fontUp" class="quick-tool" title="글자 크게">가+</button>
+        <button id="widthToggle" class="quick-tool" title="본문 폭 변경">폭</button>
+        <button id="themeToggle" class="quick-tool" title="밝기 전환">◐</button>
       </div>
     </div>
   </header>
-
-  <nav class="page-side-nav" aria-label="장 이동">
-    <button id="prevChapter" class="side-arrow side-arrow-left" title="이전 장 (←)" aria-label="이전 장">←</button>
-    <button id="nextChapter" class="side-arrow side-arrow-right" title="다음 장 (→)" aria-label="다음 장">→</button>
-  </nav>
 
   <main>
     <section class="reader-shell">
@@ -59,10 +54,10 @@
           <span class="daily-action">본문 보기 →</span>
         </button>
         <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button">
-          <span class="daily-kicker">오늘의 읽기</span>
+          <span class="daily-kicker">오늘의 묵상장</span>
           <strong id="dailyChapterRef">오늘의 장을 준비하는 중…</strong>
-          <span class="daily-chapter-copy">한 장 천천히 읽기</span>
-          <span class="daily-action">바로 읽기 →</span>
+          <span class="daily-text">오늘은 이 장을 천천히 묵상해 보세요.</span>
+          <span class="daily-action">묵상장 열기 →</span>
         </button>
       </section>
 
