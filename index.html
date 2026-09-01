@@ -15,91 +15,37 @@
       <div class="location-controls" aria-label="성경 위치 선택">
         <select id="translationSelect" class="translation-select" aria-label="성경 버전">
           <option value="krv1961">개역한글</option>
+          <option value="kjv">KJV · English</option>
+          <option value="web">WEB · English</option>
+          <option value="asv">ASV · English</option>
+          <option value="lsg">Louis Segond 1910 · Français</option>
+          <option value="luth1912">Lutherbibel 1912 · Deutsch</option>
+          <option value="cuv">和合本 CUV · 中文</option>
+          <option value="synodal">Синодальный · Русский</option>
+          <option value="vulg">Vulgata · Latina</option>
         </select>
-        <select id="testamentSelect" class="testament-select" aria-label="성경 범위">
-          <option value="all">전체</option>
-          <option value="old">구약</option>
-          <option value="new">신약</option>
-        </select>
+        <select id="testamentSelect" class="testament-select" aria-label="성경 범위"><option value="all">전체</option><option value="old">구약</option><option value="new">신약</option></select>
         <select id="bookSelect" aria-label="성경책"></select>
         <select id="chapterSelect" aria-label="장"></select>
         <select id="verseSelect" aria-label="절"><option value="">절</option></select>
-        <form id="searchForm" class="top-search" role="search">
-          <input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="책 이름 · 단어 · 요 3:16" aria-label="책 찾기, 성경 검색 또는 구절 바로가기" />
-          <datalist id="bookList"></datalist>
-          <button id="searchButton" type="submit">검색</button>
-        </form>
+        <form id="searchForm" class="top-search" role="search"><input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="책 이름 · 단어 · 요 3:16" aria-label="책 찾기, 성경 검색 또는 구절 바로가기" /><datalist id="bookList"></datalist><button id="searchButton" type="submit">검색</button></form>
       </div>
-
-      <div class="toolbar" aria-label="읽기 도구">
-        <button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
-        <span class="toolbar-divider" aria-hidden="true"></span>
-        <button id="fontDown" class="quick-tool" title="글자 작게">가−</button>
-        <button id="fontUp" class="quick-tool" title="글자 크게">가+</button>
-        <button id="widthToggle" class="quick-tool" title="본문 폭 변경">폭</button>
-        <button id="themeToggle" class="quick-tool" title="밝기 전환">◐</button>
-      </div>
+      <div class="toolbar" aria-label="읽기 도구"><button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button><span class="toolbar-divider" aria-hidden="true"></span><button id="fontDown" class="quick-tool" title="글자 작게">가−</button><button id="fontUp" class="quick-tool" title="글자 크게">가+</button><button id="widthToggle" class="quick-tool" title="본문 폭 변경">폭</button><button id="themeToggle" class="quick-tool" title="밝기 전환">◐</button></div>
     </div>
   </header>
-
-  <main>
-    <section class="reader-shell">
-      <section class="daily-strip" aria-label="오늘의 말씀">
-        <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button">
-          <span class="daily-kicker">오늘의 성구</span>
-          <strong id="dailyVerseRef">말씀을 준비하는 중…</strong>
-          <span class="daily-action">열기 →</span>
-          <span id="dailyVerseText" class="daily-text"></span>
-        </button>
-        <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button">
-          <span class="daily-kicker">오늘의 묵상장</span>
-          <strong id="dailyChapterRef">묵상할 장을 준비하는 중…</strong>
-          <span class="daily-action">열기 →</span>
-          <span id="dailyChapterText" class="daily-text">오늘 한 장을 천천히 읽어보세요.</span>
-        </button>
-      </section>
-
-      <aside class="ad-slot ad-slot-top" data-ad-slot="top" aria-label="광고 영역"><span>광고</span></aside>
-
-      <section id="searchPanel" class="search-panel" hidden aria-label="검색 결과">
-        <div class="search-panel-head"><p id="searchSummary" class="search-summary"></p><button id="closeSearch" type="button" class="search-close">닫기</button></div>
-        <div id="searchResults" class="search-results"></div>
-      </section>
-
-      <div class="chapter-heading">
-        <button id="prevChapterTitle" class="title-chapter-nav" type="button">← 이전 장</button>
-        <h1 id="chapterTitle">요한복음 3장</h1>
-        <button id="nextChapterTitle" class="title-chapter-nav" type="button">다음 장 →</button>
-      </div>
-
-      <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교">
-        <div class="compare-controls" aria-label="비교 역본 선택">
-          <label><span>왼쪽 역본</span><select id="leftTranslation" aria-label="왼쪽 비교 역본"><option value="krv1961">개역한글</option><option value="kjv">King James Version</option></select></label>
-          <button id="swapTranslations" type="button" class="swap-button" title="좌우 역본 바꾸기">⇄</button>
-          <label><span>오른쪽 역본</span><select id="rightTranslation" aria-label="오른쪽 비교 역본"><option value="kjv">King James Version</option><option value="krv1961">개역한글</option></select></label>
-        </div>
-        <div class="compare-head"><div><strong id="leftTranslationName">개역한글</strong><span id="leftTranslationMeta">한국어</span></div><div><strong id="rightTranslationName">King James Version</strong><span id="rightTranslationMeta">영어 · Public Domain</span></div></div>
-        <div id="compareStatus" class="compare-status"></div><div id="compareRows" class="compare-rows"></div>
-      </section>
-
-      <div id="singleReader"><div id="status" class="status">본문을 불러오는 중…</div><article id="verses" class="verses" aria-live="polite"></article></div>
-      <nav class="chapter-nav" aria-label="장 이동"><button id="prevChapterBottom">← 이전 장</button><button id="nextChapterBottom">다음 장 →</button></nav>
-      <aside class="ad-slot ad-slot-bottom" data-ad-slot="bottom" aria-label="광고 영역"><span>광고</span></aside>
+  <main><section class="reader-shell">
+    <section class="daily-strip" aria-label="오늘의 말씀">
+      <button id="dailyVerseCard" class="daily-card daily-verse-card" type="button"><span class="daily-kicker">오늘의 성구</span><strong id="dailyVerseRef">말씀을 준비하는 중…</strong><span class="daily-action">열기 →</span><span id="dailyVerseText" class="daily-text"></span></button>
+      <button id="dailyChapterCard" class="daily-card daily-chapter-card" type="button"><span class="daily-kicker">오늘의 묵상장</span><strong id="dailyChapterRef">묵상할 장을 준비하는 중…</strong><span class="daily-action">열기 →</span><span id="dailyChapterText" class="daily-text">오늘 한 장을 천천히 읽어보세요.</span></button>
     </section>
-  </main>
-
-  <footer><p>성경전서 개역한글판 · 대한성서공회</p><p class="source-note">비교 가능 역본: 개역한글 · King James Version(Public Domain). 권리 확인이 끝난 역본부터 선택 목록에 추가합니다.</p></footer>
-
-  <script src="app.js" defer></script>
-  <script src="reference.js" defer></script>
-  <script src="book-finder.js" defer></script>
-  <script src="testament-select.js" defer></script>
-  <script src="daily.js" defer></script>
-  <script src="annotations-data.js" defer></script>
-  <script src="annotations.js" defer></script>
-  <script src="compare.js" defer></script>
-  <script src="verse-picker.js" defer></script>
-  <script src="clipboard.js" defer></script>
-  <script src="title-nav.js" defer></script>
-</body>
-</html>
+    <aside class="ad-slot ad-slot-top" data-ad-slot="top" aria-label="광고 영역"><span>광고</span></aside>
+    <section id="searchPanel" class="search-panel" hidden aria-label="검색 결과"><div class="search-panel-head"><p id="searchSummary" class="search-summary"></p><button id="closeSearch" type="button" class="search-close">닫기</button></div><div id="searchResults" class="search-results"></div></section>
+    <div class="chapter-heading"><button id="prevChapterTitle" class="title-chapter-nav" type="button">← 이전 장</button><h1 id="chapterTitle">요한복음 3장</h1><button id="nextChapterTitle" class="title-chapter-nav" type="button">다음 장 →</button></div>
+    <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교"><div class="compare-controls" aria-label="비교 역본 선택"><label><span>왼쪽 역본</span><select id="leftTranslation" aria-label="왼쪽 비교 역본"></select></label><button id="swapTranslations" type="button" class="swap-button" title="좌우 역본 바꾸기">⇄</button><label><span>오른쪽 역본</span><select id="rightTranslation" aria-label="오른쪽 비교 역본"></select></label></div><div class="compare-head"><div><strong id="leftTranslationName"></strong><span id="leftTranslationMeta"></span></div><div><strong id="rightTranslationName"></strong><span id="rightTranslationMeta"></span></div></div><div id="compareStatus" class="compare-status"></div><div id="compareRows" class="compare-rows"></div></section>
+    <div id="singleReader"><div id="status" class="status">본문을 불러오는 중…</div><article id="verses" class="verses" aria-live="polite"></article></div>
+    <nav class="chapter-nav" aria-label="장 이동"><button id="prevChapterBottom">← 이전 장</button><button id="nextChapterBottom">다음 장 →</button></nav>
+    <aside class="ad-slot ad-slot-bottom" data-ad-slot="bottom" aria-label="광고 영역"><span>광고</span></aside>
+  </section></main>
+  <footer><p id="translationAttribution">개역한글 · 대한성서공회</p><p class="source-note">외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.</p></footer>
+  <script src="app.js" defer></script><script src="reference.js" defer></script><script src="book-finder.js" defer></script><script src="testament-select.js" defer></script><script src="daily.js" defer></script><script src="annotations-data.js" defer></script><script src="annotations.js" defer></script><script src="compare.js" defer></script><script src="verse-picker.js" defer></script><script src="clipboard.js" defer></script><script src="title-nav.js" defer></script>
+</body></html>
