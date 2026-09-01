@@ -1,49 +1,79 @@
 .daily-strip {
   display: grid;
-  grid-template-columns: 1.35fr .85fr;
-  gap: 12px;
-  margin: 0 auto 18px;
+  grid-template-columns: minmax(0, 1.45fr) minmax(250px, .55fr);
+  gap: 10px;
+  margin: 0 auto 14px;
   max-width: 960px;
 }
 
 .daily-card {
-  display: grid;
-  gap: 5px;
-  min-height: 112px;
-  padding: 16px 18px;
+  min-height: 0;
+  padding: 11px 14px;
   text-align: left;
-  background: color-mix(in srgb, var(--panel) 78%, transparent);
-  border-color: var(--line);
-  border-radius: 14px;
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  border-color: color-mix(in srgb, var(--line) 82%, transparent);
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+.daily-verse-card {
+  display: grid;
+  grid-template-columns: auto auto minmax(0,1fr) auto;
+  align-items: center;
+  gap: 8px 11px;
+}
+
+.daily-chapter-card {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 7px 10px;
 }
 
 .daily-card:hover {
-  transform: translateY(-1px);
+  transform: none;
   background: var(--hover);
 }
 
 .daily-kicker {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: .02em;
+  letter-spacing: .01em;
+  white-space: nowrap;
 }
 
 .daily-card strong {
-  font-size: 16px;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .daily-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--text);
   font-family: "Noto Serif KR", "Nanum Myeongjo", "Batang", serif;
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.daily-chapter-copy {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .daily-action {
-  margin-top: 2px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.daily-chapter-card .daily-action {
+  grid-column: 3;
+  justify-self: end;
 }
 
 #verseSelect {
@@ -56,13 +86,8 @@
   box-shadow: inset 4px 0 0 #c79f2b;
 }
 
-.verse.verse-picked {
-  border-radius: 8px;
-}
-
-.compare-row.verse-picked {
-  transition: background .2s ease, box-shadow .2s ease;
-}
+.verse.verse-picked { border-radius: 8px; }
+.compare-row.verse-picked { transition: background .2s ease, box-shadow .2s ease; }
 
 .page-side-nav {
   position: fixed;
@@ -90,18 +115,10 @@
   pointer-events: auto;
 }
 
-.side-arrow:hover {
-  color: var(--text);
-  background: var(--hover);
-}
-
+.side-arrow:hover { color: var(--text); background: var(--hover); }
 .side-arrow-left { left: 5px; }
 .side-arrow-right { right: 5px; }
-
-.side-arrow:disabled {
-  opacity: .22;
-  box-shadow: none;
-}
+.side-arrow:disabled { opacity: .22; box-shadow: none; }
 
 .ad-slot {
   display: none;
@@ -115,15 +132,8 @@
   color: var(--muted);
   font-size: 11px;
 }
-
-body[data-ads="enabled"] .ad-slot {
-  display: flex;
-}
-
-.ad-slot-bottom {
-  margin-top: 28px;
-  margin-bottom: 0;
-}
+body[data-ads="enabled"] .ad-slot { display: flex; }
+.ad-slot-bottom { margin-top: 28px; margin-bottom: 0; }
 
 .section-heading {
   margin: 30px 0 13px;
@@ -164,12 +174,16 @@ body[data-ads="enabled"] .ad-slot {
   .side-arrow-left { left: 3px; }
   .side-arrow-right { right: 3px; }
   .side-arrow { width: 34px; min-width: 34px; height: 60px; opacity: .84; }
+  .daily-strip { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 760px) {
-  .daily-strip { grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px; }
-  .daily-card { min-height: 0; padding: 13px 14px; }
-  .daily-text { font-size: 14px; }
+  .daily-strip { grid-template-columns: 1fr; gap: 7px; margin-bottom: 12px; }
+  .daily-card { padding: 10px 12px; }
+  .daily-verse-card { grid-template-columns: auto auto 1fr; }
+  .daily-verse-card .daily-action { display:none; }
+  .daily-text { font-size: 13px; }
+  .daily-chapter-card { grid-template-columns:auto auto 1fr; }
   #verseSelect { min-width: 70px; }
   .section-heading { padding-left: 34px; }
   .verse-note { margin-left: 34px; }
