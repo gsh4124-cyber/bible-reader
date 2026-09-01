@@ -1,136 +1,37 @@
 .daily-strip {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin: 0 auto 18px;
-  max-width: 960px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin:0 auto 18px;
+  max-width:960px;
 }
-
 .daily-card {
-  display: grid;
-  grid-template-columns: auto minmax(0,1fr) auto;
-  grid-template-rows: auto auto;
-  align-items: center;
-  gap: 5px 10px;
-  min-height: 78px;
-  padding: 13px 15px;
-  text-align: left;
-  background: color-mix(in srgb, var(--panel) 66%, transparent);
-  border-color: color-mix(in srgb, var(--line) 78%, transparent);
-  border-radius: 14px;
-  box-shadow: none;
+  display:grid;
+  grid-template-rows:auto auto;
+  align-content:center;
+  gap:8px;
+  min-height:82px;
+  padding:14px 16px;
+  text-align:left;
+  background:color-mix(in srgb,var(--panel) 66%,transparent);
+  border-color:color-mix(in srgb,var(--line) 78%,transparent);
+  border-radius:14px;
+  box-shadow:none;
 }
-
-.daily-card:hover {
-  transform: none;
-  background: color-mix(in srgb, var(--hover) 72%, transparent);
-}
-
-.daily-kicker {
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .01em;
-  white-space: nowrap;
-}
-
-.daily-card strong {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 14px;
-}
-
-.daily-text {
-  grid-column: 1 / -1;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: color-mix(in srgb, var(--text) 88%, var(--muted));
-  font-family: "Noto Serif KR", "Nanum Myeongjo", "Batang", serif;
-  font-size: 13.5px;
-  line-height: 1.5;
-}
-
-.daily-action {
-  color: var(--muted);
-  font-size: 11px;
-  white-space: nowrap;
-}
-
-#verseSelect { min-width: 78px; }
-
-.verse.verse-picked,
-.compare-row.verse-picked {
-  background: color-mix(in srgb, #f3cf62 28%, var(--hover));
-  box-shadow: inset 4px 0 0 #c79f2b;
-}
-
-.verse.verse-picked { border-radius: 8px; }
-.compare-row.verse-picked { transition: background .2s ease, box-shadow .2s ease; }
-
-.ad-slot {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  min-height: 90px;
-  margin: 10px auto 22px;
-  max-width: 960px;
-  border: 1px dashed var(--line);
-  border-radius: 12px;
-  color: var(--muted);
-  font-size: 11px;
-}
-body[data-ads="enabled"] .ad-slot { display: flex; }
-.ad-slot-bottom { margin-top: 28px; margin-bottom: 0; }
-
-.section-heading {
-  margin: 30px 0 13px;
-  padding-left: 42px;
-  color: var(--text);
-  font-family: "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -.02em;
-}
-
-.verse-note-marker {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px;
-  height: 18px;
-  margin-left: 5px;
-  padding: 0 4px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--muted);
-  font: 10px/1 system-ui, sans-serif;
-  vertical-align: super;
-  cursor: pointer;
-}
-
-.verse-note {
-  margin: 6px 0 2px 42px;
-  padding: 9px 11px;
-  border-left: 2px solid var(--line);
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-@media (max-width: 900px) {
-  .daily-strip { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 760px) {
-  .daily-strip { grid-template-columns: 1fr; gap: 7px; margin-bottom: 12px; }
-  .daily-card { min-height: 0; padding: 10px 12px; }
-  .daily-action { display:none; }
-  .daily-text { font-size: 13px; }
-  #verseSelect { min-width: 70px; }
-  .section-heading { padding-left: 34px; }
-  .verse-note { margin-left: 34px; }
-}
+.daily-card:hover { transform:none; background:color-mix(in srgb,var(--hover) 72%,transparent); }
+.daily-line { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:10px; min-width:0; }
+.daily-kicker { color:var(--muted); font-size:11px; font-weight:700; white-space:nowrap; }
+.daily-card strong { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:14px; }
+.daily-action { color:var(--muted); font-size:11px; white-space:nowrap; }
+.daily-text { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:color-mix(in srgb,var(--text) 88%,var(--muted)); font-family:"Noto Serif KR","Nanum Myeongjo","Batang",serif; font-size:13.5px; line-height:1.5; }
+#verseSelect { min-width:78px; }
+.verse.verse-picked,.compare-row.verse-picked { background:color-mix(in srgb,#f3cf62 28%,var(--hover)); box-shadow:inset 4px 0 0 #c79f2b; }
+.verse.verse-picked { border-radius:8px; }
+.ad-slot { display:none; align-items:center; justify-content:center; min-height:90px; margin:10px auto 22px; max-width:960px; border:1px dashed var(--line); border-radius:12px; color:var(--muted); font-size:11px; }
+body[data-ads="enabled"] .ad-slot { display:flex; }
+.ad-slot-bottom { margin-top:28px; margin-bottom:0; }
+.section-heading { margin:30px 0 13px; padding-left:42px; color:var(--text); font-size:15px; font-weight:700; }
+.verse-note-marker { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; margin-left:5px; padding:0 4px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font:10px/1 system-ui,sans-serif; vertical-align:super; cursor:pointer; }
+.verse-note { margin:6px 0 2px 42px; padding:9px 11px; border-left:2px solid var(--line); color:var(--muted); font-size:13px; line-height:1.6; }
+@media(max-width:900px){.daily-strip{grid-template-columns:1fr}}
+@media(max-width:760px){.daily-strip{grid-template-columns:1fr;gap:7px;margin-bottom:12px}.daily-card{min-height:0;padding:10px 12px}.daily-action{display:none}.daily-text{font-size:13px}#verseSelect{min-width:70px}.section-heading{padding-left:34px}.verse-note{margin-left:34px}}
