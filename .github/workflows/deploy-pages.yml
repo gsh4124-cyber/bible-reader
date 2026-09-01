@@ -35,7 +35,7 @@ jobs:
       - name: Check required runtime files
         run: |
           set -e
-          for file in index.html styles.css features.css ui-fix.css app.js reference.js book-finder.js testament-select.js daily.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js locale-safe.js verse-tools.js focus-mode.js; do
+          for file in index.html styles.css features.css ui-fix.css records-enhancements.css app.js reference.js book-finder.js testament-select.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js locale-safe.js verse-tools.js records-enhancements.js; do
             test -s "$file"
           done
 
@@ -44,9 +44,12 @@ jobs:
           ! grep -q 'annotations-data.js' index.html
           ! grep -q 'annotations.js' index.html
 
-      - name: Check obsolete locale runtime is excluded
+      - name: Check retired runtime is excluded
         run: |
           ! grep -q 'src="locale.js"' index.html
+          ! grep -q 'src="daily.js"' index.html
+          ! grep -q 'src="focus-mode.js"' index.html
+          ! grep -q 'notebook-tabs-fix.css' index.html
 
   deploy:
     environment:
