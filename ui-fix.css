@@ -25,7 +25,7 @@
   gap: 22px;
   width: 100%;
   margin: 0 auto 30px;
-  padding: 0 0 22px;
+  padding: 0 0 14px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -36,10 +36,12 @@
 
 .title-chapter-nav {
   min-width: 108px;
-  padding: 10px 14px;
+  padding: 11px 16px;
   color: var(--muted);
   background: transparent;
   white-space: nowrap;
+  align-self: end;
+  transform: translateY(7px);
 }
 
 .title-chapter-nav:hover {
@@ -67,13 +69,14 @@
   .chapter-heading {
     grid-template-columns: auto 1fr auto;
     gap: 8px;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
   }
   .title-chapter-nav {
     min-width: 42px;
     width: 42px;
     padding: 8px 0;
     font-size: 0;
+    transform: translateY(5px);
   }
   #prevChapterTitle::after { content: "←"; font-size: 18px; }
   #nextChapterTitle::after { content: "→"; font-size: 18px; }
