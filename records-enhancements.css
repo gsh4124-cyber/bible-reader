@@ -1,0 +1,7 @@
+.notebook-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.notebook-tabs button{min-width:0;padding-inline:6px;font-size:13px;white-space:nowrap}
+.notebook-data-tools{display:flex;justify-content:flex-end;gap:7px;padding:10px 14px 0}
+.notebook-data-tools button{padding:6px 9px;border-color:var(--line);color:var(--muted);background:transparent;font-size:12px}
+.notebook-data-tools button:hover{color:var(--text);background:var(--hover)}
+.chapter-record-item{min-height:70px;align-content:center}
+@media(max-width:430px){.notebook-tabs button{font-size:12px;padding-inline:3px}.notebook-data-tools{justify-content:stretch}.notebook-data-tools button{flex:1}}
