@@ -141,11 +141,11 @@
   function enhance(panel){
     if(!panel||panel.dataset.recordsEnhanced) return;
     panel.dataset.recordsEnhanced='true'; const tabs=panel.querySelector('.notebook-tabs'); if(!tabs) return;
-    const notesTab=tabs.querySelector('[data-tab="notes"]'); if(notesTab) notesTab.remove();
+    const notesTab=tabs.querySelector('[data-tab="notes"]'); if(notesTab) notesTab.hidden=true;
     const savedTab=tabs.querySelector('[data-tab="saved"]'); const highlightTab=tabs.querySelector('[data-tab="highlights"]');
     const chapterTab=document.createElement('button'); chapterTab.type='button'; chapterTab.dataset.tab='chapters'; chapterTab.textContent='저장한 장'; chapterTab.setAttribute('role','tab'); tabs.append(chapterTab);
 
-    function select(tab){tabs.querySelectorAll('button').forEach(b=>{const active=b===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});}
+    function select(tab){tabs.querySelectorAll('button:not([hidden])').forEach(b=>{const active=b===tab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});if(notesTab){notesTab.classList.remove('active');notesTab.setAttribute('aria-selected','false');}}
     savedTab?.addEventListener('click',()=>setTimeout(()=>{select(savedTab);renderSaved(panel);},0));
     highlightTab?.addEventListener('click',()=>setTimeout(()=>select(highlightTab),0));
     chapterTab.addEventListener('click',()=>{select(chapterTab);renderChapters(panel);});
