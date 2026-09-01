@@ -28,27 +28,29 @@
     return matches.length === 1 ? BOOK_NAMES.indexOf(matches[0]) : -1;
   }
 
-  function chooseBook(query) {
+  async function chooseBook(query) {
     const index = findBookIndex(query.trim());
     if (index < 0) return false;
 
-    const allButton = document.querySelector('[data-testament="all"]');
-    if (allButton && !allButton.classList.contains("active")) allButton.click();
+    if (typeof setTestament === "function" && activeTestament !== "all") {
+      await setTestament("all");
+      const testamentSelect = document.querySelector("#testamentSelect");
+      if (testamentSelect) testamentSelect.value = "all";
+    }
 
-    requestAnimationFrame(() => {
-      select.value = String(index);
-      select.dispatchEvent(new Event("change", { bubbles: true }));
-      input.value = "";
-      input.blur();
-    });
+    select.value = String(index);
+    select.dispatchEvent(new Event("change", { bubbles: true }));
+    input.value = "";
+    input.blur();
     return true;
   }
 
-  document.addEventListener("submit", (event) => {
+  document.addEventListener("submit", async (event) => {
     if (event.target !== form) return;
     const query = input.value.trim();
-    if (!query || !chooseBook(query)) return;
+    if (!query || findBookIndex(query) < 0) return;
     event.preventDefault();
     event.stopImmediatePropagation();
+    await chooseBook(query);
   }, true);
 })();
