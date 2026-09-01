@@ -8,6 +8,7 @@
 
   function recordNote(id){ return String(readJson(RECORD_NOTES_KEY)[id] || '').trim(); }
   function saveRecordNote(id, text){ const notes=readJson(RECORD_NOTES_KEY); const value=String(text||'').trim(); if(value) notes[id]=value; else delete notes[id]; writeJson(RECORD_NOTES_KEY,notes); }
+  function removeRecordNote(id){ const notes=readJson(RECORD_NOTES_KEY); delete notes[id]; writeJson(RECORD_NOTES_KEY,notes); }
   function button(text, handler){ const b=document.createElement('button'); b.type='button'; b.textContent=text; b.addEventListener('click',handler); return b; }
 
   async function goToVerse(item){
@@ -54,8 +55,8 @@
       button('메모 삭제',()=>{saveRecordNote(id,'');close();onSaved?.();}),
       button('취소',close)
     );
-    backdrop.addEventListener('click',close);
-    editor.addEventListener('click',event=>event.stopPropagation());
+    backdrop.addEventListener('pointerdown',event=>{ if(event.target===backdrop) close(); });
+    editor.addEventListener('pointerdown',event=>event.stopPropagation());
     editor.append(heading,textarea,actions); backdrop.append(editor); document.body.append(backdrop); requestAnimationFrame(()=>textarea.focus());
   }
 
@@ -83,6 +84,18 @@
   function savedEntries(){ return verseEntries(item=>item.mark?.bookmark); }
   function highlightEntries(){ return verseEntries(item=>item.mark?.highlight); }
 
+  function deleteVerseRecord(item, mode, panel){
+    const marks=readJson(MARKS_KEY);
+    const mark=marks[item.key] || {};
+    if(mode==='highlight') mark.highlight=false;
+    else mark.bookmark=false;
+    if(!mark.highlight && !mark.bookmark && !String(mark.note||'').trim()) delete marks[item.key];
+    else marks[item.key]=mark;
+    writeJson(MARKS_KEY,marks);
+    removeRecordNote(`${mode==='highlight'?'highlight':'verse'}:${item.key}`);
+    renderVerseRecords(panel,mode);
+  }
+
   function renderVerseRecords(panel, mode){
     const list=panel.querySelector('.notebook-list'); if(!list) return;
     const entries=mode==='highlight' ? highlightEntries() : savedEntries(); list.innerHTML='';
@@ -95,7 +108,11 @@
       const body=document.createElement('p'); body.className='saved-verse-text'; body.textContent=item.mark.savedText||'본문을 불러오는 중…'; fillVerseText(item,body);
       const note=noteBlock(id);
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
-      actions.append(button('구절로 이동',()=>goToVerse(item)),button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:ref.textContent,onSaved:()=>renderVerseRecords(panel,mode)})));
+      actions.append(
+        button('구절로 이동',()=>goToVerse(item)),
+        button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:ref.textContent,onSaved:()=>renderVerseRecords(panel,mode)})),
+        button(mode==='highlight'?'하이라이트 삭제':'저장 삭제',()=>deleteVerseRecord(item,mode,panel))
+      );
       card.append(ref,body); if(note) card.append(note); card.append(actions); list.append(card);
     });
   }
@@ -105,6 +122,12 @@
 
   function chapterEntries(){
     return Object.entries(readJson(CHAPTERS_KEY)).map(([key,item])=>({key,...item})).sort((a,b)=>(a.bookIndex-b.bookIndex)||(a.chapter-b.chapter));
+  }
+
+  function deleteChapterRecord(item,panel){
+    const chapters=readJson(CHAPTERS_KEY); delete chapters[item.key]; writeJson(CHAPTERS_KEY,chapters);
+    removeRecordNote(`chapter:${item.key}`);
+    renderChapters(panel);
   }
 
   function renderChapters(panel){
@@ -117,7 +140,11 @@
       const title=document.createElement('strong'); title.textContent=item.label||`${BOOKS[item.bookIndex]?.ko||''} ${item.chapter}장`;
       const note=noteBlock(id);
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
-      actions.append(button('장으로 이동',()=>goToChapter(item)),button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:title.textContent,onSaved:()=>renderChapters(panel)})));
+      actions.append(
+        button('장으로 이동',()=>goToChapter(item)),
+        button(recordNote(id)?'메모 수정':'메모 추가',()=>openRecordNoteEditor({id,title:title.textContent,onSaved:()=>renderChapters(panel)})),
+        button('저장 삭제',()=>deleteChapterRecord(item,panel))
+      );
       card.append(title); if(note) card.append(note); card.append(actions); list.append(card);
     });
   }
@@ -149,9 +176,30 @@
     });
   }
 
+  function ensureNotebookBackdrop(panel){
+    let backdrop=document.querySelector('.notebook-backdrop');
+    if(!backdrop){
+      backdrop=document.createElement('div'); backdrop.className='notebook-backdrop';
+      backdrop.addEventListener('pointerdown',event=>{
+        if(event.target!==backdrop) return;
+        panel.querySelector('.notebook-close')?.click();
+        backdrop.remove();
+      });
+      document.body.append(backdrop);
+    }
+    panel.addEventListener('pointerdown',event=>event.stopPropagation());
+    const close=panel.querySelector('.notebook-close');
+    if(close&&!close.dataset.backdropCleanup){
+      close.dataset.backdropCleanup='true';
+      close.addEventListener('click',()=>document.querySelector('.notebook-backdrop')?.remove());
+    }
+  }
+
   function enhance(panel){
     if(!panel||panel.dataset.recordsEnhanced) return;
-    panel.dataset.recordsEnhanced='true'; const tabs=panel.querySelector('.notebook-tabs'); if(!tabs) return;
+    panel.dataset.recordsEnhanced='true';
+    ensureNotebookBackdrop(panel);
+    const tabs=panel.querySelector('.notebook-tabs'); if(!tabs) return;
     const notesTab=tabs.querySelector('[data-tab="notes"]'); if(notesTab) notesTab.hidden=true;
     const savedTab=tabs.querySelector('[data-tab="saved"]');
     const highlightTab=tabs.querySelector('[data-tab="highlights"]');
