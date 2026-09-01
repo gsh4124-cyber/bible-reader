@@ -1,0 +1,113 @@
+.daily-strip {
+  display: grid;
+  grid-template-columns: 1.35fr .85fr;
+  gap: 12px;
+  margin: 0 auto 18px;
+  max-width: 960px;
+}
+
+.daily-card {
+  display: grid;
+  gap: 5px;
+  min-height: 112px;
+  padding: 16px 18px;
+  text-align: left;
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  border-color: var(--line);
+  border-radius: 14px;
+}
+
+.daily-card:hover {
+  transform: translateY(-1px);
+  background: var(--hover);
+}
+
+.daily-kicker {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.daily-card strong {
+  font-size: 16px;
+}
+
+.daily-text {
+  color: var(--text);
+  font-family: "Noto Serif KR", "Nanum Myeongjo", "Batang", serif;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.daily-action {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.ad-slot {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 90px;
+  margin: 10px auto 22px;
+  max-width: 960px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+body[data-ads="enabled"] .ad-slot {
+  display: flex;
+}
+
+.ad-slot-bottom {
+  margin-top: 28px;
+  margin-bottom: 0;
+}
+
+/* 소제목·난하주 데이터 연결 시 공통으로 사용할 표시 규격 */
+.section-heading {
+  margin: 30px 0 13px;
+  padding-left: 42px;
+  color: var(--text);
+  font-family: "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.verse-note-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 5px;
+  padding: 0 4px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font: 10px/1 system-ui, sans-serif;
+  vertical-align: super;
+  cursor: pointer;
+}
+
+.verse-note {
+  margin: 6px 0 2px 42px;
+  padding: 9px 11px;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .daily-strip { grid-template-columns: 1fr; gap: 8px; margin-bottom: 14px; }
+  .daily-card { min-height: 0; padding: 13px 14px; }
+  .daily-text { font-size: 14px; }
+  .section-heading { padding-left: 34px; }
+  .verse-note { margin-left: 34px; }
+}
