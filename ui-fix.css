@@ -17,7 +17,7 @@
 #singleReader.dual-page .verse{break-inside:avoid-column;-webkit-column-break-inside:avoid;margin-bottom:13px}
 
 .compare-panel{padding-top:2px}
-.compare-head-selects{display:grid;grid-template-columns:minmax(260px,1fr) auto minmax(260px,1fr);align-items:center;gap:14px;position:sticky;top:76px;z-index:5;padding:8px 0 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+.compare-head-selects{display:grid;grid-template-columns:minmax(260px,1fr) auto minmax(260px,1fr);align-items:center;gap:14px;position:static;z-index:auto;padding:8px 0 12px;background:var(--bg);border-bottom:1px solid var(--line)}
 .compare-head-selects .compare-translation-block{display:grid;justify-items:center;align-items:center;justify-content:stretch;text-align:center;padding:0 16px}
 .compare-head-selects .compare-translation-block select{width:min(100%,500px);text-align:center;text-align-last:center;background:var(--bg)}
 .compare-head-selects .swap-button{align-self:center}
@@ -67,7 +67,7 @@ body.focus-reading .chapter-nav{margin-top:38px}
   .chapter-heading{height:112px;margin:18px auto 24px;padding-bottom:12px}.chapter-heading h1{top:50%;max-width:calc(100% - 100px);overflow:hidden;text-overflow:ellipsis}.title-chapter-nav{min-width:42px;width:42px;padding:8px 0;font-size:0;align-self:flex-end}#prevChapterTitle::after{content:'←';font-size:18px}#nextChapterTitle::after{content:'→';font-size:18px}.translation-select{min-width:128px;max-width:180px}
   .reader-view-button{min-width:118px}
   #singleReader.dual-page{width:100%;margin-left:0;transform:none}#singleReader.dual-page .verses{column-count:1;column-rule:0;padding-inline:0}
-  .compare-head-selects{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;top:154px}.compare-head-selects .compare-translation-block{padding:0 4px}.compare-head-selects .compare-translation-block select{min-width:0;width:100%;padding-right:24px;font-size:12px}
+  .compare-head-selects{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px}.compare-head-selects .compare-translation-block{padding:0 4px}.compare-head-selects .compare-translation-block select{min-width:0;width:100%;padding-right:24px;font-size:12px}
   .compare-row .compare-cell:nth-child(2){padding-left:30px}
   .verse-actions-trigger{opacity:.55}
   .verse-action-popover{max-width:calc(100vw - 24px);flex-wrap:wrap}
