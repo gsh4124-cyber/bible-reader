@@ -21,6 +21,7 @@
 .compare-head-selects .compare-translation-block{display:grid;justify-items:center;align-items:center;justify-content:stretch;text-align:center;padding:0 16px}
 .compare-head-selects .compare-translation-block select{width:min(100%,500px);text-align:center;text-align-last:center;background:var(--bg)}
 .compare-head-selects .swap-button{align-self:center}
+.compare-row .compare-cell:nth-child(2){padding-left:26px}.compare-row .compare-cell:nth-child(2) .compare-verse-number{display:none}
 .compare-panel.stacked .compare-head-selects{grid-template-columns:1fr auto 1fr}
 .compare-panel.stacked .compare-row{grid-template-columns:1fr;gap:0}.compare-panel.stacked .compare-cell:first-child{border-right:0;border-bottom:1px dashed var(--line)}
 
@@ -30,4 +31,5 @@
   .reader-view-button{min-width:118px}
   #singleReader.dual-page{width:100%;margin-left:0;transform:none}#singleReader.dual-page .verses{column-count:1;column-rule:0;padding-inline:0}
   .compare-head-selects{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;top:154px}.compare-head-selects .compare-translation-block{padding:0 4px}.compare-head-selects .compare-translation-block select{min-width:0;width:100%;padding-right:24px;font-size:12px}
+  .compare-row .compare-cell:nth-child(2){padding-left:8px}
 }
