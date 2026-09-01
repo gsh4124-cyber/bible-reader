@@ -1,24 +1,26 @@
 (() => {
   const verses = document.querySelector('#verses');
   const heading = document.querySelector('.chapter-heading');
+  const toolbar = document.querySelector('.toolbar');
   if (!verses) return;
 
   const STORE_KEY = 'bible-reader-verse-marks-v1';
   const CHAPTER_KEY = 'bible-reader-chapter-bookmarks-v1';
   const LABELS = {
-    ko:{copy:'복사',highlight:'하이라이트',saveVerse:'구절 저장',removeVerse:'구절 저장 해제',note:'메모',noteTitle:'구절 메모',save:'저장',removeNote:'메모 삭제',cancel:'취소',chapterBookmark:'장 북마크',removeChapterBookmark:'장 북마크 해제'},
-    en:{copy:'Copy',highlight:'Highlight',saveVerse:'Save verse',removeVerse:'Remove saved verse',note:'Note',noteTitle:'Verse note',save:'Save',removeNote:'Delete note',cancel:'Cancel',chapterBookmark:'Bookmark chapter',removeChapterBookmark:'Remove chapter bookmark'},
-    fr:{copy:'Copier',highlight:'Surligner',saveVerse:'Enregistrer',removeVerse:'Retirer',note:'Note',noteTitle:'Note du verset',save:'Enregistrer',removeNote:'Supprimer',cancel:'Annuler',chapterBookmark:'Ajouter ce chapitre',removeChapterBookmark:'Retirer ce chapitre'},
-    de:{copy:'Kopieren',highlight:'Markieren',saveVerse:'Vers speichern',removeVerse:'Vers entfernen',note:'Notiz',noteTitle:'Versnotiz',save:'Speichern',removeNote:'Notiz löschen',cancel:'Abbrechen',chapterBookmark:'Kapitel merken',removeChapterBookmark:'Kapitel entfernen'},
-    zh:{copy:'复制',highlight:'高亮',saveVerse:'保存经文',removeVerse:'取消保存',note:'笔记',noteTitle:'经文笔记',save:'保存',removeNote:'删除笔记',cancel:'取消',chapterBookmark:'收藏本章',removeChapterBookmark:'取消收藏本章'},
-    ru:{copy:'Копировать',highlight:'Выделить',saveVerse:'Сохранить стих',removeVerse:'Удалить стих',note:'Заметка',noteTitle:'Заметка к стиху',save:'Сохранить',removeNote:'Удалить заметку',cancel:'Отмена',chapterBookmark:'Закладка главы',removeChapterBookmark:'Убрать закладку'},
-    la:{copy:'Copia',highlight:'Nota',saveVerse:'Serva versum',removeVerse:'Remove versum',note:'Commentarium',noteTitle:'Commentarium versus',save:'Serva',removeNote:'Remove',cancel:'Claude',chapterBookmark:'Serva caput',removeChapterBookmark:'Remove caput'}
+    ko:{copy:'복사',highlight:'하이라이트',removeHighlight:'강조 해제',saveVerse:'구절 저장',removeVerse:'구절 저장 해제',note:'메모',noteTitle:'구절 메모',save:'저장',removeNote:'메모 삭제',cancel:'취소',chapterBookmark:'장 북마크',removeChapterBookmark:'장 북마크 해제',notebook:'메모장',notebookTitle:'메모장',emptyNotes:'저장된 메모가 없습니다.',go:'구절로 이동',close:'닫기'},
+    en:{copy:'Copy',highlight:'Highlight',removeHighlight:'Remove highlight',saveVerse:'Save verse',removeVerse:'Remove saved verse',note:'Note',noteTitle:'Verse note',save:'Save',removeNote:'Delete note',cancel:'Cancel',chapterBookmark:'Bookmark chapter',removeChapterBookmark:'Remove chapter bookmark',notebook:'Notes',notebookTitle:'Notes',emptyNotes:'No saved notes.',go:'Go to verse',close:'Close'},
+    fr:{copy:'Copier',highlight:'Surligner',removeHighlight:'Retirer le surlignage',saveVerse:'Enregistrer',removeVerse:'Retirer',note:'Note',noteTitle:'Note du verset',save:'Enregistrer',removeNote:'Supprimer',cancel:'Annuler',chapterBookmark:'Ajouter ce chapitre',removeChapterBookmark:'Retirer ce chapitre',notebook:'Notes',notebookTitle:'Notes',emptyNotes:'Aucune note.',go:'Aller au verset',close:'Fermer'},
+    de:{copy:'Kopieren',highlight:'Markieren',removeHighlight:'Markierung entfernen',saveVerse:'Vers speichern',removeVerse:'Vers entfernen',note:'Notiz',noteTitle:'Versnotiz',save:'Speichern',removeNote:'Notiz löschen',cancel:'Abbrechen',chapterBookmark:'Kapitel merken',removeChapterBookmark:'Kapitel entfernen',notebook:'Notizen',notebookTitle:'Notizen',emptyNotes:'Keine Notizen.',go:'Zum Vers',close:'Schließen'},
+    zh:{copy:'复制',highlight:'高亮',removeHighlight:'取消高亮',saveVerse:'保存经文',removeVerse:'取消保存',note:'笔记',noteTitle:'经文笔记',save:'保存',removeNote:'删除笔记',cancel:'取消',chapterBookmark:'收藏本章',removeChapterBookmark:'取消收藏本章',notebook:'笔记本',notebookTitle:'笔记本',emptyNotes:'暂无笔记。',go:'前往经文',close:'关闭'},
+    ru:{copy:'Копировать',highlight:'Выделить',removeHighlight:'Убрать выделение',saveVerse:'Сохранить стих',removeVerse:'Удалить стих',note:'Заметка',noteTitle:'Заметка к стиху',save:'Сохранить',removeNote:'Удалить заметку',cancel:'Отмена',chapterBookmark:'Закладка главы',removeChapterBookmark:'Убрать закладку',notebook:'Заметки',notebookTitle:'Заметки',emptyNotes:'Нет заметок.',go:'К стиху',close:'Закрыть'},
+    la:{copy:'Copia',highlight:'Nota',removeHighlight:'Notam remove',saveVerse:'Serva versum',removeVerse:'Remove versum',note:'Commentarium',noteTitle:'Commentarium versus',save:'Serva',removeNote:'Remove',cancel:'Claude',chapterBookmark:'Serva caput',removeChapterBookmark:'Remove caput',notebook:'Commentaria',notebookTitle:'Commentaria',emptyNotes:'Nulla commentaria.',go:'Ad versum',close:'Claude'}
   };
 
   let marks = loadJson(STORE_KEY);
   let chapterBookmarks = loadJson(CHAPTER_KEY);
   let activeToolbar = null;
   let noteEditor = null;
+  let notebookPanel = null;
 
   function lang() {
     if (window.BibleI18n?.lang) return window.BibleI18n.lang();
@@ -37,6 +39,7 @@
   function currentBookName(){ return window.BibleI18n?.bookName ? window.BibleI18n.bookName(bookIndex()) : BOOKS[bookIndex()].ko; }
   function currentReference(verse){ return `${currentBookName()} ${chapterNumber()}:${verse}`; }
   function markFor(key){ return marks[key] || {highlight:false,bookmark:false,note:''}; }
+  function bookNameFor(index){ return window.BibleI18n?.bookName ? window.BibleI18n.bookName(index) : (BOOKS[index]?.ko || ''); }
 
   function applyMarks(){
     verses.querySelectorAll('.verse').forEach(row => {
@@ -48,7 +51,9 @@
       ensureTrigger(row);
     });
     ensureChapterBookmark();
+    ensureNotebookButton();
     updateChapterBookmark();
+    if (notebookPanel) renderNotebook();
   }
 
   function ensureTrigger(row){
@@ -81,6 +86,19 @@
     title?.insertAdjacentElement('afterend', button);
   }
 
+  function ensureNotebookButton(){
+    if (!toolbar || toolbar.querySelector('.notebook-button')) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'text-button notebook-button';
+    button.textContent = labels().notebook;
+    button.addEventListener('click', event => {
+      event.preventDefault(); event.stopPropagation();
+      notebookPanel ? closeNotebook() : openNotebook();
+    });
+    toolbar.append(button);
+  }
+
   function updateChapterBookmark(){
     const button = heading?.querySelector('.chapter-bookmark-button');
     if (!button) return;
@@ -95,6 +113,7 @@
 
   function closeToolbar(){ activeToolbar?.remove(); activeToolbar = null; }
   function closeNoteEditor(){ noteEditor?.remove(); noteEditor = null; }
+  function closeNotebook(){ notebookPanel?.remove(); notebookPanel = null; document.body.classList.remove('notebook-open'); }
   function actionButton(text, handler){
     const b=document.createElement('button'); b.type='button'; b.textContent=text;
     b.addEventListener('click', e=>{e.preventDefault();e.stopPropagation();handler();});
@@ -123,6 +142,63 @@
     requestAnimationFrame(()=>textarea.focus());
   }
 
+  function noteEntries(){
+    return Object.entries(marks).map(([key,mark])=>{
+      const [tr,book,chapter,verse] = key.split(':');
+      return {key,mark,tr,bookIndex:Number(book),chapter:Number(chapter),verse:Number(verse)};
+    }).filter(item=>item.mark?.note?.trim()).sort((a,b)=>a.bookIndex-b.bookIndex || a.chapter-b.chapter || a.verse-b.verse);
+  }
+
+  function renderNotebook(){
+    if (!notebookPanel) return;
+    const l = labels();
+    const list = notebookPanel.querySelector('.notebook-list');
+    const title = notebookPanel.querySelector('.notebook-title');
+    const close = notebookPanel.querySelector('.notebook-close');
+    title.textContent = l.notebookTitle;
+    close.textContent = l.close;
+    list.innerHTML = '';
+    const entries = noteEntries();
+    if (!entries.length){
+      const empty = document.createElement('p'); empty.className='notebook-empty'; empty.textContent=l.emptyNotes; list.append(empty); return;
+    }
+    entries.forEach(item=>{
+      const card=document.createElement('article'); card.className='notebook-item';
+      const ref=document.createElement('strong'); ref.textContent=`${bookNameFor(item.bookIndex)} ${item.chapter}:${item.verse}`;
+      const note=document.createElement('p'); note.textContent=item.mark.note;
+      const actions=document.createElement('div'); actions.className='notebook-item-actions';
+      const go=actionButton(l.go, async()=>{
+        activeTranslationId = TRANSLATIONS[item.tr] ? item.tr : activeTranslationId;
+        if (translationSelect) translationSelect.value = activeTranslationId;
+        state.bookIndex = item.bookIndex; state.chapter = item.chapter;
+        await loadCurrent({scrollTop:false});
+        closeNotebook();
+        requestAnimationFrame(()=>{
+          const row=verses.querySelector(`[data-verse="${item.verse}"]`);
+          if(row){ row.classList.add('searched'); row.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>row.classList.remove('searched'),1800); }
+        });
+      });
+      const edit=actionButton(l.note, async()=>{
+        activeTranslationId = TRANSLATIONS[item.tr] ? item.tr : activeTranslationId;
+        if (translationSelect) translationSelect.value = activeTranslationId;
+        state.bookIndex=item.bookIndex; state.chapter=item.chapter;
+        await loadCurrent({scrollTop:false}); closeNotebook();
+        requestAnimationFrame(()=>{const row=verses.querySelector(`[data-verse="${item.verse}"]`); if(row) openNoteEditor(row,item.key);});
+      });
+      actions.append(go,edit); card.append(ref,note,actions); list.append(card);
+    });
+  }
+
+  function openNotebook(){
+    closeToolbar(); closeNoteEditor(); closeNotebook();
+    const panel=document.createElement('aside'); panel.className='notebook-panel'; panel.setAttribute('aria-label',labels().notebookTitle);
+    const head=document.createElement('div'); head.className='notebook-head';
+    const title=document.createElement('strong'); title.className='notebook-title';
+    const close=document.createElement('button'); close.type='button'; close.className='notebook-close'; close.addEventListener('click',closeNotebook);
+    const list=document.createElement('div'); list.className='notebook-list';
+    head.append(title,close); panel.append(head,list); document.body.append(panel); notebookPanel=panel; document.body.classList.add('notebook-open'); renderNotebook();
+  }
+
   function openToolbar(row, anchor){
     closeToolbar(); closeNoteEditor();
     const verse = Number(row.dataset.verse);
@@ -141,7 +217,7 @@
         try { await navigator.clipboard.writeText(`${currentReference(verse)}\n${text}`); } catch (_) {}
         closeToolbar();
       }),
-      actionButton(mark.highlight?labels().removeHighlight || '강조 해제':l.highlight, ()=>{
+      actionButton(mark.highlight?l.removeHighlight:l.highlight, ()=>{
         const next=markFor(key); next.highlight=!next.highlight; marks[key]=next; saveMarks(); applyMarks(); closeToolbar();
       }),
       actionButton(l.note, ()=>openNoteEditor(row,key)),
