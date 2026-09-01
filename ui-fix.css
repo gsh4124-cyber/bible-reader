@@ -1,0 +1,77 @@
+.toolbar,
+.toolbar button,
+.quick-tool,
+.primary-tool {
+  white-space: nowrap;
+  writing-mode: horizontal-tb;
+  word-break: keep-all;
+  flex-shrink: 0;
+}
+
+#compareToggle {
+  min-width: 58px;
+  padding-inline: 14px;
+}
+
+.quick-tool {
+  min-width: 46px;
+  padding-inline: 10px;
+}
+
+.chapter-heading {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) auto minmax(110px, 1fr);
+  align-items: center;
+  gap: 22px;
+  width: min(960px, 100%);
+  margin: 0 auto 30px;
+}
+
+.chapter-heading h1 {
+  grid-column: 2;
+  text-align: center;
+}
+
+.title-chapter-nav {
+  min-width: 108px;
+  padding: 9px 13px;
+  color: var(--muted);
+  background: transparent;
+  white-space: nowrap;
+}
+
+.title-chapter-nav:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+#prevChapterTitle {
+  grid-column: 1;
+  justify-self: end;
+}
+
+#nextChapterTitle {
+  grid-column: 3;
+  justify-self: start;
+}
+
+@media (max-width: 1250px) {
+  .toolbar { gap: 3px; }
+  #compareToggle { min-width: 54px; padding-inline: 11px; }
+  .quick-tool { min-width: 42px; padding-inline: 8px; }
+}
+
+@media (max-width: 760px) {
+  .chapter-heading {
+    grid-template-columns: auto 1fr auto;
+    gap: 8px;
+  }
+  .title-chapter-nav {
+    min-width: 42px;
+    width: 42px;
+    padding: 8px 0;
+    font-size: 0;
+  }
+  #prevChapterTitle::after { content: "←"; font-size: 18px; }
+  #nextChapterTitle::after { content: "→"; font-size: 18px; }
+}
