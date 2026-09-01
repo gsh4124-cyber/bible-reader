@@ -7,13 +7,13 @@
   const STORE_KEY = 'bible-reader-verse-marks-v1';
   const CHAPTER_KEY = 'bible-reader-chapter-bookmarks-v1';
   const LABELS = {
-    ko:{copy:'복사',highlight:'하이라이트',removeHighlight:'강조 해제',saveVerse:'구절 저장',removeVerse:'구절 저장 해제',note:'메모',noteTitle:'구절 메모',save:'저장',removeNote:'메모 삭제',cancel:'취소',chapterBookmark:'장 북마크',removeChapterBookmark:'장 북마크 해제',notebook:'메모장',notebookTitle:'나의 기록',notesTab:'메모',savedTab:'저장한 성구',emptyNotes:'저장된 메모가 없습니다.',emptySaved:'저장한 성구가 없습니다.',go:'구절로 이동',close:'닫기'},
-    en:{copy:'Copy',highlight:'Highlight',removeHighlight:'Remove highlight',saveVerse:'Save verse',removeVerse:'Remove saved verse',note:'Note',noteTitle:'Verse note',save:'Save',removeNote:'Delete note',cancel:'Cancel',chapterBookmark:'Bookmark chapter',removeChapterBookmark:'Remove chapter bookmark',notebook:'Notes',notebookTitle:'My records',notesTab:'Notes',savedTab:'Saved verses',emptyNotes:'No saved notes.',emptySaved:'No saved verses.',go:'Go to verse',close:'Close'},
-    fr:{copy:'Copier',highlight:'Surligner',removeHighlight:'Retirer le surlignage',saveVerse:'Enregistrer',removeVerse:'Retirer',note:'Note',noteTitle:'Note du verset',save:'Enregistrer',removeNote:'Supprimer',cancel:'Annuler',chapterBookmark:'Ajouter ce chapitre',removeChapterBookmark:'Retirer ce chapitre',notebook:'Notes',notebookTitle:'Mes notes',notesTab:'Notes',savedTab:'Versets enregistrés',emptyNotes:'Aucune note.',emptySaved:'Aucun verset enregistré.',go:'Aller au verset',close:'Fermer'},
-    de:{copy:'Kopieren',highlight:'Markieren',removeHighlight:'Markierung entfernen',saveVerse:'Vers speichern',removeVerse:'Vers entfernen',note:'Notiz',noteTitle:'Versnotiz',save:'Speichern',removeNote:'Notiz löschen',cancel:'Abbrechen',chapterBookmark:'Kapitel merken',removeChapterBookmark:'Kapitel entfernen',notebook:'Notizen',notebookTitle:'Meine Einträge',notesTab:'Notizen',savedTab:'Gespeicherte Verse',emptyNotes:'Keine Notizen.',emptySaved:'Keine gespeicherten Verse.',go:'Zum Vers',close:'Schließen'},
-    zh:{copy:'复制',highlight:'高亮',removeHighlight:'取消高亮',saveVerse:'保存经文',removeVerse:'取消保存',note:'笔记',noteTitle:'经文笔记',save:'保存',removeNote:'删除笔记',cancel:'取消',chapterBookmark:'收藏本章',removeChapterBookmark:'取消收藏本章',notebook:'笔记本',notebookTitle:'我的记录',notesTab:'笔记',savedTab:'已保存经文',emptyNotes:'暂无笔记。',emptySaved:'暂无保存的经文。',go:'前往经文',close:'关闭'},
-    ru:{copy:'Копировать',highlight:'Выделить',removeHighlight:'Убрать выделение',saveVerse:'Сохранить стих',removeVerse:'Удалить стих',note:'Заметка',noteTitle:'Заметка к стиху',save:'Сохранить',removeNote:'Удалить заметку',cancel:'Отмена',chapterBookmark:'Закладка главы',removeChapterBookmark:'Убрать закладку',notebook:'Заметки',notebookTitle:'Мои записи',notesTab:'Заметки',savedTab:'Сохранённые стихи',emptyNotes:'Нет заметок.',emptySaved:'Нет сохранённых стихов.',go:'К стиху',close:'Закрыть'},
-    la:{copy:'Copia',highlight:'Nota',removeHighlight:'Notam remove',saveVerse:'Serva versum',removeVerse:'Remove versum',note:'Commentarium',noteTitle:'Commentarium versus',save:'Serva',removeNote:'Remove',cancel:'Claude',chapterBookmark:'Serva caput',removeChapterBookmark:'Remove caput',notebook:'Commentaria',notebookTitle:'Mea',notesTab:'Commentaria',savedTab:'Versus servati',emptyNotes:'Nulla commentaria.',emptySaved:'Nulli versus servati.',go:'Ad versum',close:'Claude'}
+    ko:{copy:'복사',highlight:'하이라이트',removeHighlight:'강조 해제',saveVerse:'구절 저장',removeVerse:'구절 저장 해제',note:'메모',noteTitle:'구절 메모',save:'저장',removeNote:'메모 삭제',cancel:'취소',chapterBookmark:'장 북마크',removeChapterBookmark:'장 북마크 해제',notebook:'메모장',notebookTitle:'나의 기록',notesTab:'메모',savedTab:'저장한 성구',highlightTab:'하이라이트',emptyNotes:'저장된 메모가 없습니다.',emptySaved:'저장한 성구가 없습니다.',emptyHighlights:'하이라이트한 성구가 없습니다.',go:'구절로 이동',close:'닫기'},
+    en:{copy:'Copy',highlight:'Highlight',removeHighlight:'Remove highlight',saveVerse:'Save verse',removeVerse:'Remove saved verse',note:'Note',noteTitle:'Verse note',save:'Save',removeNote:'Delete note',cancel:'Cancel',chapterBookmark:'Bookmark chapter',removeChapterBookmark:'Remove chapter bookmark',notebook:'Notes',notebookTitle:'My records',notesTab:'Notes',savedTab:'Saved verses',highlightTab:'Highlights',emptyNotes:'No saved notes.',emptySaved:'No saved verses.',emptyHighlights:'No highlighted verses.',go:'Go to verse',close:'Close'},
+    fr:{copy:'Copier',highlight:'Surligner',removeHighlight:'Retirer le surlignage',saveVerse:'Enregistrer',removeVerse:'Retirer',note:'Note',noteTitle:'Note du verset',save:'Enregistrer',removeNote:'Supprimer',cancel:'Annuler',chapterBookmark:'Ajouter ce chapitre',removeChapterBookmark:'Retirer ce chapitre',notebook:'Notes',notebookTitle:'Mes notes',notesTab:'Notes',savedTab:'Versets enregistrés',highlightTab:'Surlignés',emptyNotes:'Aucune note.',emptySaved:'Aucun verset enregistré.',emptyHighlights:'Aucun verset surligné.',go:'Aller au verset',close:'Fermer'},
+    de:{copy:'Kopieren',highlight:'Markieren',removeHighlight:'Markierung entfernen',saveVerse:'Vers speichern',removeVerse:'Vers entfernen',note:'Notiz',noteTitle:'Versnotiz',save:'Speichern',removeNote:'Notiz löschen',cancel:'Abbrechen',chapterBookmark:'Kapitel merken',removeChapterBookmark:'Kapitel entfernen',notebook:'Notizen',notebookTitle:'Meine Einträge',notesTab:'Notizen',savedTab:'Gespeicherte Verse',highlightTab:'Markiert',emptyNotes:'Keine Notizen.',emptySaved:'Keine gespeicherten Verse.',emptyHighlights:'Keine markierten Verse.',go:'Zum Vers',close:'Schließen'},
+    zh:{copy:'复制',highlight:'高亮',removeHighlight:'取消高亮',saveVerse:'保存经文',removeVerse:'取消保存',note:'笔记',noteTitle:'经文笔记',save:'保存',removeNote:'删除笔记',cancel:'取消',chapterBookmark:'收藏本章',removeChapterBookmark:'取消收藏本章',notebook:'笔记本',notebookTitle:'我的记录',notesTab:'笔记',savedTab:'已保存经文',highlightTab:'高亮',emptyNotes:'暂无笔记。',emptySaved:'暂无保存的经文。',emptyHighlights:'暂无高亮经文。',go:'前往经文',close:'关闭'},
+    ru:{copy:'Копировать',highlight:'Выделить',removeHighlight:'Убрать выделение',saveVerse:'Сохранить стих',removeVerse:'Удалить стих',note:'Заметка',noteTitle:'Заметка к стиху',save:'Сохранить',removeNote:'Удалить заметку',cancel:'Отмена',chapterBookmark:'Закладка главы',removeChapterBookmark:'Убрать закладку',notebook:'Заметки',notebookTitle:'Мои записи',notesTab:'Заметки',savedTab:'Сохранённые стихи',highlightTab:'Выделенные',emptyNotes:'Нет заметок.',emptySaved:'Нет сохранённых стихов.',emptyHighlights:'Нет выделенных стихов.',go:'К стиху',close:'Закрыть'},
+    la:{copy:'Copia',highlight:'Nota',removeHighlight:'Notam remove',saveVerse:'Serva versum',removeVerse:'Remove versum',note:'Commentarium',noteTitle:'Commentarium versus',save:'Serva',removeNote:'Remove',cancel:'Claude',chapterBookmark:'Serva caput',removeChapterBookmark:'Remove caput',notebook:'Commentaria',notebookTitle:'Mea',notesTab:'Commentaria',savedTab:'Versus servati',highlightTab:'Notati',emptyNotes:'Nulla commentaria.',emptySaved:'Nulli versus servati.',emptyHighlights:'Nulli versus notati.',go:'Ad versum',close:'Claude'}
   };
 
   let marks = loadJson(STORE_KEY);
@@ -123,6 +123,7 @@
   }
   function noteEntries(){ return allEntries().filter(item=>item.mark?.note?.trim()); }
   function savedEntries(){ return allEntries().filter(item=>item.mark?.bookmark); }
+  function highlightedEntries(){ return allEntries().filter(item=>item.mark?.highlight); }
 
   async function goToEntry(item, editNote=false){
     activeTranslationId = TRANSLATIONS[item.tr] ? item.tr : activeTranslationId;
@@ -136,7 +137,7 @@
     });
   }
 
-  async function fillSavedText(item, target){
+  async function fillEntryText(item, target){
     if (item.mark.savedText){ target.textContent = item.mark.savedText; return; }
     try {
       const data = await fetchBook(BOOKS[item.bookIndex], item.tr);
@@ -153,18 +154,19 @@
     notebookPanel.querySelector('.notebook-close').textContent = l.close;
     const notesTab = notebookPanel.querySelector('[data-tab="notes"]');
     const savedTab = notebookPanel.querySelector('[data-tab="saved"]');
-    notesTab.textContent=l.notesTab; savedTab.textContent=l.savedTab;
-    notesTab.classList.toggle('active',notebookTab==='notes'); savedTab.classList.toggle('active',notebookTab==='saved');
-    notesTab.setAttribute('aria-selected',String(notebookTab==='notes')); savedTab.setAttribute('aria-selected',String(notebookTab==='saved'));
+    const highlightTab = notebookPanel.querySelector('[data-tab="highlights"]');
+    notesTab.textContent=l.notesTab; savedTab.textContent=l.savedTab; highlightTab.textContent=l.highlightTab;
+    [notesTab,savedTab,highlightTab].forEach(tab=>{ const active=tab.dataset.tab===notebookTab; tab.classList.toggle('active',active); tab.setAttribute('aria-selected',String(active)); });
     list.innerHTML = '';
-    const entries = notebookTab==='notes' ? noteEntries() : savedEntries();
-    if (!entries.length){ const empty = document.createElement('p'); empty.className='notebook-empty'; empty.textContent=notebookTab==='notes'?l.emptyNotes:l.emptySaved; list.append(empty); return; }
+    const entries = notebookTab==='notes' ? noteEntries() : notebookTab==='saved' ? savedEntries() : highlightedEntries();
+    const emptyText = notebookTab==='notes' ? l.emptyNotes : notebookTab==='saved' ? l.emptySaved : l.emptyHighlights;
+    if (!entries.length){ const empty = document.createElement('p'); empty.className='notebook-empty'; empty.textContent=emptyText; list.append(empty); return; }
     entries.forEach(item=>{
-      const card=document.createElement('article'); card.className='notebook-item';
+      const card=document.createElement('article'); card.className=`notebook-item ${notebookTab==='highlights'?'highlight-item':''}`;
       const ref=document.createElement('strong'); ref.textContent=`${bookNameFor(item.bookIndex)} ${item.chapter}:${item.verse}`;
       const body=document.createElement('p');
       if(notebookTab==='notes') body.textContent=item.mark.note;
-      else { body.className='saved-verse-text'; body.textContent=item.mark.savedText || '본문을 불러오는 중…'; fillSavedText(item,body); }
+      else { body.className='saved-verse-text'; body.textContent=item.mark.savedText || '본문을 불러오는 중…'; fillEntryText(item,body); }
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
       actions.append(actionButton(l.go, ()=>goToEntry(item,false)));
       if(notebookTab==='notes') actions.append(actionButton(l.note, ()=>goToEntry(item,true)));
@@ -179,7 +181,7 @@
     const title=document.createElement('strong'); title.className='notebook-title';
     const close=document.createElement('button'); close.type='button'; close.className='notebook-close'; close.addEventListener('click',closeNotebook);
     const tabs=document.createElement('div'); tabs.className='notebook-tabs'; tabs.setAttribute('role','tablist');
-    ['notes','saved'].forEach(tab=>{ const b=document.createElement('button'); b.type='button'; b.dataset.tab=tab; b.setAttribute('role','tab'); b.addEventListener('click',()=>{notebookTab=tab;renderNotebook();}); tabs.append(b); });
+    ['notes','saved','highlights'].forEach(tab=>{ const b=document.createElement('button'); b.type='button'; b.dataset.tab=tab; b.setAttribute('role','tab'); b.addEventListener('click',()=>{notebookTab=tab;renderNotebook();}); tabs.append(b); });
     const list=document.createElement('div'); list.className='notebook-list';
     head.append(title,close); panel.append(head,tabs,list); document.body.append(panel); notebookPanel=panel; document.body.classList.add('notebook-open'); renderNotebook();
   }
@@ -191,7 +193,7 @@
     bar.style.top=`${window.scrollY + rect.bottom + 6}px`; bar.style.left=`${Math.max(12, Math.min(window.scrollX + rect.left - 220, window.scrollX + window.innerWidth - 420))}px`;
     bar.append(
       actionButton(l.copy, async()=>{ const text=row.querySelector('.verse-text')?.textContent?.trim() || ''; try { await navigator.clipboard.writeText(`${currentReference(verse)}\n${text}`); } catch (_) {} closeToolbar(); }),
-      actionButton(mark.highlight?l.removeHighlight:l.highlight, ()=>{ const next=markFor(key); next.highlight=!next.highlight; marks[key]=next; saveMarks(); applyMarks(); closeToolbar(); }),
+      actionButton(mark.highlight?l.removeHighlight:l.highlight, ()=>{ const next=markFor(key); next.highlight=!next.highlight; if(next.highlight) next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||''; marks[key]=next; saveMarks(); applyMarks(); closeToolbar(); }),
       actionButton(l.note, ()=>openNoteEditor(row,key)),
       actionButton(mark.bookmark?l.removeVerse:l.saveVerse, ()=>{ const next=markFor(key); next.bookmark=!next.bookmark; if(next.bookmark) next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||''; marks[key]=next; saveMarks(); applyMarks(); closeToolbar(); })
     );
