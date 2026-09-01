@@ -22,9 +22,8 @@ select { min-width:160px; padding:10px 34px 10px 12px; background:color-mix(in s
 .top-search input,.top-search input:focus { width:240px; padding:10px 12px; outline:none; background:color-mix(in srgb,var(--panel) 82%,transparent); }
 .top-search input:focus { border-color:var(--muted); }
 .top-search button { padding:10px 14px; background:color-mix(in srgb,var(--panel) 82%,transparent); }
-.chapter-arrows { display:flex; gap:6px; align-items:center; margin-left:1px; }
-.nav-arrow { background:color-mix(in srgb,var(--panel) 82%,transparent); }
-.toolbar { grid-column:3; justify-self:end; display:flex; align-items:center; gap:7px; }
+.toolbar { grid-column:3; justify-self:end; display:flex; align-items:center; gap:5px; }
+.tool-separator { width:1px; height:24px; margin:0 3px; background:var(--line); }
 button { cursor:pointer; padding:9px 12px; }
 button:hover { background:var(--hover); }
 button:disabled { cursor:default; opacity:.38; }
@@ -32,12 +31,8 @@ button:disabled:hover { background:transparent; }
 .icon-button { min-width:42px; }
 .text-button { min-width:46px; }
 .primary-tool { font-weight:700; background:color-mix(in srgb,var(--panel) 82%,transparent); }
-.view-menu { position:relative; }
-.view-menu summary { list-style:none; cursor:pointer; user-select:none; padding:9px 13px; border:1px solid var(--line); border-radius:10px; color:var(--muted); background:color-mix(in srgb,var(--panel) 82%,transparent); }
-.view-menu summary::-webkit-details-marker { display:none; }
-.view-menu[open] summary,.view-menu summary:hover { color:var(--text); background:var(--hover); }
-.view-menu-panel { position:absolute; right:0; top:calc(100% + 8px); display:grid; grid-template-columns:repeat(4,auto); gap:6px; min-width:max-content; padding:8px; border:1px solid var(--line); border-radius:12px; background:var(--panel); box-shadow:0 12px 30px rgba(0,0,0,.09); backdrop-filter:blur(16px); }
-.view-menu-panel button { color:var(--text); background:transparent; }
+.toolbar-compact { min-width:38px; padding:9px 9px; color:var(--muted); background:transparent; border-color:transparent; }
+.toolbar-compact:hover { color:var(--text); border-color:var(--line); background:var(--hover); }
 main { padding:26px 24px 68px; }
 .reader-shell { width:min(var(--reader-width),100%); margin:0 auto; transition:width .2s ease; }
 .search-panel { max-width:800px; margin:0 auto 24px; padding:14px; border:1px solid var(--line); border-radius:14px; background:var(--panel); }
@@ -91,13 +86,14 @@ footer { max-width:960px; margin:0 auto; padding:28px 24px 54px; color:var(--mut
   .topbar { padding:8px 10px; }
   .topbar-inner { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
   .toolbar { order:1; margin-left:auto; }
+  .tool-separator { display:none; }
+  .toolbar-compact { min-width:34px; padding:8px 6px; }
   .location-controls { order:2; width:100%; flex-wrap:wrap; }
   .testament-select { min-width:78px; }
   #bookSelect { min-width:145px; flex:1; }
   #chapterSelect,#verseSelect { min-width:78px; }
   .top-search { order:2; width:100%; justify-content:center; margin-left:0; }
   .top-search input,.top-search input:focus { width:min(100%,360px); }
-  .chapter-arrows { order:1; }
   select { min-width:90px; }
   main { padding:22px 17px 58px; } .search-result { grid-template-columns:1fr; gap:4px; } .verses { padding-inline:0; } .verse { padding-left:34px; } .verse-number { left:3px; }
   .compare-panel { padding-inline:0; }
