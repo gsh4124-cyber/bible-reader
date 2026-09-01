@@ -1,7 +1,27 @@
-.toolbar,.toolbar button,.quick-tool,.primary-tool{white-space:nowrap;writing-mode:horizontal-tb;word-break:keep-all;flex-shrink:0}#compareToggle{min-width:58px;padding-inline:14px}.quick-tool{min-width:46px;padding-inline:10px}.translation-select{min-width:150px;max-width:210px}
-.chapter-heading{position:relative;display:flex;align-items:flex-end;justify-content:space-between;width:100%;min-height:132px;margin:24px auto 34px;padding:20px 0 18px;border-bottom:1px solid var(--line)}
-.chapter-heading h1{position:absolute;left:50%;top:50%;margin:0;text-align:center;transform:translate(-50%,-50%);white-space:nowrap}.title-chapter-nav{min-width:108px;padding:11px 16px;color:var(--muted);background:transparent;white-space:nowrap;align-self:flex-end;z-index:1}.title-chapter-nav:hover{color:var(--text);background:var(--hover)}#prevChapterTitle{margin-right:auto}#nextChapterTitle{margin-left:auto}
-.compare-controls{align-items:end}.compare-controls label{text-align:center}.compare-view-controls{display:grid;justify-items:center;gap:6px;margin:-2px auto 18px;color:var(--muted);font-size:12px}.compare-view-buttons{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}.compare-view-button{min-width:132px;border:0;border-radius:0;padding:8px 14px;color:var(--muted);background:transparent}.compare-view-button+.compare-view-button{border-left:1px solid var(--line)}.compare-view-button.active{color:var(--text);font-weight:700;background:var(--hover)}
-.compare-head{gap:0}.compare-head div{display:grid;justify-items:center;align-content:center;gap:3px;text-align:center;padding:4px 18px}.compare-head div:first-child{border-right:1px solid var(--line)}.compare-head span{display:block}.compare-panel.stacked .compare-head{grid-template-columns:1fr}.compare-panel.stacked .compare-head div:first-child{border-right:0;border-bottom:1px solid var(--line)}.compare-panel.stacked .compare-row{grid-template-columns:1fr;gap:0}.compare-panel.stacked .compare-cell:first-child{border-right:0;border-bottom:1px dashed var(--line)}
+.toolbar,.toolbar button,.quick-tool,.primary-tool{white-space:nowrap;writing-mode:horizontal-tb;word-break:keep-all;flex-shrink:0}
+#compareToggle{min-width:58px;padding-inline:14px}.quick-tool{min-width:46px;padding-inline:10px}.translation-select{min-width:150px;max-width:210px}
+
+.chapter-heading{position:relative;display:flex;align-items:flex-end;justify-content:space-between;width:100%;height:132px;margin:22px auto 26px;padding:0 0 14px;border-bottom:1px solid var(--line)}
+.chapter-heading h1{position:absolute;left:50%;top:50%;margin:0;text-align:center;transform:translate(-50%,-50%);white-space:nowrap}
+.title-chapter-nav{min-width:108px;padding:11px 16px;color:var(--muted);background:transparent;white-space:nowrap;align-self:flex-end;z-index:1}.title-chapter-nav:hover{color:var(--text);background:var(--hover)}#prevChapterTitle{margin-right:auto}#nextChapterTitle{margin-left:auto}
+
+.reader-view-controls{display:grid;justify-items:center;gap:6px;margin:0 auto 22px;color:var(--muted);font-size:12px}
+.reader-view-buttons{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--panel) 45%,transparent)}
+.reader-view-button{min-width:132px;border:0;border-radius:0;padding:8px 16px;color:var(--muted);background:transparent}
+.reader-view-button+.reader-view-button{border-left:1px solid var(--line)}.reader-view-button.active{color:var(--text);font-weight:700;background:var(--hover)}
+
+#singleReader.dual-page .verses{column-count:2;column-gap:70px;column-rule:1px solid var(--line);padding-inline:18px}
+#singleReader.dual-page .verse{break-inside:avoid-column;-webkit-column-break-inside:avoid;margin-bottom:13px}
+
+.compare-panel{padding-top:2px}
+.compare-head-selects{display:grid;grid-template-columns:minmax(260px,1fr) auto minmax(260px,1fr);align-items:center;gap:14px;position:sticky;top:76px;z-index:5;padding:10px 0 12px;background:var(--bg);border-bottom:1px solid var(--line)}
+.compare-translation-block{display:grid;justify-items:center;gap:5px;text-align:center;padding:0 16px}.compare-translation-block select{width:min(100%,440px);text-align:center;text-align-last:center;background:var(--bg)}.compare-translation-block span{color:var(--muted);font-size:12px}.compare-head-selects .swap-button{align-self:center}
+.compare-panel.stacked .compare-head-selects{grid-template-columns:1fr auto 1fr}.compare-panel.stacked .compare-row{grid-template-columns:1fr;gap:0}.compare-panel.stacked .compare-cell:first-child{border-right:0;border-bottom:1px dashed var(--line)}
+
 @media(max-width:1250px){.toolbar{gap:3px}#compareToggle{min-width:54px;padding-inline:11px}.quick-tool{min-width:42px;padding-inline:8px}.translation-select{min-width:132px;max-width:165px}}
-@media(max-width:760px){.chapter-heading{min-height:104px;margin:20px auto 28px;padding:14px 0 14px}.chapter-heading h1{top:50%;max-width:calc(100% - 100px);overflow:hidden;text-overflow:ellipsis}.title-chapter-nav{min-width:42px;width:42px;padding:8px 0;font-size:0;align-self:flex-end}#prevChapterTitle::after{content:"←";font-size:18px}#nextChapterTitle::after{content:"→";font-size:18px}.translation-select{min-width:128px;max-width:180px}.compare-view-button{min-width:112px}}
+@media(max-width:760px){
+  .chapter-heading{height:106px;margin:18px auto 22px;padding-bottom:12px}.chapter-heading h1{top:50%;max-width:calc(100% - 100px);overflow:hidden;text-overflow:ellipsis}.title-chapter-nav{min-width:42px;width:42px;padding:8px 0;font-size:0;align-self:flex-end}#prevChapterTitle::after{content:"←";font-size:18px}#nextChapterTitle::after{content:"→";font-size:18px}.translation-select{min-width:128px;max-width:180px}
+  .reader-view-button{min-width:112px}
+  #singleReader.dual-page .verses{column-count:1;column-rule:0;padding-inline:0}
+  .compare-head-selects{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;top:154px}.compare-translation-block{padding:0 4px}.compare-translation-block select{min-width:0;width:100%;padding-right:24px;font-size:12px}.compare-translation-block span{font-size:10px}
+}
