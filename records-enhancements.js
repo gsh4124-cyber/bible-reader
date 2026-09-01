@@ -4,19 +4,20 @@
   const BACKUP_VERSION = 1;
   const readJson = key => { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (_) { return {}; } };
 
-  function goToChapter(item){
+  async function goToChapter(item){
     const tr = item.translation || item.tr || 'krv1961';
     if (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[tr]) {
       activeTranslationId = tr;
       const select = document.querySelector('#translationSelect');
       if (select) select.value = tr;
+      localStorage.setItem('bible-reader-translation', tr);
     }
     if (typeof state !== 'undefined') {
       state.bookIndex = Number(item.bookIndex) || 0;
       state.chapter = Number(item.chapter) || 1;
     }
     document.querySelector('.notebook-close')?.click();
-    if (typeof loadCurrent === 'function') loadCurrent({scrollTop:true});
+    if (typeof loadCurrent === 'function') await loadCurrent({scrollTop:true});
   }
 
   function renderChapters(panel){
