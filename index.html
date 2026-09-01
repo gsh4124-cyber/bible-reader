@@ -7,6 +7,7 @@
   <title>성경 읽기</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="features.css" />
+  <link rel="stylesheet" href="ui-fix.css" />
 </head>
 <body>
   <header class="topbar">
@@ -65,7 +66,11 @@
         <div id="searchResults" class="search-results"></div>
       </section>
 
-      <div class="chapter-heading"><h1 id="chapterTitle">요한복음 3장</h1></div>
+      <div class="chapter-heading">
+        <button id="prevChapterTitle" class="title-chapter-nav" type="button">← 이전 장</button>
+        <h1 id="chapterTitle">요한복음 3장</h1>
+        <button id="nextChapterTitle" class="title-chapter-nav" type="button">다음 장 →</button>
+      </div>
 
       <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교">
         <div class="compare-controls" aria-label="비교 역본 선택">
@@ -95,5 +100,6 @@
   <script src="compare.js" defer></script>
   <script src="verse-picker.js" defer></script>
   <script src="clipboard.js" defer></script>
+  <script src="title-nav.js" defer></script>
 </body>
 </html>
