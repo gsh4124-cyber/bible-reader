@@ -9,10 +9,11 @@
     "요한이서","요한삼서","유다서","요한계시록"
   ];
 
-  const finder = document.querySelector("#bookFinder");
+  const input = document.querySelector("#searchInput");
   const list = document.querySelector("#bookList");
   const select = document.querySelector("#bookSelect");
-  if (!finder || !list || !select) return;
+  const form = document.querySelector("#searchForm");
+  if (!input || !list || !select || !form) return;
 
   BOOK_NAMES.forEach((name) => {
     const option = document.createElement("option");
@@ -20,13 +21,16 @@
     list.append(option);
   });
 
-  function chooseBook() {
-    const query = finder.value.trim();
-    if (!query) return;
+  function findBookIndex(query) {
     const exactIndex = BOOK_NAMES.findIndex((name) => name === query);
-    const partialIndex = BOOK_NAMES.findIndex((name) => name.includes(query));
-    const index = exactIndex >= 0 ? exactIndex : partialIndex;
-    if (index < 0) return;
+    if (exactIndex >= 0) return exactIndex;
+    const matches = BOOK_NAMES.filter((name) => name.includes(query));
+    return matches.length === 1 ? BOOK_NAMES.indexOf(matches[0]) : -1;
+  }
+
+  function chooseBook(query) {
+    const index = findBookIndex(query.trim());
+    if (index < 0) return false;
 
     const allButton = document.querySelector('[data-testament="all"]');
     if (allButton && !allButton.classList.contains("active")) allButton.click();
@@ -34,16 +38,17 @@
     requestAnimationFrame(() => {
       select.value = String(index);
       select.dispatchEvent(new Event("change", { bubbles: true }));
-      finder.value = "";
-      finder.blur();
+      input.value = "";
+      input.blur();
     });
+    return true;
   }
 
-  finder.addEventListener("change", chooseBook);
-  finder.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      chooseBook();
-    }
-  });
+  document.addEventListener("submit", (event) => {
+    if (event.target !== form) return;
+    const query = input.value.trim();
+    if (!query || !chooseBook(query)) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
 })();
