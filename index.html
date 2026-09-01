@@ -22,16 +22,12 @@
         <select id="bookSelect" aria-label="성경책"></select>
         <select id="chapterSelect" aria-label="장"></select>
         <select id="verseSelect" aria-label="절"><option value="1">1절</option></select>
-        <form id="searchForm" class="top-search" role="search"><input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="책 이름 · 단어 · 요 3:16" aria-label="책 찾기, 성경 검색 또는 구절 바로가기" /><datalist id="bookList"></datalist><button id="searchButton" type="submit">검색</button></form>
+        <form id="searchForm" class="top-search" role="search"><input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="검색" aria-label="성경 검색" /><datalist id="bookList"></datalist><button id="searchButton" type="submit">검색</button></form>
       </div>
       <div class="toolbar" aria-label="읽기 도구"><button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false">비교</button><span class="toolbar-divider"></span><button id="fontDown" class="quick-tool">가−</button><button id="fontUp" class="quick-tool">가+</button><button id="widthToggle" class="quick-tool">폭</button><button id="themeToggle" class="quick-tool">◐</button></div>
     </div>
   </header>
   <main><section class="reader-shell">
-    <section class="daily-strip" aria-label="오늘의 말씀">
-      <button id="dailyVerseCard" class="daily-card" type="button"><div class="daily-line"><span class="daily-kicker">오늘의 성구</span><strong id="dailyVerseRef">말씀을 준비하는 중…</strong><span class="daily-action">열기 →</span></div><span id="dailyVerseText" class="daily-text"></span></button>
-      <button id="dailyChapterCard" class="daily-card" type="button"><div class="daily-line"><span class="daily-kicker">오늘의 묵상장</span><strong id="dailyChapterRef">묵상할 장을 준비하는 중…</strong><span class="daily-action">열기 →</span></div><span id="dailyChapterText" class="daily-text">오늘 한 장을 천천히 읽고 묵상해 보세요.</span></button>
-    </section>
     <aside class="ad-slot ad-slot-top" data-ad-slot="top" aria-label="광고 영역"><span>광고</span></aside>
     <section id="searchPanel" class="search-panel" hidden><div class="search-panel-head"><p id="searchSummary" class="search-summary"></p><button id="closeSearch" type="button" class="search-close">닫기</button></div><div id="searchResults" class="search-results"></div></section>
     <div class="chapter-heading"><button id="prevChapterTitle" class="title-chapter-nav" type="button">← 이전 장</button><h1 id="chapterTitle">요한복음 3장</h1><button id="nextChapterTitle" class="title-chapter-nav" type="button">다음 장 →</button></div>
@@ -45,5 +41,5 @@
     <aside class="ad-slot ad-slot-bottom" data-ad-slot="bottom"><span>광고</span></aside>
   </section></main>
   <footer><p id="translationAttribution">개역한글 · 대한성서공회</p><p class="source-note">외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.</p></footer>
-  <script src="app.js" defer></script><script src="reference.js" defer></script><script src="book-finder.js" defer></script><script src="testament-select.js" defer></script><script src="daily.js" defer></script><script src="compare.js" defer></script><script src="verse-picker.js" defer></script><script src="clipboard.js" defer></script><script src="title-nav.js" defer></script><script src="exact-search.js" defer></script><script src="locale-safe.js" defer></script><script src="verse-tools.js" defer></script><script src="focus-mode.js" defer></script>
+  <script src="app.js" defer></script><script src="reference.js" defer></script><script src="book-finder.js" defer></script><script src="testament-select.js" defer></script><script src="compare.js" defer></script><script src="verse-picker.js" defer></script><script src="clipboard.js" defer></script><script src="title-nav.js" defer></script><script src="exact-search.js" defer></script><script src="locale-safe.js" defer></script><script src="verse-tools.js" defer></script><script src="focus-mode.js" defer></script>
 </body></html>
