@@ -12,6 +12,9 @@
   <header class="topbar">
     <div class="topbar-inner centered-nav">
       <div class="location-controls" aria-label="성경 위치 선택">
+        <select id="translationSelect" class="translation-select" aria-label="성경 버전">
+          <option value="krv1961">개역한글</option>
+        </select>
         <select id="testamentSelect" class="testament-select" aria-label="성경 범위">
           <option value="all">전체</option>
           <option value="old">구약</option>
@@ -62,7 +65,7 @@
         <div id="searchResults" class="search-results"></div>
       </section>
 
-      <div class="chapter-heading"><p class="translation-label">개역한글</p><h1 id="chapterTitle">요한복음 3장</h1></div>
+      <div class="chapter-heading"><h1 id="chapterTitle">요한복음 3장</h1></div>
 
       <section id="comparePanel" class="compare-panel" hidden aria-label="역본 비교">
         <div class="compare-controls" aria-label="비교 역본 선택">
