@@ -10,30 +10,38 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="location-controls" aria-label="성경 위치 선택">
+    <div class="topbar-inner">
       <div class="testament-tabs" role="group" aria-label="구약 신약 분류">
         <button type="button" class="testament-button active" data-testament="all" aria-pressed="true">전체</button>
         <button type="button" class="testament-button" data-testament="old" aria-pressed="false">구약</button>
         <button type="button" class="testament-button" data-testament="new" aria-pressed="false">신약</button>
       </div>
-      <div class="selectors">
-        <input id="bookFinder" class="book-finder" list="bookList" autocomplete="off" placeholder="책 이름" aria-label="성경책 빠른 찾기" />
-        <datalist id="bookList"></datalist>
-        <select id="bookSelect" aria-label="성경책"></select>
-        <select id="chapterSelect" aria-label="장"></select>
+
+      <div class="location-controls" aria-label="성경 위치 선택">
+        <div class="selectors">
+          <input id="bookFinder" class="book-finder" list="bookList" autocomplete="off" placeholder="책 찾기" aria-label="성경책 빠른 찾기" />
+          <datalist id="bookList"></datalist>
+          <select id="bookSelect" aria-label="성경책"></select>
+          <select id="chapterSelect" aria-label="장"></select>
+        </div>
+        <div class="chapter-arrows" aria-label="장 이동">
+          <button id="prevChapter" class="icon-button nav-arrow" title="이전 장 (←)">←</button>
+          <button id="nextChapter" class="icon-button nav-arrow" title="다음 장 (→)">→</button>
+        </div>
       </div>
-      <div class="chapter-arrows" aria-label="장 이동">
-        <button id="prevChapter" class="icon-button" title="이전 장 (←)">←</button>
-        <button id="nextChapter" class="icon-button" title="다음 장 (→)">→</button>
+
+      <div class="toolbar" aria-label="읽기 도구">
+        <button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
+        <details class="view-menu">
+          <summary>보기</summary>
+          <div class="view-menu-panel" aria-label="보기 설정">
+            <button id="fontDown" class="text-button" title="글자 작게">가−</button>
+            <button id="fontUp" class="text-button" title="글자 크게">가+</button>
+            <button id="widthToggle" class="text-button" title="본문 폭 변경">폭</button>
+            <button id="themeToggle" class="icon-button" title="밝기 전환">◐</button>
+          </div>
+        </details>
       </div>
-    </div>
-    <div class="toolbar" aria-label="읽기 도구">
-      <button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false" title="두 역본 나란히 비교">비교</button>
-      <span class="toolbar-divider" aria-hidden="true"></span>
-      <button id="fontDown" class="text-button subtle-tool" title="글자 작게">가−</button>
-      <button id="fontUp" class="text-button subtle-tool" title="글자 크게">가+</button>
-      <button id="widthToggle" class="text-button subtle-tool" title="본문 폭 변경">폭</button>
-      <button id="themeToggle" class="icon-button subtle-tool" title="밝기 전환">◐</button>
     </div>
   </header>
 
