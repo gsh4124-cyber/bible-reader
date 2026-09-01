@@ -10,7 +10,7 @@
 
   const KJV_SOURCE = "https://raw.githubusercontent.com/aruljohn/Bible-kjv/master/";
   const META = {
-    krv1961: { name: "개역한글 1961", meta: "한국어" },
+    krv1961: { name: "개역한글", meta: "한국어" },
     kjv: { name: "King James Version", meta: "영어 · Public Domain" }
   };
 
