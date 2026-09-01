@@ -15,18 +15,18 @@
 .chapter-heading {
   position:relative;
   display:flex;
-  align-items:center;
+  align-items:flex-end;
   justify-content:space-between;
   width:100%;
-  min-height:92px;
-  margin:46px auto 34px;
+  min-height:124px;
+  margin:46px auto 42px;
   padding:16px 0 18px;
   border-bottom:1px solid var(--line);
 }
 .chapter-heading h1 {
   position:absolute;
   left:50%;
-  top:50%;
+  top:38%;
   margin:0;
   text-align:center;
   transform:translate(-50%, -50%);
@@ -38,7 +38,7 @@
   color:var(--muted);
   background:transparent;
   white-space:nowrap;
-  align-self:center;
+  align-self:flex-end;
   transform:none;
   z-index:1;
 }
@@ -54,11 +54,12 @@
 }
 @media (max-width:760px) {
   .chapter-heading {
-    min-height:76px;
-    margin:28px auto 26px;
+    min-height:94px;
+    margin:28px auto 30px;
     padding:12px 0 14px;
   }
   .chapter-heading h1 {
+    top:38%;
     max-width:calc(100% - 100px);
     overflow:hidden;
     text-overflow:ellipsis;
@@ -68,6 +69,7 @@
     width:42px;
     padding:8px 0;
     font-size:0;
+    align-self:flex-end;
   }
   #prevChapterTitle::after { content:"←"; font-size:18px; }
   #nextChapterTitle::after { content:"→"; font-size:18px; }
