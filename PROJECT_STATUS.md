@@ -63,9 +63,12 @@
 
 기술 구조:
 - frontend: `analytics.js`
+- public ingress: Supabase Edge Function `bible-page-view`
+- Edge Function은 `https://gsh4124-cyber.github.io` origin의 POST만 허용한다.
 - 저장: Supabase PostgreSQL `bible_page_views_daily`
 - RPC: `increment_bible_page_view()`
-- RLS 활성화, anon/authenticated의 테이블 직접 읽기·쓰기 권한은 부여하지 않고 증가 RPC 실행만 허용한다.
+- RPC 실행권한은 `service_role`에만 두고 anon/authenticated 직접 실행권한은 제거했다.
+- 테이블은 RLS 활성화, anon/authenticated 직접 읽기·쓰기를 허용하지 않는다.
 - 날짜 기준은 `Asia/Seoul`.
 - 필요 시 이 Chat에서 DB를 조회해 일별·주별·월별·누적 page view를 회수한다.
 
@@ -137,8 +140,7 @@
 
 - GitHub 저장소 공개 상태
 - GitHub Pages 자동배포: `main` push → `Final QA and Deploy Pages`
-- 익명 page view 계측 runtime 포함 커밋 `c47a96c7074b80f0276b6a40cc00717e94cbd098`
-- 해당 배포 workflow run `33602984713` 성공 확인
+- 익명 page view runtime은 `analytics.js`를 필수 QA 파일로 포함한다.
 - Google Search Console URL-prefix 소유권 확인 완료
 - HTML verification tag는 `<head>`에 계속 유지
 - canonical / robots / sitemap 실행선 유지
