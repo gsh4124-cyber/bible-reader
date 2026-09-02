@@ -38,7 +38,7 @@ jobs:
       - name: Check required runtime files
         run: |
           set -e
-          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js i18n.js runtime-ui-i18n.js full-reader-loader.js reference.js book-finder.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js; do
+          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js i18n.js runtime-ui-i18n.js full-reader-loader.js reference.js book-finder.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js robots.txt sitemap.xml 193977ee04feba4a99f471a555a2aa54.txt; do
             test -s "$file"
           done
           for lang in en fr de zh ru la pt ar; do
@@ -57,6 +57,8 @@ jobs:
           grep -q 'hreflang="x-default"' index.html
           grep -q 'src="i18n.js"' index.html
           grep -q 'src="runtime-ui-i18n.js"' index.html
+          grep -q '^Sitemap: https://gsh4124-cyber.github.io/bible-reader/sitemap.xml$' robots.txt
+          test "$(tr -d '\r\n' < 193977ee04feba4a99f471a555a2aa54.txt)" = "193977ee04feba4a99f471a555a2aa54"
 
       - name: Check deferred annotation runtime is excluded
         run: |
@@ -95,3 +97,37 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  notify-indexnow:
+    name: notify-indexnow
+    runs-on: ubuntu-latest
+    needs: deploy
+    continue-on-error: true
+    steps:
+      - name: Notify IndexNow of all localized entry URLs
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.request
+
+          key = "193977ee04feba4a99f471a555a2aa54"
+          base = "https://gsh4124-cyber.github.io/bible-reader/"
+          urls = [base] + [base + lang + "/" for lang in ["en","fr","de","zh","ru","la","pt","ar"]]
+          payload = {
+              "host": "gsh4124-cyber.github.io",
+              "key": key,
+              "keyLocation": base + key + ".txt",
+              "urlList": urls,
+          }
+          request = urllib.request.Request(
+              "https://api.indexnow.org/indexnow",
+              data=json.dumps(payload).encode("utf-8"),
+              headers={"Content-Type": "application/json; charset=utf-8"},
+              method="POST",
+          )
+          with urllib.request.urlopen(request, timeout=30) as response:
+              code = response.getcode()
+              print(f"IndexNow response: {code}; submitted {len(urls)} URLs")
+              if code not in (200, 202):
+                  raise SystemExit(f"Unexpected IndexNow status: {code}")
+          PY
