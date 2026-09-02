@@ -4,7 +4,7 @@
 - 저장소 역할: 성경 읽기 웹도구의 코드·기술상태·현재 상태 인계 원본
 - 상위 상태 원본: 황제 Vault `자동 사업운영/바이브코딩/_INDEX.md`
 - ChatGPT 실행창: `성경 홈페이지 본부`
-- 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/bible-reader`
+- 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/페이지형/bible-reader`
 - 운영 주소: https://gsh4124-cyber.github.io/bible-reader/
 
 ## 현재 단계 — 황제 확정 2026-09-02
