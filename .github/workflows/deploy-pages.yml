@@ -35,9 +35,25 @@ jobs:
       - name: Check required runtime files
         run: |
           set -e
-          for file in index.html styles.css features.css ui-fix.css records-enhancements.css app.js reference.js book-finder.js testament-select.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js locale-safe.js verse-tools.js records-enhancements.js analytics.js; do
+          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js i18n.js runtime-ui-i18n.js full-reader-loader.js reference.js book-finder.js testament-select.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js; do
             test -s "$file"
           done
+          for lang in en fr de zh ru la pt ar; do
+            test -s "$lang/index.html"
+          done
+
+      - name: Check multilingual SEO entry points
+        run: |
+          set -e
+          for lang in en fr de zh ru la pt ar; do
+            grep -q "hreflang=\"$lang\"" "$lang/index.html"
+            grep -q "rel=\"canonical\"" "$lang/index.html"
+            grep -q 'name="description"' "$lang/index.html"
+            grep -q "bible-reader/$lang/" sitemap.xml
+          done
+          grep -q 'hreflang="x-default"' index.html
+          grep -q 'src="i18n.js"' index.html
+          grep -q 'src="runtime-ui-i18n.js"' index.html
 
       - name: Check deferred annotation runtime is excluded
         run: |
@@ -47,6 +63,9 @@ jobs:
       - name: Check retired runtime is excluded
         run: |
           ! grep -q 'src="locale.js"' index.html
+          ! grep -q 'src="locale-safe.js"' index.html
+          ! grep -q 'src="language-selector.js"' index.html
+          ! grep -q 'src="launch-translation.js"' index.html
           ! grep -q 'src="daily.js"' index.html
           ! grep -q 'src="focus-mode.js"' index.html
           ! grep -q 'notebook-tabs-fix.css' index.html
