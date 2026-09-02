@@ -104,11 +104,26 @@ jobs:
     needs: deploy
     continue-on-error: true
     steps:
-      - name: Notify IndexNow of all localized entry URLs
+      - name: Checkout recent history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Notify IndexNow of localized entry URLs when web content changed
         run: |
           python3 - <<'PY'
           import json
+          import os
+          import subprocess
           import urllib.request
+
+          if os.environ.get("GITHUB_EVENT_NAME") == "push":
+              changed = subprocess.check_output(["git", "diff", "--name-only", "HEAD^", "HEAD"], text=True).splitlines()
+              relevant = [path for path in changed if not path.endswith(".md") and not path.startswith(".github/")]
+              if not relevant:
+                  print("IndexNow skipped: documentation/workflow-only change")
+                  raise SystemExit(0)
+              print("IndexNow relevant changes:", ", ".join(relevant))
 
           key = "193977ee04feba4a99f471a555a2aa54"
           base = "https://gsh4124-cyber.github.io/bible-reader/"
