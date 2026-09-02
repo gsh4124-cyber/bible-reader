@@ -1,17 +1,17 @@
 # PROJECT STATUS — bible-reader
 
-- 마지막 갱신: 2026-09-02
+- 마지막 갱신: 2026-09-03
 - 저장소 역할: 성경 읽기 웹도구의 코드·기술상태·현재 상태 인계 원본
-- 상위 상태 원본: 황제 Vault `자동 사업운영/바이브코딩/_INDEX.md`
+- 상위 상태 원본: 황제 Vault `자동 사업운영/바이브코딩/_INDEX.md` 및 `자동 사업운영/바이브코딩/페이지형/_INDEX.md`
 - ChatGPT 실행창: `성경 홈페이지 본부`
 - 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/자동 사업운영/바이브코딩/페이지형/bible-reader`
 - 운영 주소: https://gsh4124-cyber.github.io/bible-reader/
 
-## 현재 단계 — 2026-09-02
+## 현재 단계
 
-**최종 기준본 + 9개 언어 다국어 통합 완료 / GitHub Pages 공개 배포 / 실사용·검색노출·유지보수 단계**
+**최종 기준본 / 9개 UI 언어 통합 / GitHub Pages 공개 운영 / 익명 방문 집계 / 글로벌 검색 유통 자동화 / 실사용·색인·유지보수 단계**
 
-새 기능을 근거 없이 계속 붙이지 않는다. 실제 사용 중 발견되는 오류·불편, 검색노출 문제, 외부 데이터 로딩 문제, 브라우저 회귀처럼 실제 근거가 생긴 경우만 수정한다.
+구현 완료, 자동 QA 성공, 공개 배포 성공, 실제 기기 사용 PASS, 검색 색인·노출은 서로 구분한다.
 
 ## 핵심 목적
 
@@ -19,146 +19,66 @@
 
 기능 수보다 장시간 읽기 편안함, 빠른 위치 이동, 역본 비교, 기록 회수, 실제 사용 피드백을 우선한다.
 
-## 다국어 운영 원칙 — 황제 확정
+## 가장 중요한 다국어 원칙 — 황제 확정
 
-한국어 본체와 별도 해외 미니앱을 운영하지 않는다.
+한국어 본체와 별도 해외 미니앱을 운영하지 않는다. 모든 언어 URL은 동일한 실제 성경 리더 본체를 사용한다.
 
-> **동일한 실제 성경 리더 본체를 모든 언어에서 사용하고, UI 언어·기본 역본·검색 진입 URL만 현지화한다.**
+### 1. 역본 변경 = 성경 영역만 변경
 
-지원 UI 언어와 진입 URL:
-- 한국어: `/bible-reader/`
-- English: `/bible-reader/en/`
-- Français: `/bible-reader/fr/`
-- Deutsch: `/bible-reader/de/`
-- 中文: `/bible-reader/zh/`
-- Русский: `/bible-reader/ru/`
-- Latina: `/bible-reader/la/`
-- Português: `/bible-reader/pt/`
-- العربية: `/bible-reader/ar/`
+역본을 바꾸면 다음이 **선택한 역본의 언어**를 따른다.
 
-IP 기반 강제 리다이렉트는 사용하지 않는다.
-
-### 언어와 역본 분리
-
-- UI 언어와 성경 역본은 별도 상태다.
-- 언어를 바꾸면 해당 언어 URL로 이동하고 그 언어의 기본 역본을 선택한다.
-- 역본을 사용자가 바꾸면 현재 UI 언어는 유지한다.
-- 예: English UI에서 KJV → WEB → ASV로 바꿔도 UI는 English 그대로다.
-- 현재 선택 역본은 localStorage에 유지한다.
-
-언어별 기본 역본:
-- ko → 개역한글 1961
-- en → KJV
-- fr → Louis Segond 1910
-- de → Lutherbibel 1912
-- zh → 和合本 CUV
-- ru → Синодальный перевод
-- la → Vulgata
-- pt → Almeida 1819
-- ar → Smith–Van Dyck
-
-## 다국어 구현 상태
-
-### 66권 이름
-
-`i18n.js`에 9개 언어 각각 66권 전체 명칭을 둔다.
-
-책 이름이 나오는 책 선택, 장 제목, 검색 결과/참조, 저장 기록, 복사 참조는 현재 UI 언어의 명칭을 사용한다. 중국어 CUV에서 `Numbers 第1章`처럼 영어 책 이름이 섞이지 않고 `民数记 第1章`처럼 표시하도록 정리했다.
-
-### UI 현지화
-
-현지화 대상:
-- 역본/언어/구약·신약/책/장/절/검색
-- 비교, 한 면/양면 보기
-- 이전/다음
-- 글자 크기 및 읽기 폭
-- 기록 패널 전체
-- 메모 편집기·삭제·백업/복원
-- 검색 진행/결과 요약
-- 로딩/오류
-- 하단 역본·권리 안내
-- 광고 라벨
-- aria-label/title 등 접근성 문구
-- 복사 참조
-
-글자 크기 표기:
-- 한국어 `가− / 가+`
-- 중국어 `字− / 字+`
-- 러시아어 `А− / А+`
-- 아랍어 `ع− / ع+`
-- 영어·프랑스어·독일어·포르투갈어·라틴어 `A− / A+`
-- 읽기 폭은 공통 `↔`
-
-`i18n-layout.css`가 언어별 문자열 길이에 따른 PC/태블릿/모바일 topbar 줄바꿈과 Arabic RTL을 처리한다. PC는 가능한 한 한 줄 사용성을 우선하되 공간이 부족하면 자연스럽게 줄바꿈한다.
-
-### 기록과 역본
-
-기존 하이라이트·저장 성구·저장 장·메모를 초기화하거나 삭제하지 않는다.
-
-기록의 핵심은 성구 위치다. 기록 목록의 본문은 현재 보고 있는 역본을 다시 불러온다.
+- 성경 본문
+- 66권 책 이름
+- 책 선택 목록
+- 장·절 표기
+- 본문 장 제목
+- 성경 검색 결과의 성경 참조
+- 저장 성구·하이라이트·저장 장의 성경 참조 및 현재 표시 본문
+- 복사되는 성경 참조
 
 예:
-- 민수기 1:1 위치를 과거 개역한글에서 저장
-- 현재 KJV → 현재 KJV 본문으로 표시
-- 현재 CUV → 현재 CUV 본문으로 표시
-- 다시 개역한글 → 개역한글 본문으로 표시
+- 한국어 UI + KJV → `Numbers 1`, 영어 본문
+- 한국어 UI + WEB → `Philippians 1`, 영어 본문
+- 한국어 UI + CUV → `民数记 第1章`, 중국어 본문
+- 한국어 UI + 개역한글 → `민수기 1장`, 한국어 본문
 
-개인 기록 자체는 계속 localStorage only다.
+### 2. 언어 변경 = 성경을 제외한 UI만 변경
 
-## 현재 다국어 runtime 구조
+언어를 바꾸면 현재 역본은 유지하고 다음 **서비스 UI**만 선택한 UI 언어를 따른다.
 
-핵심:
-- `i18n.js` — 9개 언어 UI/66권 이름/언어 선택/동적 기본 현지화의 원본
-- `i18n-layout.css` — 다국어 상단 레이아웃·모바일·RTL
-- `runtime-ui-i18n.js` — 기존 동적 기능이 생성하는 UI/접근성 문구의 호환 현지화
-- `full-reader-loader.js` — 각 언어 URL에서 동일한 본체를 로드하고 UI 언어·SEO·기본 역본을 부팅
-- `extra-translations.js` — 포르투갈어/아랍어 역본 추가 및 역본 선택 유지
-- `clipboard.js` — 현재 언어의 책 이름과 참조 형식으로 복사
+- 검색 / 비교
+- 이전 / 다음
+- 한 면 / 양면 보기
+- 글자 크기 / 폭 / 테마
+- 메모장 / 나의 기록
+- 기록 백업 / 복원
+- 메모 추가·수정·삭제
+- 저장·하이라이트 조작 버튼
+- 로딩·오류·확인 문구
+- 접근성 aria-label/title
+- 브라우저 title / meta description 등 UI·검색 진입 문구
 
-중복·구형 다국어 실행선은 제거했다:
-- `locale-safe.js`
-- `language-selector.js`
-- `launch-translation.js`
+따라서 `KJV + 한국어 UI`에서 본문과 성경명은 영어이고 `비교`, `메모장`, `나의 기록` 등 조작 UI는 한국어가 정상이다.
 
-기존 `locale.js`, `daily.js`, `focus-mode.js`, `notebook-tabs-fix.css`도 runtime에서 제거된 상태를 유지한다.
+UI 언어와 역본을 서로 강제로 동기화하지 않는다.
 
-## SEO 구조
+## 지원 UI 언어 / URL
 
-각 9개 언어 URL에 다음을 유지한다.
-- `html lang`
-- Arabic `dir="rtl"`
-- 언어별 title
-- 언어별 meta description
-- 자기 canonical
-- 9개 언어 reciprocal hreflang
-- `x-default`
+- ko: `/bible-reader/`
+- en: `/bible-reader/en/`
+- fr: `/bible-reader/fr/`
+- de: `/bible-reader/de/`
+- zh: `/bible-reader/zh/`
+- ru: `/bible-reader/ru/`
+- la: `/bible-reader/la/`
+- pt: `/bible-reader/pt/`
+- ar: `/bible-reader/ar/`
 
-`sitemap.xml`에 9개 URL을 모두 포함한다.
+IP 강제 리다이렉트는 사용하지 않는다.
 
-Google Search Console HTML verification tag는 루트 `<head>`에서 계속 유지한다.
+## 현재 역본
 
-## 현재 읽기 기능
-
-- 66권·장·절 이동
-- 성경책 위치 및 본문 검색
-- 이전/다음 장
-- 글자 크기, 본문 폭, 라이트/다크 모드
-- 한 면/양면 보기
-- 다국어 역본 선택 및 2역본 비교
-- 절 복사
-- 절 하이라이트
-- 절 저장
-- 장 저장
-- `나의 기록`: 하이라이트 / 저장한 성구 / 저장한 장
-- 각 기록 메모 추가/수정·삭제
-- 기록 백업/복원(JSON)
-- 마지막 읽기 위치·역본·읽기 설정·기록 localStorage
-- 로그인/계정/개인 기록 서버 동기화 없음
-- 실제 광고 비활성
-
-## 번역본·권리 기준
-
-현재 실행선은 권리 안전성이 확인된 공개도메인·재배포 가능 역본만 사용한다.
+권리 안전성이 확인된 공개도메인·재배포 가능 자료만 실행선에 둔다.
 
 - 개역한글 1961
 - KJV
@@ -174,28 +94,36 @@ Google Search Console HTML verification tag는 루트 `<head>`에서 계속 유�
 
 개역개정·새번역·공동번역 등 현대 한국어 역본은 권리자 허가·라이선스 없이 포함하지 않는다.
 
-난하주·관주는 신뢰 가능한 전체 원자료 확보 전까지 runtime에 넣지 않는다. 기존 annotation 스키마·수입 도구는 미래 자산으로만 보존한다.
+## 핵심 기능
 
-## 다국어 QA — 2026-09-02
+- 66권·장·절 이동
+- 성경책 직접 이동 및 본문 전체검색
+- 이전/다음 장
+- 글자 크기, 본문 폭, 라이트/다크 모드
+- 한 면/양면 보기
+- 2역본 비교
+- 절 복사
+- 절 하이라이트
+- 절 저장
+- 장 저장
+- `나의 기록`: 하이라이트 / 저장한 성구 / 저장한 장
+- 각 기록 메모 추가·수정·삭제
+- 기록 JSON 백업/복원
+- 마지막 읽기 위치·역본·읽기 설정·기록 localStorage 저장
 
-GitHub Actions `Final QA and Deploy Pages`에서 다음을 자동 검수한다.
+구약/신약/전체 선택기는 제거 완료했으며 숨김 코드로 남기지 않는다.
 
-- 전체 JS 문법
-- 필수 runtime 존재
-- 9개 언어 × 66권 이름 배열 무결성
-- 9개 언어 UI locale 존재
-- 각 언어 URL의 html lang / canonical / description / hreflang
-- sitemap 9개 URL
-- 구형/중복 runtime이 index에서 제외됐는지
-- annotation runtime이 MVP에서 제외됐는지
+난하주·관주는 현재 MVP runtime에서 제외한다. 관련 annotation 스키마/수입 자산은 미래 참고용으로만 보존한다.
 
-`tools/validate-i18n.mjs`를 추가해 9개 언어 각각 정확히 66권인지 자동 검증한다.
+## 기록 저장 원칙
 
-최신 다국어 동적 UI 보완 커밋 `1015aab50c715d4e3b7a709dbf24d672e3700991`의 workflow run `33619548569`가 **QA success + GitHub Pages deploy success**로 완료됐다.
+개인 기록은 localStorage only다. 로그인/계정/개인 기록 서버 동기화는 없다.
 
-자동 QA와 배포 성공은 실제 브라우저 UX 검증과 구분한다. 최종 PC/모바일 시각·클릭 검증은 황제의 공개 페이지 확인을 우선한다.
+기록의 핵심은 특정 번역문 스냅샷이 아니라 성구 위치다. 저장 위치는 유지하고 표시 본문은 현재 보고 있는 역본에서 다시 가져온다.
 
-## 익명 방문 집계 — 황제 승인 2026-09-02
+기존 하이라이트·저장 성구·저장 장·메모를 다국어 작업 때문에 삭제하거나 초기화하지 않는다.
+
+## 익명 방문 집계 — 황제 승인
 
 광고·유입 판단용 총 page view만 날짜별 aggregate로 저장한다.
 
@@ -205,45 +133,139 @@ GitHub Actions `Final QA and Deploy Pages`에서 다음을 자동 검수한다.
 - frontend `analytics.js`
 - Supabase Edge Function `bible-page-view`
 - DB `bible_page_views_daily`
-- 개인 기록과 완전히 분리
+- 로컬 실행은 집계하지 않고 실제 GitHub Pages origin에서만 호출
 
-## 재발 방지 규칙
+## 현재 다국어 runtime
 
-1. UI를 제거·교체하면 HTML뿐 아니라 연결 JS/CSS/CI 필수파일 목록까지 함께 정리한다.
-2. 다국어에서 번역문 길이가 달라도 select/button 텍스트를 잘라 기능명을 숨기지 않는다. 공간 부족 시 줄바꿈을 우선한다.
-3. UI 언어와 역본은 독립 상태로 유지한다. 역본 변경으로 UI 언어가 바뀌지 않게 한다.
-4. 책 이름은 영어 fallback으로 임시 처리하지 않고 지원 언어별 66권 전체 배열을 검증한다.
-5. 동적 생성 UI는 정적 HTML 현지화와 별도로 검수한다.
-6. 자동 QA PASS를 실제 사용 PASS로 간주하지 않는다.
-7. 기존 localStorage 기록을 다국어 마이그레이션 때문에 삭제·초기화하지 않는다.
-8. 원격 `main` 반영과 Windows 로컬 저장소 동기화는 별개다. 로컬 실행경로를 쓸 때는 GitHub Desktop Pull 등으로 최신화해야 한다.
-9. 방문 통계는 개인 식별·행동추적으로 확대하지 않는다.
+- `app.js` — 본문 로딩·역본·기본 읽기·검색 기반
+- `extra-translations.js` — 포르투갈어/아랍어 역본 및 선택 유지
+- `i18n.js` — 9개 UI 언어, 9×66권 성경명, UI/성경언어 분리 원본
+- `runtime-ui-i18n.js` — 동적 UI·접근성·기록·브라우저 제목 보완
+- `i18n-layout.css` — PC/태블릿/모바일 다국어 레이아웃·Arabic RTL
+- `full-reader-loader.js` — 언어별 고정 URL에서 동일 본체 로드
+- `book-finder.js` / `reference.js` — 현 역본 언어의 성경명 검색·직접 이동
+- `exact-search.js` — 현재 역본 전체검색
+- `compare.js` — 비교
+- `verse-picker.js` — 절 이동; 모바일 native select가 열린 동안 option 재생성 금지
+- `clipboard.js` — 현 역본 언어 기준 성경 참조 복사
+- `verse-tools.js` / `records-enhancements.js` — 저장·하이라이트·장저장·기록·메모
+- `analytics.js` — 익명 page view
 
-## 유지보수 기준
+제거한 구형/중복 runtime은 다시 연결하지 않는다.
 
-현재부터 우선순위:
-- 실제 PC/모바일에서 발견된 다국어 레이아웃·번역 잔존 문제
-- 핵심 기능 회귀
-- GitHub Pages 배포 이상
-- 외부 성경 JSON 로딩 문제
-- Search Console 색인·검색 오류
-- 익명 page view 집계
-- 번역본 권리·출처 변화
-- localStorage/백업 복원 문제
+## 모바일 native select 재발 방지
+
+실제 Android에서 선택창은 열리지만 항목 터치가 적용되지 않는 회귀가 발생한 적이 있다.
+
+원인:
+- MutationObserver/현지화 코드가 native picker가 열린 동안 `<select>/<option>`을 다시 쓰거나 재생성함
+
+현재 규칙:
+- picker 활성 중 option DOM 재작성 금지
+- 동적 번역 walker에서 SELECT/OPTION 제외
+- `verse-picker.js`가 장 제목 mutation으로 절 select를 재생성하지 않음
+- 관련 회귀조건을 `tools/validate-i18n.mjs`에서 검사
+
+자동 검사 PASS만으로 실제 모바일 터치 PASS라고 하지 않는다.
+
+## SEO / 글로벌 검색 유통
+
+각 9개 언어 URL에 다음을 유지한다.
+
+- html lang
+- Arabic dir=rtl
+- 언어별 title / meta description
+- 자기 canonical
+- reciprocal hreflang
+- x-default
+- sitemap 9 URL
+- robots sitemap directive
+
+Google Search Console HTML 소유확인 태그는 유지한다.
+
+### IndexNow
+
+2026-09-03부터 GitHub Pages 배포 후 IndexNow 자동 제출을 연결했다.
+
+- 9개 언어 진입 URL 제출
+- 검증 키 파일: `193977ee04feba4a99f471a555a2aa54.txt`
+- 첫 실제 제출 run `33657942702`
+- `notify-indexnow` job success
+- HTTP `202 Accepted`, 9 URLs submitted
+- 문서/워크플로 전용 변경은 중복 제출하지 않음
+
+세부 검색생태계 상태 원본: `GLOBAL_SEARCH_DISTRIBUTION.md`
+
+현재 구분:
+- Google: Search Console 소유확인 완료, 실제 각 언어 색인·노출은 관찰 대상
+- Bing: sitemap + IndexNow 활성, Webmaster 상세 등록은 필요 시 로그인 Gate
+- Naver: IndexNow 경로 활성, Search Advisor 상세 등록은 필요 시 로그인 Gate
+- Yandex: sitemap + IndexNow 활성, Webmaster 등록은 로그인 Gate
+- Baidu: zh URL/sitemap/robots 준비, 별도 Search Resource Platform 등록 및 중국 본토 접근성 검증은 Gate/현실검증
+
+제출 성공 ≠ 크롤링 ≠ 색인 ≠ 검색 노출 ≠ 실제 유입이다.
+
+## QA 상태 구분
+
+다음 표현을 엄격히 구분한다.
+
+- `CODE/CI PASS`: 문법·정적검사·자동 회귀검사 통과
+- `DEPLOY PASS`: GitHub Pages Actions 배포 성공
+- `BROWSER PASS`: 실제 브라우저 기능 확인
+- `MOBILE REAL-USE PASS`: 실제 모바일 터치/레이아웃 확인
+- `FULL QA PASS`: 요구 범위의 실제 브라우저·기기 검증까지 완료
+
+실제 기기 검증 전에는 `전수검사 완료`라고 과대보고하지 않는다. 세부 규칙은 `QA_REAL_DEVICE_RULES.md` 참고.
+
+## 현재 자동 QA
+
+GitHub Actions `Final QA and Deploy Pages`에서 최소 다음을 검사한다.
+
+- 전체 JS 문법
+- 필수 runtime 존재
+- 9개 언어 × 66권 이름 배열 무결성
+- UI locale 필수 키
+- 현 역본 언어를 성경명/복사/검색에 사용하는 연결
+- 기록 본문이 현재 역본에서 로드되는 구조
+- native mobile select 회귀 방지
+- 언어 URL html lang/canonical/description/hreflang
+- sitemap/robots/IndexNow 키 파일
+- 제거한 구형 runtime/구약신약/daily/focus 재유입 방지
+
+## 유지보수 우선순위
+
+1. 실제 PC/모바일에서 발견되는 기능 오류·레이아웃 회귀
+2. 역본 언어와 UI 언어 혼합 오류
+3. 외부 성경 JSON 로딩 문제
+4. GitHub Pages/IndexNow 배포 이상
+5. 검색엔진 실제 색인·노출·유입
+6. 익명 page view
+7. localStorage/백업 복원
+8. 번역본 권리·출처 변화
+
+새 기능을 근거 없이 계속 붙이지 않는다.
 
 ## Gate
 
 황제 확인 전 진행하지 않는다.
+
 - 실제 광고/AdSense 도입
 - 새 비용·유료도구
 - 유료 번역본 라이선스
 - 외부 권리자 연락
 - 로그인/개인 기록 서버 DB/개인정보 저장
 - page view 합계를 넘어서는 개인 식별·세션·읽기행동 추적
+- Search Console/Bing/Yandex/Baidu 등 외부 계정 로그인·소유확인 작업
+- 중국 본토용 별도 유료 도메인/호스팅 등 인프라 변경
 - 큰 제품 방향 변경
 
-## 다음 행동
+## 현재 남은 현실검증
 
-**새 기능 개발 없음.**
+- 실제 삼성/Android에서 역본·언어·책·장·절 native select 터치 확인
+- 실제 모바일에서 상단 3줄 구조와 장/절 겹침 재확인
+- KJV/WEB/CUV 등 복수 역본에서 성경명과 본문 언어 일치 확인
+- UI 언어 변경 시 역본이 유지되고 UI만 변경되는지 확인
+- 기록/검색/비교의 실제 모바일 상호작용 확인
+- 각 검색엔진의 실제 색인·노출·유입 관찰
 
-공개 페이지에서 한국어·영어·중국어·포르투갈어·아랍어를 중심으로 실제 PC/모바일 사용을 최종 확인하고, 발견되는 실사용 오류만 유지보수한다.
+현재는 **유지보수 + 실제 사용 검증 + 검색 유통 관찰 단계**다.
