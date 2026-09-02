@@ -7,8 +7,12 @@
     catch (_) { return BOOKS[state.bookIndex]?.ko || 'Bible'; }
   }
 
+  function scriptureLang() {
+    return window.BibleI18n?.scriptureLang?.() || 'ko';
+  }
+
   function refParts(startVerse, endVerse = startVerse) {
-    const lang = window.BibleI18n?.lang?.() || 'ko';
+    const lang = scriptureLang();
     const book = currentBookName();
     const chapter = state.chapter;
     if (lang === 'ko') return startVerse === endVerse ? `${book} ${chapter}장 ${startVerse}절` : `${book} ${chapter}장 ${startVerse}–${endVerse}절`;
@@ -34,7 +38,7 @@
     const verseNumber = Number(verseEl?.dataset.verse);
     const text = (overrideText ?? verseEl?.querySelector('.verse-text')?.textContent ?? '').trim();
     if (!verseNumber || !text) return '';
-    const lang = window.BibleI18n?.lang?.() || 'ko';
+    const lang = scriptureLang();
     if (lang === 'ko') return `${verseNumber}절 ${text}`;
     if (lang === 'zh') return `${verseNumber}节 ${text}`;
     if (lang === 'ru') return `${verseNumber} ${text}`;
