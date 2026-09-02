@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 const langs=['ko','en','fr','de','zh','ru','la','pt','ar'];
-const requiredUiKeys=['all','old','new','chapter','verse','title','search','compare','prev','next','single','dual','notes','fontDown','fontUp','fontDownTitle','fontUpTitle','widthTitle','close','ad','loading','loadError','recordsTitle','highlights','savedVerses','savedChapters','backup','restore','goVerse','goChapter','addNote','editNote','deleteHighlight','deleteSaved','save','deleteNote','cancel','notePlaceholder','emptyHighlights','emptySaved','emptyChapters','backupConfirm','backupInvalid','source','description','pageTitle'];
+const requiredUiKeys=['chapter','verse','title','search','compare','prev','next','single','dual','notes','fontDown','fontUp','fontDownTitle','fontUpTitle','widthTitle','close','ad','loading','loadError','recordsTitle','highlights','savedVerses','savedChapters','backup','restore','goVerse','goChapter','addNote','editNote','deleteHighlight','deleteSaved','save','deleteNote','cancel','notePlaceholder','emptyHighlights','emptySaved','emptyChapters','backupConfirm','backupInvalid','source','description','pageTitle'];
 const src=fs.readFileSync('i18n.js','utf8');
 const bookBlock=src.match(/const BOOK_NAMES = \{([\s\S]*?)\n  \};\n\n  const UI/);
 if(!bookBlock) throw new Error('BOOK_NAMES block not found');
@@ -22,6 +22,11 @@ for(const lang of langs){
 const index=fs.readFileSync('index.html','utf8');
 if(index.indexOf('src="i18n.js"')>index.indexOf('src="reference.js"')) throw new Error('i18n.js must load before localized navigation helpers');
 if(index.includes('id="testamentSelect"')) throw new Error('retired testament selector must not remain in index.html');
+for(const file of ['app.js','book-finder.js','runtime-ui-i18n.js','ui-fix.css']){
+  const body=fs.readFileSync(file,'utf8');
+  if(body.includes('testamentSelect')||body.includes('activeTestament')||body.includes('setTestament')||body.includes('booksForTestament')) throw new Error(`retired testament code remains in ${file}`);
+}
+
 if(fs.existsSync('testament-select.js')) throw new Error('retired testament-select.js must be deleted');
 for(const lang of langs.filter(l=>l!=='ko')){
   const html=fs.readFileSync(`${lang}/index.html`,'utf8');
@@ -57,5 +62,10 @@ for(const lang of langs){if(!runtime.includes(`${lang}:{translation:`))throw new
 const layout=fs.readFileSync('i18n-layout.css','utf8');
 if(!layout.includes('@media(min-width:1360px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
 if(!layout.includes('.location-controls .top-search{display:grid!important')) throw new Error('search input and action must render as one grouped control');
+
+for(const file of ['features.css','ui-fix.css']){
+  const body=fs.readFileSync(file,'utf8');
+  if(body.includes('daily-strip')||body.includes('daily-card')||body.includes('focus-reading')||body.includes('focus-tool')) throw new Error(`retired daily/focus CSS remains in ${file}`);
+}
 
 console.log('Multilingual integrity OK: 9 locales, 66 localized books each, navigation/search/records hooks and SEO entry points present.');
