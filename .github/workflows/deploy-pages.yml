@@ -38,7 +38,7 @@ jobs:
       - name: Check required runtime files
         run: |
           set -e
-          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js i18n.js runtime-ui-i18n.js full-reader-loader.js reference.js book-finder.js testament-select.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js; do
+          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js i18n.js runtime-ui-i18n.js full-reader-loader.js reference.js book-finder.js compare.js verse-picker.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js; do
             test -s "$file"
           done
           for lang in en fr de zh ru la pt ar; do
@@ -69,6 +69,7 @@ jobs:
           ! grep -q 'src="locale-safe.js"' index.html
           ! grep -q 'src="language-selector.js"' index.html
           ! grep -q 'src="launch-translation.js"' index.html
+          ! grep -q 'src="testament-select.js"' index.html
           ! grep -q 'src="daily.js"' index.html
           ! grep -q 'src="focus-mode.js"' index.html
           ! grep -q 'notebook-tabs-fix.css' index.html
