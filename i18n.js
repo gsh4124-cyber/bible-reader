@@ -100,15 +100,15 @@
   }
 
   function applySelects(){
-    const books=document.querySelector('#bookSelect');if(books)[...books.options].forEach(o=>o.textContent=bookName(Number(o.value)));
-    const chapters=document.querySelector('#chapterSelect');if(chapters)[...chapters.options].forEach(o=>o.textContent=scriptureText('chapter')(Number(o.value)));
-    const verses=document.querySelector('#verseSelect');if(verses)[...verses.options].forEach(o=>o.textContent=scriptureText('verse')(Number(o.value)||1));
+    const books=document.querySelector('#bookSelect');if(books)[...books.options].forEach(o=>{const next=bookName(Number(o.value));if(o.textContent!==next)o.textContent=next});
+    const chapters=document.querySelector('#chapterSelect');if(chapters)[...chapters.options].forEach(o=>{const next=scriptureText('chapter')(Number(o.value));if(o.textContent!==next)o.textContent=next});
+    const verses=document.querySelector('#verseSelect');if(verses)[...verses.options].forEach(o=>{const next=scriptureText('verse')(Number(o.value)||1);if(o.textContent!==next)o.textContent=next});
   }
 
   function applyTitle(){
     if(typeof state==='undefined')return;
     const label=scriptureText('title')(bookName(state.bookIndex),state.chapter);
-    const h=document.querySelector('#chapterTitle');if(h)h.textContent=label;
+    const h=document.querySelector('#chapterTitle');if(h&&h.textContent!==label)h.textContent=label;
     const tr=TRANSLATIONS[document.querySelector('#translationSelect')?.value]||TRANSLATIONS.krv1961;
     document.title=`${label} · ${tr.name}`;
     const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=text('description');
@@ -124,11 +124,12 @@
   function localizeDynamicTree(root=document.body){
     if(!root)return;
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
-    nodes.forEach(n=>{if(['SCRIPT','STYLE'].includes(n.parentElement?.tagName))return;const next=translateDynamic(n.nodeValue);if(next!==n.nodeValue)n.nodeValue=next;});
+    nodes.forEach(n=>{if(['SCRIPT','STYLE','SELECT','OPTION'].includes(n.parentElement?.tagName))return;const next=translateDynamic(n.nodeValue);if(next!==n.nodeValue)n.nodeValue=next;});
     root.querySelectorAll?.('textarea[placeholder="메모를 입력하세요"]').forEach(el=>el.placeholder=text('notePlaceholder'));
   }
 
-  function applyAll(){applyStatic();applySelects();applyTitle();applyReadingDirection();localizeDynamicTree();}
+  function selectPickerOpen(){return document.activeElement?.tagName==='SELECT';}
+  function applyAll(){applyStatic();if(!selectPickerOpen()){applySelects();applyTitle();}applyReadingDirection();localizeDynamicTree();}
   window.BibleI18n={lang:()=>uiLang,scriptureLang,text:()=>UI[uiLang]||UI.en,ui:text,bookName,bookNames:BOOK_NAMES,localizeReference,apply:applyAll,defaultTranslation:code=>DEFAULT_TRANSLATION[code]};
 
   const nativeConfirm=window.confirm.bind(window),nativeAlert=window.alert.bind(window);
@@ -136,8 +137,16 @@
   window.alert=(message)=>nativeAlert(message==='올바른 성경 읽기 백업 파일이 아닙니다.'?text('backupInvalid'):message);
 
   createLanguageSelector();
-  let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(applyAll,30)};
-  new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true});
+  let timer;
+  const schedule=()=>{
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      if(selectPickerOpen()){timer=setTimeout(schedule,120);return;}
+      applyAll();
+    },30);
+  };
+  new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true});
   ['translationSelect','bookSelect','chapterSelect','verseSelect','leftTranslation','rightTranslation'].forEach(id=>document.querySelector('#'+id)?.addEventListener('change',schedule));
+  document.addEventListener('focusout',event=>{if(event.target?.tagName==='SELECT')schedule();});
   [0,100,350,800,1600].forEach(ms=>setTimeout(applyAll,ms));
 })();
