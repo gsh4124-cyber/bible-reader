@@ -63,9 +63,16 @@ const layout=fs.readFileSync('i18n-layout.css','utf8');
 if(!layout.includes('@media(min-width:1360px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
 if(!layout.includes('.location-controls .top-search{display:grid!important')) throw new Error('search input and action must render as one grouped control');
 
+// Regression guard: native mobile select pickers must not be rebuilt while open.
+if(!src.includes("['SCRIPT','STYLE','SELECT','OPTION']")) throw new Error('i18n dynamic walker must skip SELECT/OPTION text nodes');
+if(!src.includes("document.activeElement?.tagName==='SELECT'")) throw new Error('i18n must defer select option rewrites while a native picker is active');
+const versePicker=fs.readFileSync('verse-picker.js','utf8');
+if(versePicker.includes('observer.observe(chapterTitle')) throw new Error('verse picker must not rebuild options from chapter title mutations');
+if(!versePicker.includes('document.activeElement===verseSelect')) throw new Error('verse picker must guard against rebuilding while its native picker is active');
+
 for(const file of ['features.css','ui-fix.css']){
   const body=fs.readFileSync(file,'utf8');
   if(body.includes('daily-strip')||body.includes('daily-card')||body.includes('focus-reading')||body.includes('focus-tool')) throw new Error(`retired daily/focus CSS remains in ${file}`);
 }
 
-console.log('Multilingual integrity OK: 9 locales, 66 localized books each, navigation/search/records hooks and SEO entry points present.');
+console.log('Multilingual integrity OK: 9 locales, 66 localized books each, navigation/search/records hooks, SEO entry points, and mobile native-select regression guards present.');
