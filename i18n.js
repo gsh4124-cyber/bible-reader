@@ -37,22 +37,27 @@
   }
   const uiLang = pathLang();
   const text = key => UI[uiLang]?.[key] ?? UI.en[key] ?? key;
-  const bookName = index => BOOK_NAMES[uiLang]?.[index] || BOOK_NAMES.en[index] || BOOKS[index]?.ko || '';
+  function scriptureLang(){
+    const id=document.querySelector('#translationSelect')?.value || (typeof activeTranslationId!=='undefined' ? activeTranslationId : 'krv1961');
+    const tr=TRANSLATIONS[id] || TRANSLATIONS.krv1961;
+    if(tr?.id==='krv1961' || tr?.type==='krv') return 'ko';
+    return LANGS.includes(tr?.lang) ? tr.lang : 'en';
+  }
+  const scriptureText = key => UI[scriptureLang()]?.[key] ?? UI.en[key] ?? key;
+  const bookName = index => BOOK_NAMES[scriptureLang()]?.[index] || BOOK_NAMES.en[index] || BOOKS[index]?.ko || '';
 
   function createLanguageSelector(){
     const translation=document.querySelector('#translationSelect');
     if(!translation || document.querySelector('#languageSelect')) return;
     const wrap=document.createElement('span'); wrap.className='language-selector-wrap';
-    const icon=document.createElement('span'); icon.className='language-icon'; icon.textContent='🌐'; icon.setAttribute('aria-hidden','true');
     const select=document.createElement('select'); select.id='languageSelect'; select.className='language-select'; select.setAttribute('aria-label','Language');
     LANGS.forEach(code=>{const o=document.createElement('option');o.value=code;o.textContent=LANGUAGE_LABEL[code];select.append(o)});
     select.value=uiLang;
     select.addEventListener('change',()=>{
-      const code=select.value; const target=DEFAULT_TRANSLATION[code];
-      try{localStorage.setItem('bible-reader-translation',target)}catch(_){}
+      const code=select.value;
       location.href=code==='ko'?'/bible-reader/':`/bible-reader/${code}/`;
     });
-    wrap.append(icon,select); translation.insertAdjacentElement('afterend',wrap);
+    wrap.append(select); translation.insertAdjacentElement('afterend',wrap);
   }
 
   function localizeReference(raw){
@@ -95,15 +100,14 @@
   }
 
   function applySelects(){
-    const testament=document.querySelector('#testamentSelect');if(testament&&testament.options.length>=3){testament.options[0].textContent=text('all');testament.options[1].textContent=text('old');testament.options[2].textContent=text('new');}
     const books=document.querySelector('#bookSelect');if(books)[...books.options].forEach(o=>o.textContent=bookName(Number(o.value)));
-    const chapters=document.querySelector('#chapterSelect');if(chapters)[...chapters.options].forEach(o=>o.textContent=text('chapter')(Number(o.value)));
-    const verses=document.querySelector('#verseSelect');if(verses)[...verses.options].forEach(o=>o.textContent=text('verse')(Number(o.value)||1));
+    const chapters=document.querySelector('#chapterSelect');if(chapters)[...chapters.options].forEach(o=>o.textContent=scriptureText('chapter')(Number(o.value)));
+    const verses=document.querySelector('#verseSelect');if(verses)[...verses.options].forEach(o=>o.textContent=scriptureText('verse')(Number(o.value)||1));
   }
 
   function applyTitle(){
     if(typeof state==='undefined')return;
-    const label=text('title')(bookName(state.bookIndex),state.chapter);
+    const label=scriptureText('title')(bookName(state.bookIndex),state.chapter);
     const h=document.querySelector('#chapterTitle');if(h)h.textContent=label;
     const tr=TRANSLATIONS[document.querySelector('#translationSelect')?.value]||TRANSLATIONS.krv1961;
     document.title=`${label} · ${tr.name}`;
@@ -125,7 +129,7 @@
   }
 
   function applyAll(){applyStatic();applySelects();applyTitle();applyReadingDirection();localizeDynamicTree();}
-  window.BibleI18n={lang:()=>uiLang,text:()=>UI[uiLang]||UI.en,ui:text,bookName,bookNames:BOOK_NAMES,localizeReference,apply:applyAll,defaultTranslation:code=>DEFAULT_TRANSLATION[code]};
+  window.BibleI18n={lang:()=>uiLang,scriptureLang,text:()=>UI[uiLang]||UI.en,ui:text,bookName,bookNames:BOOK_NAMES,localizeReference,apply:applyAll,defaultTranslation:code=>DEFAULT_TRANSLATION[code]};
 
   const nativeConfirm=window.confirm.bind(window),nativeAlert=window.alert.bind(window);
   window.confirm=(message)=>nativeConfirm(message==='현재 기록을 백업 파일의 기록으로 바꿀까요?'?text('backupConfirm'):message);
@@ -134,6 +138,6 @@
   createLanguageSelector();
   let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(applyAll,30)};
   new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true});
-  ['translationSelect','bookSelect','chapterSelect','verseSelect','testamentSelect','leftTranslation','rightTranslation'].forEach(id=>document.querySelector('#'+id)?.addEventListener('change',schedule));
+  ['translationSelect','bookSelect','chapterSelect','verseSelect','leftTranslation','rightTranslation'].forEach(id=>document.querySelector('#'+id)?.addEventListener('change',schedule));
   [0,100,350,800,1600].forEach(ms=>setTimeout(applyAll,ms));
 })();
