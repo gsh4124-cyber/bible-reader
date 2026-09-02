@@ -30,7 +30,7 @@
     const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];
     while(walker.nextNode())nodes.push(walker.currentNode);
     nodes.forEach(node=>{
-      if(['SCRIPT','STYLE'].includes(node.parentElement?.tagName))return;
+      if(['SCRIPT','STYLE','SELECT','OPTION'].includes(node.parentElement?.tagName))return;
       const raw=node.nodeValue;const key=raw.trim();if(dict[key])node.nodeValue=raw.replace(key,dict[key]);
     });
     root.querySelectorAll?.('[aria-label],[title]').forEach(el=>{
@@ -113,8 +113,30 @@
     el.textContent=`${tr.name} · ${tr.language} · ${rights.pd}`;
   }
 
+  function scriptureHeading(book,chapter,scriptureLang){
+    if(scriptureLang==='ko')return `${book} ${chapter}장`;
+    if(scriptureLang==='zh')return `${book} 第${chapter}章`;
+    if(scriptureLang==='ar')return `${book} ${chapter}`;
+    return `${book} ${chapter}`;
+  }
+
+  function syncScriptureAndBrowserTitles(){
+    const bible=window.BibleI18n;
+    const bookSelect=document.querySelector('#bookSelect');
+    const chapterSelect=document.querySelector('#chapterSelect');
+    const heading=document.querySelector('#chapterTitle');
+    if(bible&&bookSelect&&chapterSelect&&heading){
+      const book=bible.bookName?.(Number(bookSelect.value));
+      const chapter=Number(chapterSelect.value)||1;
+      const scriptureLang=bible.scriptureLang?.()||'ko';
+      if(book){const next=scriptureHeading(book,chapter,scriptureLang);if(heading.textContent!==next)heading.textContent=next;}
+    }
+    const pageTitle=text().pageTitle;
+    if(pageTitle&&document.title!==pageTitle)document.title=pageTitle;
+  }
+
   function apply(){
-    applyAccess();localizeNotebook();localizeRecordButtons();localizeSearchSummary();localizeAttribution();replaceEnglishFallbacks();
+    applyAccess();localizeNotebook();localizeRecordButtons();localizeSearchSummary();localizeAttribution();replaceEnglishFallbacks();syncScriptureAndBrowserTitles();
   }
   let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(apply,35)};
   new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title']});
