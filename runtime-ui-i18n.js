@@ -1,26 +1,38 @@
 (() => {
-  const KOREAN_BOOKS=['창세기','출애굽기','레위기','민수기','신명기','여호수아','사사기','룻기','사무엘상','사무엘하','열왕기상','열왕기하','역대상','역대하','에스라','느헤미야','에스더','욥기','시편','잠언','전도서','아가','이사야','예레미야','예레미야애가','에스겔','다니엘','호세아','요엘','아모스','오바댜','요나','미가','나훔','하박국','스바냐','학개','스가랴','말라기','마태복음','마가복음','누가복음','요한복음','사도행전','로마서','고린도전서','고린도후서','갈라디아서','에베소서','빌립보서','골로새서','데살로니가전서','데살로니가후서','디모데전서','디모데후서','디도서','빌레몬서','히브리서','야고보서','베드로전서','베드로후서','요한일서','요한이서','요한삼서','유다서','요한계시록'];
-  const EN_BOOKS=['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts','Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians','1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation'];
-  const maps={
-    en:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Foreign-language editions are provided only when public-domain or redistribution rights are verified.','내 기록':'My records','닫기':'Close','하이라이트':'Highlights','저장한 성구':'Saved verses','저장한 장':'Saved chapters','기록 백업':'Back up records','백업 복원':'Restore backup','구절로 이동':'Go to verse','장으로 이동':'Go to chapter','메모 추가':'Add note','메모 수정':'Edit note','하이라이트 삭제':'Delete highlight','저장 삭제':'Delete saved item','저장':'Save','메모 삭제':'Delete note','취소':'Cancel','메모를 입력하세요':'Write a note','하이라이트한 성구가 없습니다.':'No highlighted verses.','저장한 성구가 없습니다.':'No saved verses.','저장한 장이 없습니다.':'No saved chapters.','본문을 불러오는 중…':'Loading Scripture…','본문을 불러오지 못했습니다.':'Could not load Scripture.','현재 기록을 백업 파일의 기록으로 바꿀까요?':'Replace current records with the backup file?','올바른 성경 읽기 백업 파일이 아닙니다.':'This is not a valid Bible Reader backup file.','메모장':'Notes'},
-    fr:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Les versions étrangères sont proposées uniquement lorsque le domaine public ou les droits de redistribution sont vérifiés.','내 기록':'Mes notes','닫기':'Fermer','하이라이트':'Surlignages','저장한 성구':'Versets enregistrés','저장한 장':'Chapitres enregistrés','기록 백업':'Sauvegarder','백업 복원':'Restaurer'},
-    de:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Fremdsprachige Ausgaben werden nur angeboten, wenn Gemeinfreiheit oder Weiterverbreitungsrechte bestätigt sind.','내 기록':'Meine Einträge','닫기':'Schließen','하이라이트':'Markierungen','저장한 성구':'Gespeicherte Verse','저장한 장':'Gespeicherte Kapitel','기록 백업':'Sichern','백업 복원':'Wiederherstellen'},
-    zh:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'仅提供已确认属于公有领域或允许再分发的外语版本。','내 기록':'我的记录','닫기':'关闭','하이라이트':'高亮','저장한 성구':'已保存经文','저장한 장':'已保存章节','기록 백업':'备份记录','백업 복원':'恢复备份'},
-    ru:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Иноязычные издания предоставляются только при подтвержденном общественном достоянии или праве на распространение.','내 기록':'Мои записи','닫기':'Закрыть','하이라이트':'Выделения','저장한 성구':'Сохраненные стихи','저장한 장':'Сохраненные главы','기록 백업':'Резервная копия','백업 복원':'Восстановить'},
-    la:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Editiones externae tantum praebentur ubi iura publici dominii vel redistributionis comprobata sunt.','내 기록':'Acta mea','닫기':'Claude','하이라이트':'Notata','저장한 성구':'Versus servati','저장한 장':'Capita servata','기록 백업':'Serva acta','백업 복원':'Restaura'},
-    pt:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'Edições em outros idiomas são fornecidas apenas quando o domínio público ou os direitos de redistribuição são verificados.','내 기록':'Meus registros','닫기':'Fechar','하이라이트':'Destaques','저장한 성구':'Versículos salvos','저장한 장':'Capítulos salvos','기록 백업':'Fazer backup','백업 복원':'Restaurar backup','구절로 이동':'Ir para o versículo','장으로 이동':'Ir para o capítulo','메모 추가':'Adicionar nota','메모 수정':'Editar nota','하이라이트 삭제':'Excluir destaque','저장 삭제':'Excluir salvo'},
-    ar:{'외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.':'تُعرض الترجمات الأجنبية فقط عند التحقق من الملكية العامة أو حقوق إعادة التوزيع.','내 기록':'سجلاتي','닫기':'إغلاق','하이라이트':'تمييزات','저장한 성구':'آيات محفوظة','저장한 장':'أصحاحات محفوظة','기록 백업':'نسخ احتياطي','백업 복원':'استعادة النسخة','구절로 이동':'انتقل إلى الآية','장으로 이동':'انتقل إلى الأصحاح','메모 추가':'إضافة ملاحظة','메모 수정':'تعديل الملاحظة'}
+  const EXTRA = {
+    pt:{'Copy':'Copiar','Highlight':'Destacar','Remove highlight':'Remover destaque','Save verse':'Salvar versículo','Remove saved verse':'Remover versículo salvo','Note':'Nota','Verse note':'Nota do versículo','Bookmark chapter':'Salvar capítulo','Remove chapter bookmark':'Remover capítulo salvo','No saved notes.':'Nenhuma nota salva.','Verse actions':'Ações do versículo'},
+    ar:{'Copy':'نسخ','Highlight':'تمييز','Remove highlight':'إلغاء التمييز','Save verse':'حفظ الآية','Remove saved verse':'إلغاء حفظ الآية','Note':'ملاحظة','Verse note':'ملاحظة الآية','Bookmark chapter':'حفظ الأصحاح','Remove chapter bookmark':'إلغاء حفظ الأصحاح','No saved notes.':'لا توجد ملاحظات محفوظة.','Verse actions':'إجراءات الآية'}
   };
-  function lang(){ try{return window.BibleI18n?.lang?.()||'ko';}catch(_){return 'ko';} }
-  function replaceTextNode(node,dict){ const raw=node.nodeValue; const s=raw.trim(); if(!s)return; if(dict[s]){node.nodeValue=raw.replace(s,dict[s]);return;} if(lang()==='en'){
-      for(let i=0;i<KOREAN_BOOKS.length;i++){
-        const k=KOREAN_BOOKS[i]; if(s.startsWith(k+' ')){node.nodeValue=raw.replace(k,EN_BOOKS[i]);break;}
-      }
-    }
+  const ACCESS = {
+    ko:{translation:'성경 버전',language:'언어',testament:'성경 범위',book:'성경책',chapter:'장',verse:'절',search:'성경 검색',tools:'읽기 도구',view:'보기 방식',compare:'역본 비교',left:'왼쪽 비교 역본',right:'오른쪽 비교 역본',swap:'좌우 역본 바꾸기',theme:'테마'},
+    en:{translation:'Bible version',language:'Language',testament:'Bible section',book:'Bible book',chapter:'Chapter',verse:'Verse',search:'Bible search',tools:'Reading tools',view:'View mode',compare:'Translation comparison',left:'Left translation',right:'Right translation',swap:'Swap translations',theme:'Theme'},
+    fr:{translation:'Version biblique',language:'Langue',testament:'Partie de la Bible',book:'Livre biblique',chapter:'Chapitre',verse:'Verset',search:'Recherche biblique',tools:'Outils de lecture',view:'Mode d’affichage',compare:'Comparaison des versions',left:'Version de gauche',right:'Version de droite',swap:'Permuter les versions',theme:'Thème'},
+    de:{translation:'Bibelübersetzung',language:'Sprache',testament:'Bibelteil',book:'Bibelbuch',chapter:'Kapitel',verse:'Vers',search:'Bibelsuche',tools:'Lesewerkzeuge',view:'Ansicht',compare:'Übersetzungsvergleich',left:'Linke Übersetzung',right:'Rechte Übersetzung',swap:'Übersetzungen tauschen',theme:'Darstellung'},
+    zh:{translation:'圣经版本',language:'语言',testament:'圣经范围',book:'圣经书卷',chapter:'章',verse:'节',search:'圣经搜索',tools:'阅读工具',view:'显示方式',compare:'译本对照',left:'左侧译本',right:'右侧译本',swap:'交换译本',theme:'主题'},
+    ru:{translation:'Перевод Библии',language:'Язык',testament:'Раздел Библии',book:'Книга Библии',chapter:'Глава',verse:'Стих',search:'Поиск по Библии',tools:'Инструменты чтения',view:'Режим просмотра',compare:'Сравнение переводов',left:'Левый перевод',right:'Правый перевод',swap:'Поменять переводы',theme:'Тема'},
+    la:{translation:'Versio Bibliae',language:'Lingua',testament:'Pars Bibliae',book:'Liber Bibliae',chapter:'Caput',verse:'Versus',search:'Quaestio Bibliae',tools:'Instrumenta lectionis',view:'Modus visus',compare:'Comparatio versionum',left:'Versio sinistra',right:'Versio dextra',swap:'Versiones permuta',theme:'Species'},
+    pt:{translation:'Versão da Bíblia',language:'Idioma',testament:'Parte da Bíblia',book:'Livro da Bíblia',chapter:'Capítulo',verse:'Versículo',search:'Pesquisar na Bíblia',tools:'Ferramentas de leitura',view:'Modo de visualização',compare:'Comparação de versões',left:'Versão à esquerda',right:'Versão à direita',swap:'Trocar versões',theme:'Tema'},
+    ar:{translation:'ترجمة الكتاب المقدس',language:'اللغة',testament:'قسم الكتاب المقدس',book:'سفر الكتاب المقدس',chapter:'الأصحاح',verse:'الآية',search:'البحث في الكتاب المقدس',tools:'أدوات القراءة',view:'طريقة العرض',compare:'مقارنة الترجمات',left:'الترجمة اليسرى',right:'الترجمة اليمنى',swap:'تبديل الترجمات',theme:'المظهر'}
+  };
+  function lang(){return window.BibleI18n?.lang?.()||'ko';}
+  function replaceLegacyText(root=document.body){
+    const dict=EXTRA[lang()]; if(!dict)return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);
+    nodes.forEach(node=>{if(['SCRIPT','STYLE'].includes(node.parentElement?.tagName))return;const raw=node.nodeValue;const s=raw.trim();if(dict[s])node.nodeValue=raw.replace(s,dict[s]);});
+    root.querySelectorAll?.('[aria-label],[title]').forEach(el=>{const a=el.getAttribute('aria-label');const t=el.getAttribute('title');if(a&&dict[a])el.setAttribute('aria-label',dict[a]);if(t&&dict[t])el.setAttribute('title',dict[t]);});
   }
-  function apply(root=document.body){ const l=lang(); if(l==='ko')return; const dict=maps[l]||maps.en; const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT); const nodes=[]; while(w.nextNode())nodes.push(w.currentNode); nodes.forEach(n=>{if(!['SCRIPT','STYLE'].includes(n.parentElement?.tagName))replaceTextNode(n,dict);}); const ph=root.querySelectorAll?.('textarea[placeholder],input[placeholder]')||[]; ph.forEach(el=>{if(dict[el.placeholder])el.placeholder=dict[el.placeholder];}); if(l==='ar')document.documentElement.dir='rtl'; }
-  let timer; const schedule=()=>{clearTimeout(timer);timer=setTimeout(()=>apply(),20)};
-  const obs=new MutationObserver(schedule); obs.observe(document.body,{subtree:true,childList:true,characterData:true});
-  document.querySelector('#translationSelect')?.addEventListener('change',()=>setTimeout(apply,0));
-  [0,100,400,1000,2000].forEach(ms=>setTimeout(apply,ms));
+  function applyAccess(){
+    const a=ACCESS[lang()]||ACCESS.en;
+    const labels={translationSelect:a.translation,languageSelect:a.language,testamentSelect:a.testament,bookSelect:a.book,chapterSelect:a.chapter,verseSelect:a.verse,searchInput:a.search,leftTranslation:a.left,rightTranslation:a.right,themeToggle:a.theme};
+    Object.entries(labels).forEach(([id,label])=>document.querySelector('#'+id)?.setAttribute('aria-label',label));
+    document.querySelector('.location-controls')?.setAttribute('aria-label',a.search);
+    document.querySelector('.toolbar')?.setAttribute('aria-label',a.tools);
+    document.querySelector('.reader-view-controls')?.setAttribute('aria-label',a.view);
+    document.querySelector('#comparePanel')?.setAttribute('aria-label',a.compare);
+    const swap=document.querySelector('#swapTranslations');if(swap){swap.title=a.swap;swap.setAttribute('aria-label',a.swap);}
+  }
+  function apply(){replaceLegacyText();applyAccess();}
+  let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(apply,25)};
+  new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title']});
+  [0,150,600,1400].forEach(ms=>setTimeout(apply,ms));
 })();
