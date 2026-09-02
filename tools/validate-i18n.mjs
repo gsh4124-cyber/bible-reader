@@ -59,9 +59,18 @@ const records=fs.readFileSync('records-enhancements.js','utf8');
 if(!records.includes('const tr=currentTranslation')) throw new Error('records must render verse text using current translation');
 const runtime=fs.readFileSync('runtime-ui-i18n.js','utf8');
 for(const lang of langs){if(!runtime.includes(`${lang}:{translation:`))throw new Error(`runtime accessibility labels missing for ${lang}`);}
+if(!runtime.includes('syncScriptureAndBrowserTitles')) throw new Error('runtime must synchronize scripture heading and UI-language browser title');
 const layout=fs.readFileSync('i18n-layout.css','utf8');
 if(!layout.includes('@media(min-width:1360px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
 if(!layout.includes('.location-controls .top-search{display:grid!important')) throw new Error('search input and action must render as one grouped control');
+
+const clipboard=fs.readFileSync('clipboard.js','utf8');
+if(!clipboard.includes('BibleI18n?.scriptureLang')) throw new Error('copied scripture references must follow translation language, not UI language');
+const exactSearch=fs.readFileSync('exact-search.js','utf8');
+if(!exactSearch.includes('BibleI18n?.bookName')) throw new Error('search result references must follow translation language');
+for(const lang of langs){if(!exactSearch.includes(`${lang}:{prepare:`))throw new Error(`search runtime messages missing for ${lang}`);}
+const compare=fs.readFileSync('compare.js','utf8');
+for(const lang of langs){if(!compare.includes(`${lang}:{loading:`))throw new Error(`comparison runtime messages missing for ${lang}`);}
 
 // Regression guard: native mobile select pickers must not be rebuilt while open.
 if(!src.includes("['SCRIPT','STYLE','SELECT','OPTION']")) throw new Error('i18n dynamic walker must skip SELECT/OPTION text nodes');
@@ -75,4 +84,4 @@ for(const file of ['features.css','ui-fix.css']){
   if(body.includes('daily-strip')||body.includes('daily-card')||body.includes('focus-reading')||body.includes('focus-tool')) throw new Error(`retired daily/focus CSS remains in ${file}`);
 }
 
-console.log('Multilingual integrity OK: 9 locales, 66 localized books each, navigation/search/records hooks, SEO entry points, and mobile native-select regression guards present.');
+console.log('Multilingual integrity OK: 9 locales, 66 localized books each, scripture/UI language separation, navigation/search/records/compare hooks, SEO entry points, and mobile native-select regression guards present.');
