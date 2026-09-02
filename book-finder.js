@@ -49,12 +49,6 @@
     const index = findBookIndex(query);
     if (index < 0) return false;
 
-    if (typeof setTestament === 'function' && typeof activeTestament !== 'undefined' && activeTestament !== 'all') {
-      await setTestament('all');
-      const testamentSelect = document.querySelector('#testamentSelect');
-      if (testamentSelect) testamentSelect.value = 'all';
-    }
-
     select.value = String(index);
     select.dispatchEvent(new Event('change', { bubbles: true }));
     input.value = '';
