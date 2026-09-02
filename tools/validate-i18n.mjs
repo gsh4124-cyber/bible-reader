@@ -53,6 +53,8 @@ if(!records.includes('const tr=currentTranslation')) throw new Error('records mu
 const runtime=fs.readFileSync('runtime-ui-i18n.js','utf8');
 for(const lang of langs){if(!runtime.includes(`${lang}:{translation:`))throw new Error(`runtime accessibility labels missing for ${lang}`);}
 const layout=fs.readFileSync('i18n-layout.css','utf8');
-if(!layout.includes('@media(min-width:1500px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
+if(!layout.includes('@media(min-width:1360px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
+if(!layout.includes('#testamentSelect{display:none!important}')) throw new Error('simplified primary topbar must hide the redundant testament selector');
+if(!layout.includes('.location-controls .top-search{display:grid!important')) throw new Error('search input and action must render as one grouped control');
 
 console.log('Multilingual integrity OK: 9 locales, 66 localized books each, navigation/search/records hooks and SEO entry points present.');
