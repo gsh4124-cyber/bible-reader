@@ -9,7 +9,7 @@
 
   function localizedNames() {
     const names = window.BibleI18n?.bookNames;
-    const current = window.BibleI18n?.lang?.() || 'ko';
+    const current = window.BibleI18n?.scriptureLang?.() || 'ko';
     return names?.[current] || names?.en || BOOKS.map(book => book.ko);
   }
 
@@ -67,6 +67,6 @@
 
   const refresh = () => setTimeout(refreshDatalist, 0);
   refreshDatalist();
-  document.querySelector('#languageSelect')?.addEventListener('change', refresh);
+  document.querySelector('#translationSelect')?.addEventListener('change', refresh);
   [100, 500, 1200].forEach(ms => setTimeout(refreshDatalist, ms));
 })();
