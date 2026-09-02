@@ -32,6 +32,9 @@ jobs:
             node --check "$file"
           done
 
+      - name: Validate multilingual integrity
+        run: node tools/validate-i18n.mjs
+
       - name: Check required runtime files
         run: |
           set -e
