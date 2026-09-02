@@ -9,8 +9,6 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 
 /* Primary navigation selects share one quiet visual rhythm. */
 .location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
-#chapterSelect{margin-inline-end:4px}
-#verseSelect{margin-inline-start:4px}
 .toolbar{gap:2px!important}
 .toolbar #compareToggle{margin-inline:4px 7px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
 .toolbar .quick-tool{min-width:36px!important;padding-inline:7px!important}
@@ -20,21 +18,21 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 @media(min-width:1360px){
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.85fr) minmax(126px,.72fr) minmax(178px,1fr) 94px 84px minmax(240px,1.35fr)!important;gap:8px!important;width:100%!important;min-width:0;align-items:center}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.82fr) minmax(126px,.68fr) minmax(178px,1fr) minmax(118px,.55fr) minmax(104px,.5fr) minmax(240px,1.35fr)!important;gap:10px!important;width:100%!important;min-width:0;align-items:center}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
 @media(min-width:1041px) and (max-width:1359px){
   .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
-  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.85fr) minmax(120px,.72fr) minmax(170px,1fr) 92px 82px minmax(220px,1.25fr)!important;gap:8px!important;width:auto!important;min-width:720px}
+  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.82fr) minmax(120px,.68fr) minmax(170px,1fr) minmax(112px,.55fr) minmax(100px,.5fr) minmax(220px,1.25fr)!important;gap:10px!important;width:auto!important;min-width:780px}
   .centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
   .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
-  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) 92px 82px!important;gap:8px!important;width:100%}
+  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) minmax(112px,.7fr) minmax(100px,.65fr)!important;gap:10px!important;width:100%}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
   .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
   .toolbar{order:2;align-self:flex-end}
@@ -43,8 +41,8 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 @media(max-width:760px){
   .topbar{padding:8px 10px}
   .topbar-inner.centered-nav{gap:7px!important}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(78px,.72fr) minmax(72px,.62fr)!important;grid-template-rows:auto auto auto!important;gap:7px!important}
-  .centered-nav #bookSelect{grid-column:1!important;grid-row:1!important}.centered-nav #chapterSelect{grid-column:2!important;grid-row:1!important;margin-inline-end:0}.centered-nav #verseSelect{grid-column:3!important;grid-row:1!important;margin-inline-start:0}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(88px,.78fr) minmax(80px,.7fr)!important;grid-template-rows:auto auto auto!important;gap:8px!important}
+  .centered-nav #bookSelect{grid-column:1!important;grid-row:1!important}.centered-nav #chapterSelect{grid-column:2!important;grid-row:1!important}.centered-nav #verseSelect{grid-column:3!important;grid-row:1!important}
   .centered-nav #translationSelect{grid-column:1/3!important;grid-row:2!important}.centered-nav .language-selector-wrap{grid-column:3!important;grid-row:2!important}
   .centered-nav .location-controls .top-search{grid-column:1/4!important;grid-row:3!important}
   .language-select{padding-inline:8px;font-size:13px}
@@ -53,7 +51,7 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 }
 
 @media(max-width:420px){
-  .centered-nav .location-controls{grid-template-columns:minmax(0,1.2fr) minmax(68px,.66fr) minmax(64px,.62fr)!important;gap:6px!important}
+  .centered-nav .location-controls{grid-template-columns:minmax(0,1.2fr) minmax(76px,.7fr) minmax(72px,.66fr)!important;gap:7px!important}
   .location-controls select{padding-inline:9px;font-size:14px}.language-select{font-size:12px!important}
 }
 
