@@ -1,16 +1,42 @@
 (() => {
-  const lang = location.pathname.split('/').filter(Boolean).pop() || 'ko';
-  const translations = {en:'kjv',fr:'lsg',de:'luth1912',zh:'cuv',ru:'synodal',la:'vulg',pt:'almeida1819',ar:'svd'};
-  const translation = translations[lang] || 'krv1961';
+  const parts = location.pathname.split('/').filter(Boolean);
+  const candidate = parts[parts.indexOf('bible-reader') + 1];
+  const lang = ['en','fr','de','zh','ru','la','pt','ar'].includes(candidate) ? candidate : 'ko';
+  const defaults = {ko:'krv1961',en:'kjv',fr:'lsg',de:'luth1912',zh:'cuv',ru:'synodal',la:'vulg',pt:'almeida1819',ar:'svd'};
+  const allowed = new Set(['krv1961','kjv','web','asv','lsg','luth1912','cuv','synodal','vulg','almeida1819','svd']);
+  const seo = {
+    en:{title:'Free Online Bible Reader · KJV and Public-Domain Translations',description:'Read and compare public-domain Bible translations in a clean, comfortable online Bible reader.'},
+    fr:{title:'Bible en ligne gratuite · Louis Segond 1910',description:'Lisez et comparez gratuitement Louis Segond 1910 et d’autres traductions bibliques du domaine public.'},
+    de:{title:'Kostenlose Online-Bibel · Lutherbibel 1912',description:'Lutherbibel 1912 und weitere gemeinfreie Bibelübersetzungen online lesen und vergleichen.'},
+    zh:{title:'在线圣经阅读 · 和合本对照',description:'在线阅读和对照和合本及其他已确认可再分发的圣经译本。'},
+    ru:{title:'Библия онлайн · Синодальный перевод',description:'Читайте и сравнивайте Синодальный перевод и другие доступные библейские переводы онлайн.'},
+    la:{title:'Biblia Sacra online · Vulgata',description:'Vulgatam et alias Bibliorum editiones publici dominii lege atque compara.'},
+    pt:{title:'Bíblia online grátis · Almeida 1819',description:'Leia e compare a Bíblia Almeida 1819 e outras traduções bíblicas em domínio público.'},
+    ar:{title:'الكتاب المقدس على الإنترنت · ترجمة فان دايك',description:'اقرأ وقارن ترجمة فان دايك وترجمات الكتاب المقدس المتاحة لإعادة التوزيع.'}
+  };
   const base = '/bible-reader/';
+
+  let selected = defaults[lang] || 'krv1961';
+  try {
+    const saved = localStorage.getItem('bible-reader-translation');
+    if (allowed.has(saved)) selected = saved;
+    else localStorage.setItem('bible-reader-translation', selected);
+  } catch (_) {}
+
   fetch(`${base}index.html`, {cache:'no-store'})
     .then(r => { if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
     .then(html => {
       const canonical = `https://gsh4124-cyber.github.io/bible-reader/${lang === 'ko' ? '' : lang + '/'}`;
-      const bootstrap = `<script>window.__BIBLE_LANG__=${JSON.stringify(lang)};window.__BIBLE_TRANSLATION__=${JSON.stringify(translation)};try{localStorage.setItem('bible-reader-translation',${JSON.stringify(translation)})}catch(_){}</`+`script>`;
+      const bootstrap = `<script>window.__BIBLE_LANG__=${JSON.stringify(lang)};window.__BIBLE_TRANSLATION__=${JSON.stringify(selected)};</`+`script>`;
       html = html
+        .replace(/<html lang="[^"]*"(?: dir="[^"]*")?>/i, `<html lang="${lang}"${lang==='ar'?' dir="rtl"':''}>`)
         .replace('<head>', `<head><base href="${base}">${bootstrap}`)
         .replace(/<link rel="canonical"[^>]*>/i, `<link rel="canonical" href="${canonical}" />`);
+      if (seo[lang]) {
+        html = html
+          .replace(/<title>[^<]*<\/title>/i, `<title>${seo[lang].title}</title>`)
+          .replace(/<meta name="description" content="[^"]*"\s*\/?>/i, `<meta name="description" content="${seo[lang].description}" />`);
+      }
       document.open(); document.write(html); document.close();
     })
     .catch(err => {
