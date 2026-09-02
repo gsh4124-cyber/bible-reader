@@ -10,9 +10,17 @@
   function saveRecordNote(id, text){ const notes=readJson(RECORD_NOTES_KEY); const value=String(text||'').trim(); if(value) notes[id]=value; else delete notes[id]; writeJson(RECORD_NOTES_KEY,notes); }
   function removeRecordNote(id){ const notes=readJson(RECORD_NOTES_KEY); delete notes[id]; writeJson(RECORD_NOTES_KEY,notes); }
   function button(text, handler){ const b=document.createElement('button'); b.type='button'; b.textContent=text; b.addEventListener('click',handler); return b; }
+  function currentTranslation(fallback='krv1961'){
+    const select=document.querySelector('#translationSelect');
+    const id=select?.value || (typeof activeTranslationId!=='undefined'?activeTranslationId:null) || fallback;
+    return (typeof TRANSLATIONS!=='undefined' && TRANSLATIONS[id]) ? id : fallback;
+  }
+  function currentBookName(index){
+    try{return window.BibleI18n?.bookName?.(index) || BOOKS[index]?.ko || '';}catch(_){return BOOKS[index]?.ko || '';}
+  }
 
   async function goToVerse(item){
-    const tr=item.tr || 'krv1961';
+    const tr=currentTranslation(item.tr || 'krv1961');
     if(typeof TRANSLATIONS!=='undefined' && TRANSLATIONS[tr]){
       activeTranslationId=tr;
       const select=document.querySelector('#translationSelect'); if(select) select.value=tr;
@@ -30,7 +38,7 @@
   }
 
   async function goToChapter(item){
-    const tr=item.translation || item.tr || 'krv1961';
+    const tr=currentTranslation(item.translation || item.tr || 'krv1961');
     if(typeof TRANSLATIONS!=='undefined' && TRANSLATIONS[tr]){
       activeTranslationId=tr;
       const select=document.querySelector('#translationSelect'); if(select) select.value=tr;
@@ -66,9 +74,9 @@
   }
 
   async function fillVerseText(item,target){
-    if(item.mark?.savedText){target.textContent=item.mark.savedText;return;}
     try{
-      const data=await fetchBook(BOOKS[item.bookIndex],item.tr);
+      const tr=currentTranslation(item.tr || 'krv1961');
+      const data=await fetchBook(BOOKS[item.bookIndex],tr);
       const chapter=data.chapters.find(c=>Number(c.chapter)===item.chapter);
       const verse=chapter?.verses.find(v=>Number(v.verse)===item.verse);
       target.textContent=verse?.text || '';
@@ -104,8 +112,8 @@
     entries.forEach(item=>{
       const id=`${mode==='highlight'?'highlight':'verse'}:${item.key}`;
       const card=document.createElement('article'); card.className=`notebook-item ${mode==='highlight'?'highlight-record-item':'saved-record-item'}`;
-      const ref=document.createElement('strong'); ref.textContent=`${BOOKS[item.bookIndex]?.ko||''} ${item.chapter}:${item.verse}`;
-      const body=document.createElement('p'); body.className='saved-verse-text'; body.textContent=item.mark.savedText||'본문을 불러오는 중…'; fillVerseText(item,body);
+      const ref=document.createElement('strong'); ref.textContent=`${currentBookName(item.bookIndex)} ${item.chapter}:${item.verse}`;
+      const body=document.createElement('p'); body.className='saved-verse-text'; body.textContent='본문을 불러오는 중…'; fillVerseText(item,body);
       const note=noteBlock(id);
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
       actions.append(
@@ -137,7 +145,7 @@
     items.forEach(item=>{
       const id=`chapter:${item.key}`;
       const card=document.createElement('article'); card.className='notebook-item chapter-record-item';
-      const title=document.createElement('strong'); title.textContent=item.label||`${BOOKS[item.bookIndex]?.ko||''} ${item.chapter}장`;
+      const title=document.createElement('strong'); title.textContent=`${currentBookName(Number(item.bookIndex)||0)} ${Number(item.chapter)||1}`;
       const note=noteBlock(id);
       const actions=document.createElement('div'); actions.className='notebook-item-actions';
       actions.append(
@@ -147,6 +155,12 @@
       );
       card.append(title); if(note) card.append(note); card.append(actions); list.append(card);
     });
+  }
+
+  function rerenderOpenPanel(){
+    const panel=document.querySelector('.notebook-panel'); if(!panel)return;
+    const active=panel.querySelector('.notebook-tabs button.active:not([hidden])')?.dataset.tab;
+    if(active==='saved')renderSaved(panel); else if(active==='chapters')renderChapters(panel); else renderHighlights(panel);
   }
 
   function exportData(){
@@ -227,4 +241,5 @@
 
   const observer=new MutationObserver(()=>{enhance(document.querySelector('.notebook-panel'));removeStandaloneMemoAction();});
   observer.observe(document.body,{childList:true,subtree:true}); enhance(document.querySelector('.notebook-panel')); removeStandaloneMemoAction();
+  document.querySelector('#translationSelect')?.addEventListener('change',()=>setTimeout(rerenderOpenPanel,0));
 })();
