@@ -1,33 +1,56 @@
-.language-selector-wrap{display:flex;align-items:center;gap:6px;min-width:0}.language-icon{flex:0 0 auto;font-size:14px}.language-select{width:100%;min-width:0;max-width:none}.location-controls select,.location-controls input,.location-controls button{min-width:0}.location-controls select{white-space:nowrap;text-overflow:ellipsis}.top-search{min-width:0}
+.language-selector-wrap{display:flex;align-items:center;gap:5px;min-width:0}.language-icon{flex:0 0 auto;font-size:13px;opacity:.68}.language-select{width:100%;min-width:0;max-width:none}.location-controls select,.location-controls input,.location-controls button{min-width:0}.location-controls select{white-space:nowrap;text-overflow:ellipsis}.top-search{min-width:0}
 
-@media(min-width:1500px){
-  .topbar-inner.centered-nav{grid-template-columns:minmax(0,1fr) auto!important;gap:12px!important;width:min(1760px,100%)!important}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(145px,.9fr) minmax(118px,.72fr) minmax(155px,.82fr) minmax(190px,1.05fr) minmax(112px,.58fr) minmax(102px,.52fr) minmax(270px,1.45fr)!important;gap:8px!important;width:100%!important;min-width:0}
-  .centered-nav .language-selector-wrap,.centered-nav .top-search{grid-column:auto!important;min-width:0}
+/* The testament filter remains available internally, but the primary reader UI uses all 66 books. */
+#testamentSelect{display:none!important}
+
+/* Search is one visual control rather than two competing boxes. */
+.location-controls .top-search{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:0!important;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--panel) 82%,transparent)}
+.location-controls .top-search input,.location-controls .top-search input:focus{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important}
+.location-controls .top-search button{border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding-inline:13px!important}
+.location-controls .top-search button:hover{background:var(--hover)!important}
+html[dir="rtl"] .location-controls .top-search button{border-left:0!important;border-right:1px solid var(--line)!important}
+
+/* Primary navigation selects share one quiet visual rhythm. */
+.location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
+.toolbar{gap:2px!important}
+.toolbar #compareToggle{margin-inline:4px 7px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
+.toolbar .quick-tool{min-width:36px!important;padding-inline:7px!important}
+.toolbar .notebook-button{margin-inline-start:6px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
+.toolbar-divider{display:none!important}
+
+@media(min-width:1360px){
+  .topbar{padding-block:9px}
+  .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.85fr) minmax(126px,.72fr) minmax(178px,1fr) 94px 84px minmax(240px,1.35fr)!important;gap:6px!important;width:100%!important;min-width:0;align-items:center}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
+  .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
-@media(min-width:1041px) and (max-width:1499px){
-  .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;width:min(1500px,100%)!important}
-  .toolbar{order:1;margin-inline-start:auto}
-  .centered-nav .location-controls{order:2;flex:1 1 100%;display:grid!important;grid-template-columns:minmax(145px,.9fr) minmax(118px,.72fr) minmax(155px,.82fr) minmax(190px,1.05fr) minmax(112px,.58fr) minmax(102px,.52fr) minmax(260px,1.4fr)!important;gap:8px!important;width:100%;min-width:0}
-  .centered-nav .top-search{grid-column:auto!important;width:100%!important}
+@media(min-width:1041px) and (max-width:1359px){
+  .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
+  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.85fr) minmax(120px,.72fr) minmax(170px,1fr) 92px 82px minmax(220px,1.25fr)!important;gap:6px!important;width:auto!important;min-width:720px}
+  .centered-nav .top-search{grid-column:6!important;width:100%!important}
+  .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
-  .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:8px}
-  .toolbar{order:1;align-self:flex-end}
-  .centered-nav .location-controls{order:2;display:grid!important;grid-template-columns:minmax(150px,1fr) minmax(125px,.82fr) minmax(150px,.95fr) minmax(190px,1.2fr)!important;gap:8px!important;width:100%}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #testamentSelect{grid-column:3}.centered-nav #bookSelect{grid-column:4}
-  .centered-nav #chapterSelect{grid-column:1}.centered-nav #verseSelect{grid-column:2}.centered-nav .top-search{grid-column:3/5!important;width:100%!important}
+  .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
+  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) 92px 82px!important;gap:7px!important;width:100%}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
+  .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
+  .toolbar{order:2;align-self:flex-end}
 }
 
 @media(max-width:760px){
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(78px,.72fr) minmax(72px,.62fr)!important;grid-template-rows:auto auto auto!important;gap:8px!important}
-  .centered-nav #testamentSelect{display:none!important}
+  .topbar{padding:8px 10px}
+  .topbar-inner.centered-nav{gap:7px!important}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(78px,.72fr) minmax(72px,.62fr)!important;grid-template-rows:auto auto auto!important;gap:7px!important}
   .centered-nav #bookSelect{grid-column:1!important;grid-row:1!important}.centered-nav #chapterSelect{grid-column:2!important;grid-row:1!important}.centered-nav #verseSelect{grid-column:3!important;grid-row:1!important}
   .centered-nav #translationSelect{grid-column:1/3!important;grid-row:2!important}.centered-nav .language-selector-wrap{grid-column:3!important;grid-row:2!important}
   .centered-nav .location-controls .top-search{grid-column:1/4!important;grid-row:3!important}
   .language-selector-wrap{gap:3px}.language-icon{display:none}.language-select{padding-inline:8px;font-size:13px}
+  .toolbar{width:100%;justify-content:flex-end!important;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
+  .toolbar #compareToggle{margin-inline:0 4px}.toolbar .notebook-button{margin-inline-start:3px}
 }
 
 @media(max-width:420px){
