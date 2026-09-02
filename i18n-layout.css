@@ -1,35 +1,38 @@
-.language-selector-wrap{display:flex;align-items:center;gap:6px;min-width:0}.language-icon{flex:0 0 auto;font-size:14px}.language-select{width:100%;min-width:0;max-width:none}.location-controls select,.location-controls input,.location-controls button{min-width:0}.location-controls select{white-space:nowrap}
+.language-selector-wrap{display:flex;align-items:center;gap:6px;min-width:0}.language-icon{flex:0 0 auto;font-size:14px}.language-select{width:100%;min-width:0;max-width:none}.location-controls select,.location-controls input,.location-controls button{min-width:0}.location-controls select{white-space:nowrap;text-overflow:ellipsis}.top-search{min-width:0}
 
-@media(min-width:1321px){
-  .topbar-inner.centered-nav{grid-template-columns:minmax(0,1fr) auto!important;gap:12px!important;width:min(1660px,100%)!important}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(130px,.9fr) minmax(110px,.72fr) minmax(128px,.78fr) minmax(165px,1.05fr) minmax(96px,.58fr) minmax(82px,.5fr) minmax(240px,1.45fr)!important;gap:7px!important;width:100%!important;min-width:0}
-  .centered-nav .language-selector-wrap{grid-column:auto;min-width:0}
-  .centered-nav .top-search{grid-column:auto!important}
+@media(min-width:1500px){
+  .topbar-inner.centered-nav{grid-template-columns:minmax(0,1fr) auto!important;gap:12px!important;width:min(1760px,100%)!important}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(145px,.9fr) minmax(118px,.72fr) minmax(155px,.82fr) minmax(190px,1.05fr) minmax(112px,.58fr) minmax(102px,.52fr) minmax(270px,1.45fr)!important;gap:8px!important;width:100%!important;min-width:0}
+  .centered-nav .language-selector-wrap,.centered-nav .top-search{grid-column:auto!important;min-width:0}
 }
 
-@media(min-width:1200px) and (max-width:1320px){
-  .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px}
+@media(min-width:1041px) and (max-width:1499px){
+  .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px;width:min(1500px,100%)!important}
   .toolbar{order:1;margin-inline-start:auto}
-  .centered-nav .location-controls{order:2;flex:1 1 100%;display:grid!important;grid-template-columns:minmax(130px,.9fr) minmax(110px,.7fr) minmax(130px,.8fr) minmax(175px,1.05fr) minmax(96px,.55fr) minmax(82px,.48fr) minmax(230px,1.35fr)!important;gap:7px!important}
-  .centered-nav .top-search{grid-column:auto!important}
+  .centered-nav .location-controls{order:2;flex:1 1 100%;display:grid!important;grid-template-columns:minmax(145px,.9fr) minmax(118px,.72fr) minmax(155px,.82fr) minmax(190px,1.05fr) minmax(112px,.58fr) minmax(102px,.52fr) minmax(260px,1.4fr)!important;gap:8px!important;width:100%;min-width:0}
+  .centered-nav .top-search{grid-column:auto!important;width:100%!important}
 }
 
-@media(min-width:761px) and (max-width:1199px){
+@media(min-width:761px) and (max-width:1040px){
   .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:8px}
   .toolbar{order:1;align-self:flex-end}
-  .centered-nav .location-controls{order:2;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(115px,.8fr) minmax(135px,.9fr) minmax(180px,1.15fr)!important;gap:8px!important;width:100%}
+  .centered-nav .location-controls{order:2;display:grid!important;grid-template-columns:minmax(150px,1fr) minmax(125px,.82fr) minmax(150px,.95fr) minmax(190px,1.2fr)!important;gap:8px!important;width:100%}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #testamentSelect{grid-column:3}.centered-nav #bookSelect{grid-column:4}
   .centered-nav #chapterSelect{grid-column:1}.centered-nav #verseSelect{grid-column:2}.centered-nav .top-search{grid-column:3/5!important;width:100%!important}
 }
 
 @media(max-width:760px){
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.25fr) minmax(88px,.75fr) minmax(72px,.58fr)!important;grid-template-rows:auto auto auto!important;gap:8px!important}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.3fr) minmax(78px,.72fr) minmax(72px,.62fr)!important;grid-template-rows:auto auto auto!important;gap:8px!important}
   .centered-nav #testamentSelect{display:none!important}
-  .centered-nav #translationSelect{grid-column:1/3!important;grid-row:1!important}
-  .centered-nav .language-selector-wrap{grid-column:3!important;grid-row:1!important}
-  .centered-nav #bookSelect{grid-column:1!important;grid-row:2!important}.centered-nav #chapterSelect{grid-column:2!important;grid-row:2!important}.centered-nav #verseSelect{grid-column:3!important;grid-row:2!important}
+  .centered-nav #bookSelect{grid-column:1!important;grid-row:1!important}.centered-nav #chapterSelect{grid-column:2!important;grid-row:1!important}.centered-nav #verseSelect{grid-column:3!important;grid-row:1!important}
+  .centered-nav #translationSelect{grid-column:1/3!important;grid-row:2!important}.centered-nav .language-selector-wrap{grid-column:3!important;grid-row:2!important}
   .centered-nav .location-controls .top-search{grid-column:1/4!important;grid-row:3!important}
   .language-selector-wrap{gap:3px}.language-icon{display:none}.language-select{padding-inline:8px;font-size:13px}
 }
 
-html[dir="rtl"] .toolbar,html[dir="rtl"] .location-controls{direction:rtl}html[dir="rtl"] #singleReader{direction:ltr}html[dir="rtl"] #singleReader[dir="rtl"]{direction:rtl}html[dir="rtl"] .notebook-panel{right:auto;left:0;border-left:0;border-right:1px solid var(--line);box-shadow:14px 0 44px rgba(0,0,0,.16)}
+@media(max-width:420px){
+  .centered-nav .location-controls{grid-template-columns:minmax(0,1.2fr) minmax(68px,.66fr) minmax(64px,.62fr)!important;gap:6px!important}
+  .location-controls select{padding-inline:9px;font-size:14px}.language-select{font-size:12px!important}
+}
+
+html[dir="rtl"] .toolbar,html[dir="rtl"] .location-controls{direction:rtl}html[dir="rtl"] #singleReader{direction:ltr}html[dir="rtl"] #singleReader[dir="rtl"]{direction:rtl}html[dir="rtl"] .notebook-panel{right:auto;left:0;border-left:0;border-right:1px solid var(--line);box-shadow:14px 0 44px rgba(0,0,0,.16)}html[dir="rtl"] .top-search{direction:rtl}html[dir="rtl"] .chapter-heading,html[dir="rtl"] .chapter-nav{direction:rtl}
