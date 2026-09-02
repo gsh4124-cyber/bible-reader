@@ -15,6 +15,9 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 .toolbar .notebook-button{margin-inline-start:6px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
 .toolbar-divider{display:none!important}
 
+/* Keep the chapter title visually centered between the toolbar and view controls. */
+.chapter-heading{margin-bottom:40px!important}
+
 @media(min-width:1360px){
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
@@ -52,6 +55,7 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
   .language-select{padding-inline:8px;font-size:13px}
   .toolbar{width:100%;justify-content:flex-end!important;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
   .toolbar #compareToggle{margin-inline:0 4px}.toolbar .notebook-button{margin-inline-start:3px}
+  .chapter-heading{margin-bottom:50px!important}
 }
 
 @media(max-width:420px){
