@@ -22,13 +22,13 @@
     return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[id]?.name) || id || 'Bible';
   }
 
-  function siteLabel() {
-    const labels = {
-      ko:'성경 읽기', en:'Read the Bible', fr:'Lire la Bible', de:'Bibel lesen', zh:'阅读圣经',
-      ru:'Читать Библию', la:'Lege Bibliam', pt:'Ler a Bíblia', ar:'اقرأ الكتاب المقدس'
+  function localizedPageName() {
+    const names = {
+      ko:'성경 읽기 웹서비스', en:'Bible Reader', fr:'Lecteur de la Bible', de:'Bibel-Leser', zh:'圣经阅读器',
+      ru:'Чтение Библии', la:'Lector Bibliae', pt:'Leitor da Bíblia', ar:'قارئ الكتاب المقدس'
     };
     const lang = String(uiLang()).toLowerCase().split('-')[0];
-    return labels[lang] || labels.en;
+    return names[lang] || names.en;
   }
 
   function refParts(startVerse, endVerse = startVerse) {
@@ -62,7 +62,7 @@
   }
 
   function buildCopyText(startVerse, endVerse, lines) {
-    return `[${translationName()}] ${refParts(startVerse, endVerse)}\n\n${lines.join('\n')}\n\n${siteLabel()}\n${SITE_URL}`;
+    return `[${translationName()}] ${refParts(startVerse, endVerse)}\n\n${lines.join('\n')}\n\n${localizedPageName()}\n${SITE_URL}`;
   }
 
   versesRoot.addEventListener('copy', (event) => {
