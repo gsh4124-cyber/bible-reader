@@ -68,6 +68,8 @@ if(runtime.includes('attributes:true')||runtime.includes("attributeFilter:['aria
 const uiSync=fs.readFileSync('ui-language-sync.js','utf8');
 if(!uiSync.includes('Object.defineProperty(document, \'title\'')) throw new Error('UI title owner guard missing');
 if(!uiSync.includes('enforceStableUiDirection')) throw new Error('stable UI direction guard missing');
+if(!uiSync.includes("location.protocol !== 'file:'")||!uiSync.includes('location.assign(target)')) throw new Error('public UI language change must route to its localized reader URL');
+for(const pair of ["ko: 'krv1961'","en: 'kjv'","fr: 'lsg'","de: 'luth1912'","zh: 'cuv'","ru: 'synodal'","la: 'vulg'","pt: 'almeida1819'","ar: 'svd'"]){if(!uiSync.includes(pair))throw new Error(`default translation mapping missing: ${pair}`);}
 const localRoute=fs.readFileSync('local-file-language.js','utf8');
 if(!localRoute.includes("url.searchParams.set('translation', translation)")) throw new Error('local language switch must update translation query');
 const loader=fs.readFileSync('full-reader-loader.js','utf8');
@@ -77,9 +79,13 @@ if(!loader.includes('const failure =')) throw new Error('localized loader failur
 const layout=fs.readFileSync('i18n-layout.css','utf8');
 if(!layout.includes('@media(min-width:1360px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header breakpoints missing');
 if(!layout.includes('.location-controls .top-search{display:grid!important')) throw new Error('search input and action must render as one grouped control');
+if(!layout.includes('word-spacing:normal!important')) throw new Error('chapter heading must preserve visible spacing between book name and chapter');
 
 const clipboard=fs.readFileSync('clipboard.js','utf8');
 if(!clipboard.includes('BibleI18n?.scriptureLang')) throw new Error('copied scripture references must follow translation language, not UI language');
+if(!clipboard.includes('`[${translationName()}] ${refParts(startVerse, endVerse)}')) throw new Error('copied scripture must include the selected translation before the reference');
+if(!clipboard.includes('${localizedPageName()} · ${SITE_URL}')) throw new Error('copied scripture must keep localized page name and site URL on one attribution line');
+for(const lang of langs){if(!clipboard.includes(`${lang}:`)&&lang!=='ko')throw new Error(`clipboard localized page name missing for ${lang}`);}
 const exactSearch=fs.readFileSync('exact-search.js','utf8');
 if(!exactSearch.includes('BibleI18n?.bookName')) throw new Error('search result references must follow translation language');
 for(const lang of langs){if(!exactSearch.includes(`${lang}:{prepare:`))throw new Error(`search runtime messages missing for ${lang}`);}
@@ -98,4 +104,4 @@ for(const file of ['features.css','ui-fix.css']){
   if(body.includes('daily-strip')||body.includes('daily-card')||body.includes('focus-reading')||body.includes('focus-tool')) throw new Error(`retired daily/focus CSS remains in ${file}`);
 }
 
-console.log('Multilingual integrity OK: 9 locales, 66 localized books each, Scripture/UI language separation, stable UI layout direction, local/public routing, navigation/search/records/compare hooks, SEO entry points, and mobile native-select regression guards present.');
+console.log('Multilingual integrity OK: 9 locales, 66 localized books each, Scripture/UI language separation, localized language routing with default translations, stable UI layout direction, local/public routing, navigation/search/records/compare hooks, copied scripture attribution, SEO entry points, and mobile native-select regression guards present.');
