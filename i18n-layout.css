@@ -6,23 +6,26 @@
 .location-controls .top-search button{border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding-inline:13px!important}
 .location-controls .top-search button:hover{background:var(--hover)!important}
 
-/* Primary navigation selects share one quiet visual rhythm. */
-.location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
-/* Desktop navigation boxes use explicit widths so browser/native select sizing cannot change proportions. */
+/* Primary navigation controls share one quiet visual rhythm. */
+.location-controls>select,.language-selector-wrap select,.number-jump-input{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
+.number-jump-input{border:1px solid var(--line);border-radius:10px;color:var(--text);font:inherit;text-align:center;appearance:textfield;-moz-appearance:textfield}
+.number-jump-input::-webkit-outer-spin-button,.number-jump-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.number-jump-input:focus{outline:none;border-color:color-mix(in srgb,var(--text) 42%,var(--line));box-shadow:0 0 0 2px color-mix(in srgb,var(--text) 8%,transparent)}
+
+/* Desktop navigation boxes use explicit widths so language changes cannot resize the topbar. */
 @media(min-width:761px){
   .centered-nav #translationSelect{width:160px!important;min-width:160px!important;max-width:160px!important}
   .centered-nav .language-selector-wrap{width:120px!important;min-width:120px!important;max-width:120px!important}
   .centered-nav #bookSelect{width:190px!important;min-width:190px!important;max-width:190px!important}
-  .centered-nav #chapterSelect{width:120px!important;min-width:120px!important;max-width:120px!important;padding-inline:12px 28px!important}
-  .centered-nav #verseSelect{width:100px!important;min-width:100px!important;max-width:100px!important;padding-inline:12px 28px!important}
+  .centered-nav #chapterNumberInput{width:120px!important;min-width:120px!important;max-width:120px!important}
+  .centered-nav #verseNumberInput{width:100px!important;min-width:100px!important;max-width:100px!important}
 }
 .toolbar{gap:2px!important}
 .toolbar #compareToggle{margin-inline:4px 7px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
 .toolbar .quick-tool{min-width:36px!important;padding-inline:7px!important}
 .toolbar .notebook-button{margin-inline-start:6px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
 
-/* The heading starts after main/heading top spacing, so 50% makes the visible top gap larger.
-   Place title and bookmark at the actual visual midpoint between the topbar and heading rule. */
+/* The heading starts after main/heading top spacing, so 50% makes the visible top gap larger. */
 .chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
 .chapter-heading h1{word-spacing:-.16em}
 
@@ -30,22 +33,22 @@
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
   .centered-nav .location-controls{display:grid!important;grid-template-columns:160px 120px 190px 120px 100px minmax(240px,1fr)!important;gap:8px!important;width:100%!important;min-width:0;align-items:center}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberInput{grid-column:4}.centered-nav #verseNumberInput{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
 @media(min-width:1041px) and (max-width:1359px){
   .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
   .centered-nav .location-controls{order:1;flex:1 1 auto;display:grid!important;grid-template-columns:150px 110px 180px 110px 96px minmax(190px,1fr)!important;gap:8px!important;width:auto!important;min-width:900px}
-  .centered-nav #translationSelect{width:150px!important;min-width:150px!important;max-width:150px!important}.centered-nav .language-selector-wrap{width:110px!important;min-width:110px!important;max-width:110px!important}.centered-nav #bookSelect{width:180px!important;min-width:180px!important;max-width:180px!important}.centered-nav #chapterSelect{width:110px!important;min-width:110px!important;max-width:110px!important}.centered-nav #verseSelect{width:96px!important;min-width:96px!important;max-width:96px!important}
-  .centered-nav .top-search{grid-column:6!important;width:100%!important}
+  .centered-nav #translationSelect{width:150px!important;min-width:150px!important;max-width:150px!important}.centered-nav .language-selector-wrap{width:110px!important;min-width:110px!important;max-width:110px!important}.centered-nav #bookSelect{width:180px!important;min-width:180px!important;max-width:180px!important}.centered-nav #chapterNumberInput{width:110px!important;min-width:110px!important;max-width:110px!important}.centered-nav #verseNumberInput{width:96px!important;min-width:96px!important;max-width:96px!important}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberInput{grid-column:4}.centered-nav #verseNumberInput{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
   .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
   .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:160px 120px 190px 120px 100px!important;gap:8px!important;width:100%}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberInput{grid-column:4}.centered-nav #verseNumberInput{grid-column:5}
   .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
   .toolbar{order:2;align-self:flex-end}
 }
@@ -57,10 +60,10 @@
   .centered-nav #translationSelect{grid-column:1/3!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav .language-selector-wrap{grid-column:3!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav #bookSelect{grid-column:1!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
-  .centered-nav #chapterSelect{grid-column:2!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
-  .centered-nav #verseSelect{grid-column:3!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
+  .centered-nav #chapterNumberInput{grid-column:2!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
+  .centered-nav #verseNumberInput{grid-column:3!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav .location-controls .top-search{grid-column:1/4!important;grid-row:3!important;width:100%!important}
-  .centered-nav #bookSelect,.centered-nav #chapterSelect,.centered-nav #verseSelect,.centered-nav #translationSelect,.centered-nav .language-selector-wrap{margin:0!important;box-sizing:border-box}
+  .centered-nav #bookSelect,.centered-nav #chapterNumberInput,.centered-nav #verseNumberInput,.centered-nav #translationSelect,.centered-nav .language-selector-wrap{margin:0!important;box-sizing:border-box}
   .language-select{padding-inline:8px;font-size:13px}
   .toolbar{width:100%;justify-content:flex-end!important;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
   .toolbar #compareToggle{margin-inline:0 4px}.toolbar .notebook-button{margin-inline-start:3px}
@@ -68,5 +71,5 @@
 
 @media(max-width:420px){
   .centered-nav .location-controls{grid-template-columns:minmax(0,1.5fr) minmax(82px,.7fr) minmax(76px,.65fr)!important;column-gap:8px!important;row-gap:7px!important}
-  .location-controls select{padding-inline:9px;font-size:14px}.language-select{font-size:12px!important}
+  .location-controls select,.number-jump-input{font-size:14px}.language-select{font-size:12px!important}
 }
