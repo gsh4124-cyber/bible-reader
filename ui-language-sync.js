@@ -36,6 +36,18 @@
     }
   }
 
+  function enforceStableUiDirection() {
+    if (document.documentElement.dir !== 'ltr') document.documentElement.dir = 'ltr';
+  }
+
+  /*
+   * Scripture direction is handled on the reader/compare content itself.
+   * The page shell stays physically stable so Arabic UI does not reorder controls.
+   */
+  const dirObserver = new MutationObserver(enforceStableUiDirection);
+  dirObserver.observe(document.documentElement, {attributes:true, attributeFilter:['dir']});
+  enforceStableUiDirection();
+
   /*
    * Some older runtime paths still try to write a Scripture-language title.
    * Intercept document.title so the browser title has one effective owner:
@@ -57,8 +69,16 @@
   }
 
   ['translationSelect','bookSelect','chapterSelect','verseSelect','languageSelect'].forEach(id => {
-    document.querySelector(`#${id}`)?.addEventListener('change', () => requestAnimationFrame(writeUiTitle));
+    document.querySelector(`#${id}`)?.addEventListener('change', () => {
+      requestAnimationFrame(() => {
+        enforceStableUiDirection();
+        writeUiTitle();
+      });
+    });
   });
 
-  [0, 80, 250, 700, 1500].forEach(ms => setTimeout(writeUiTitle, ms));
+  [0, 80, 250, 700, 1500].forEach(ms => setTimeout(() => {
+    enforceStableUiDirection();
+    writeUiTitle();
+  }, ms));
 })();
