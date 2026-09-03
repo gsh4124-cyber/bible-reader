@@ -48,7 +48,10 @@ async function open(path) {
 {
   const { page, pageErrors } = await open('/ar/');
   assert((await page.locator('html').getAttribute('lang')) === 'ar', 'ar: html lang must be ar');
-  assert((await page.locator('html').getAttribute('dir')) === 'rtl', 'ar: html dir must be rtl');
+  assert((await page.locator('html').getAttribute('dir')) === 'ltr', 'ar: UI shell direction must stay ltr');
+  assert((await page.locator('#translationSelect').inputValue()) === 'svd', 'ar: default Arabic Bible version must be SVD');
+  const title = (await page.locator('#chapterTitle').innerText()).trim();
+  assert(/[\u0600-\u06ff]/.test(title), `ar: SVD should control chapter heading language, got ${title}`);
   assert(pageErrors.length === 0, `ar: page errors: ${pageErrors.join(' | ')}`);
   await page.close();
 }
@@ -58,4 +61,4 @@ if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);
 }
-console.log('Production browser QA passed: Korean/English UI stayed independent from selected Bible version, version controlled chapter heading language, Arabic RTL passed.');
+console.log('Production browser QA passed: Korean/English UI stayed independent from selected Bible version; Arabic kept the stable LTR UI shell while SVD controlled Scripture heading language.');
