@@ -33,13 +33,13 @@
         <select id="bookSelect" aria-label="성경책"></select>
         <select id="chapterSelect" aria-label="장" hidden></select>
         <div id="chapterNumberControl" class="number-jump-control">
-          <input id="chapterNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="장 번호" />
+          <input id="chapterNumberInput" class="number-jump-input" type="text" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="장 번호" />
           <button id="chapterOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="장 목록">▾</button>
           <div id="chapterOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
         </div>
         <select id="verseSelect" aria-label="절" hidden><option value="1">1절</option></select>
         <div id="verseNumberControl" class="number-jump-control">
-          <input id="verseNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="절 번호" />
+          <input id="verseNumberInput" class="number-jump-input" type="text" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="절 번호" />
           <button id="verseOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="절 목록">▾</button>
           <div id="verseOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
         </div>
