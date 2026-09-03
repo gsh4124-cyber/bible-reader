@@ -19,6 +19,13 @@
 .chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
 .chapter-heading h1{word-spacing:-.16em}
 
+/* Keep previous/next controls visually grouped with the centered Scripture title on desktop. */
+@media(min-width:761px){
+  .chapter-heading .title-chapter-nav{position:absolute!important;bottom:16px!important;margin:0!important}
+  .chapter-heading #prevChapterTitle{left:calc(50% - 300px)!important;right:auto!important}
+  .chapter-heading #nextChapterTitle{right:calc(50% - 300px)!important;left:auto!important}
+}
+
 @media(min-width:1360px){
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
