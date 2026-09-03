@@ -21,23 +21,44 @@
     }, true);
   }
 
-  function enforceUiPageTitle() {
-    const pageTitle = window.BibleI18n?.text?.()?.pageTitle;
-    if (pageTitle && document.title !== pageTitle) document.title = pageTitle;
+  const titleDescriptor = Object.getOwnPropertyDescriptor(Document.prototype, 'title');
+  const titleElement = document.querySelector('title');
+
+  function uiPageTitle() {
+    return window.BibleI18n?.text?.()?.pageTitle || titleElement?.textContent || '';
   }
 
-  const title = document.querySelector('title');
-  if (title) {
-    new MutationObserver(enforceUiPageTitle).observe(title, {
-      childList: true,
-      characterData: true,
-      subtree: true,
+  function writeUiTitle() {
+    const desired = uiPageTitle();
+    if (!desired || !titleDescriptor?.set) return;
+    if (titleDescriptor.get.call(document) !== desired) {
+      titleDescriptor.set.call(document, desired);
+    }
+  }
+
+  /*
+   * Some older runtime paths still try to write a Scripture-language title.
+   * Intercept document.title so the browser title has one effective owner:
+   * the current UI language. This prevents title tug-of-war/flicker.
+   */
+  if (titleDescriptor?.get && titleDescriptor?.set) {
+    Object.defineProperty(document, 'title', {
+      configurable: true,
+      get() {
+        return titleDescriptor.get.call(document);
+      },
+      set() {
+        const desired = uiPageTitle();
+        if (desired && titleDescriptor.get.call(document) !== desired) {
+          titleDescriptor.set.call(document, desired);
+        }
+      },
     });
   }
 
   ['translationSelect','bookSelect','chapterSelect','verseSelect','languageSelect'].forEach(id => {
-    document.querySelector(`#${id}`)?.addEventListener('change', () => requestAnimationFrame(enforceUiPageTitle));
+    document.querySelector(`#${id}`)?.addEventListener('change', () => requestAnimationFrame(writeUiTitle));
   });
 
-  [0, 80, 250, 700, 1500].forEach(ms => setTimeout(enforceUiPageTitle, ms));
+  [0, 80, 250, 700, 1500].forEach(ms => setTimeout(writeUiTitle, ms));
 })();
