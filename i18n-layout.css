@@ -8,12 +8,16 @@
 
 /* Primary navigation selects share one quiet visual rhythm. */
 .location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
-.centered-nav #chapterSelect,.centered-nav #verseSelect{padding-inline-start:9px;padding-inline-end:24px}
+/* Chapter/verse controls size to their current label on desktop, so short labels do not waste horizontal space. */
+@media(min-width:761px){
+  .centered-nav #chapterSelect,.centered-nav #verseSelect{field-sizing:content;width:auto!important;padding-inline-start:8px;padding-inline-end:22px}
+  .centered-nav #chapterSelect{min-width:72px!important;max-width:126px!important}
+  .centered-nav #verseSelect{min-width:66px!important;max-width:112px!important}
+}
 .toolbar{gap:2px!important}
 .toolbar #compareToggle{margin-inline:4px 7px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
 .toolbar .quick-tool{min-width:36px!important;padding-inline:7px!important}
 .toolbar .notebook-button{margin-inline-start:6px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
-.toolbar-divider{display:none!important}
 
 /* The heading starts after main/heading top spacing, so 50% makes the visible top gap larger.
    Place title and bookmark at the actual visual midpoint between the topbar and heading rule. */
@@ -23,21 +27,21 @@
 @media(min-width:1360px){
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.82fr) minmax(126px,.68fr) minmax(178px,1fr) 112px 88px minmax(240px,1.35fr)!important;gap:10px!important;width:100%!important;min-width:0;align-items:center}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.82fr) minmax(126px,.68fr) minmax(178px,1fr) max-content max-content minmax(240px,1.35fr)!important;gap:8px!important;width:100%!important;min-width:0;align-items:center}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
 @media(min-width:1041px) and (max-width:1359px){
   .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
-  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.82fr) minmax(120px,.68fr) minmax(170px,1fr) 110px 86px minmax(220px,1.25fr)!important;gap:10px!important;width:auto!important;min-width:780px}
+  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.82fr) minmax(120px,.68fr) minmax(170px,1fr) max-content max-content minmax(220px,1.25fr)!important;gap:8px!important;width:auto!important;min-width:760px}
   .centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
   .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
-  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) 110px 86px!important;gap:10px!important;width:100%}
+  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) max-content max-content!important;gap:8px!important;width:100%}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
   .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
   .toolbar{order:2;align-self:flex-end}
@@ -63,9 +67,3 @@
   .centered-nav .location-controls{grid-template-columns:minmax(0,1.5fr) minmax(82px,.7fr) minmax(76px,.65fr)!important;column-gap:8px!important;row-gap:7px!important}
   .location-controls select{padding-inline:9px;font-size:14px}.language-select{font-size:12px!important}
 }
-
-/* UI controls keep the same physical positions in every language.
-   RTL is applied only to Scripture/compare content by runtime code. */
-html[dir="rtl"] .topbar-inner,html[dir="rtl"] .toolbar,html[dir="rtl"] .location-controls,html[dir="rtl"] .top-search,html[dir="rtl"] .chapter-heading,html[dir="rtl"] .chapter-nav,html[dir="rtl"] .reader-view-controls{direction:ltr!important}
-html[dir="rtl"] .notebook-panel{right:0!important;left:auto!important;border-right:0!important;border-left:1px solid var(--line)!important;box-shadow:-14px 0 44px rgba(0,0,0,.16)!important}
-html[dir="rtl"] #singleReader{direction:ltr}html[dir="rtl"] #singleReader[dir="rtl"]{direction:rtl}
