@@ -13,6 +13,24 @@
     return window.BibleI18n?.scriptureLang?.() || 'ko';
   }
 
+  function uiLang() {
+    return window.BibleI18n?.currentLang?.() || document.documentElement.lang || 'ko';
+  }
+
+  function translationName() {
+    const id = typeof activeTranslationId !== 'undefined' ? activeTranslationId : document.querySelector('#translationSelect')?.value;
+    return (typeof TRANSLATIONS !== 'undefined' && TRANSLATIONS[id]?.name) || id || 'Bible';
+  }
+
+  function siteLabel() {
+    const labels = {
+      ko:'성경 읽기', en:'Read the Bible', fr:'Lire la Bible', de:'Bibel lesen', zh:'阅读圣经',
+      ru:'Читать Библию', la:'Lege Bibliam', pt:'Ler a Bíblia', ar:'اقرأ الكتاب المقدس'
+    };
+    const lang = String(uiLang()).toLowerCase().split('-')[0];
+    return labels[lang] || labels.en;
+  }
+
   function refParts(startVerse, endVerse = startVerse) {
     const lang = scriptureLang();
     const book = currentBookName();
@@ -44,7 +62,7 @@
   }
 
   function buildCopyText(startVerse, endVerse, lines) {
-    return `${refParts(startVerse, endVerse)}\n${lines.join('\n')}\n\n${SITE_URL}`;
+    return `[${translationName()}] ${refParts(startVerse, endVerse)}\n${lines.join('\n')}\n\n${siteLabel()}\n${SITE_URL}`;
   }
 
   versesRoot.addEventListener('copy', (event) => {
