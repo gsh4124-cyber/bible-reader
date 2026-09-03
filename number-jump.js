@@ -78,8 +78,7 @@
   function syncInput(select,input,menu,button){
     const values = optionValues(select);
     const max = values.length ? Math.max(...values) : 1;
-    input.min = '1';
-    input.max = String(max);
+    input.dataset.max = String(max);
     const selected = Number(select.value) || 1;
     if (document.activeElement !== input) input.value = String(Math.min(max, Math.max(1, selected)));
     buildMenu(select,menu,input,button);
@@ -105,17 +104,23 @@
   }
 
   [[chapterInput,chapterSelect],[verseInput,verseSelect]].forEach(([input,select]) => {
+    input.addEventListener('input',() => {
+      const digits = input.value.replace(/\D+/g,'');
+      if (input.value !== digits) input.value = digits;
+    });
     input.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault();
         commit(input,select);
         input.blur();
       }
-      if (event.key === 'Escape') closeAll();
+      if (event.key === 'Escape') {
+        input.value = String(Number(select.value) || 1);
+        closeAll();
+        input.blur();
+      }
     });
-    input.addEventListener('change',() => commit(input,select));
     input.addEventListener('blur',() => commit(input,select));
-    input.addEventListener('wheel',event => { if (document.activeElement === input) event.preventDefault(); },{passive:false});
   });
 
   [[chapterButton,chapterMenu,chapterInput,chapterSelect,verseMenu,verseButton],[verseButton,verseMenu,verseInput,verseSelect,chapterMenu,chapterButton]].forEach(([button,menu,input,select,otherMenu,otherButton]) => {
