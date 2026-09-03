@@ -14,10 +14,16 @@
   const languageSelect = document.querySelector('#languageSelect');
   if (languageSelect) {
     languageSelect.addEventListener('change', () => {
-      const translation = DEFAULT_TRANSLATION[languageSelect.value];
+      const code = languageSelect.value;
+      const translation = DEFAULT_TRANSLATION[code];
       if (!translation) return;
       try { localStorage.setItem('bible-reader-translation', translation); } catch (_) {}
       window.__BIBLE_TRANSLATION__ = translation;
+
+      if (location.protocol !== 'file:') {
+        const target = code === 'ko' ? '/bible-reader/' : `/bible-reader/${code}/`;
+        if (location.pathname !== target) location.assign(target);
+      }
     }, true);
   }
 
