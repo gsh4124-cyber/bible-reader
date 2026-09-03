@@ -35,6 +35,9 @@ jobs:
       - name: Validate multilingual integrity
         run: node tools/validate-i18n.mjs
 
+      - name: Validate chapter and verse input behavior
+        run: node tools/validate-number-jump.mjs
+
       - name: Check required runtime files
         run: |
           set -e
