@@ -40,19 +40,32 @@
     if (document.documentElement.dir !== 'ltr') document.documentElement.dir = 'ltr';
   }
 
-  /*
-   * Scripture direction is handled on the reader/compare content itself.
-   * The page shell stays physically stable so Arabic UI does not reorder controls.
-   */
+  function syncAfterSelection(select) {
+    /*
+     * i18n.js intentionally avoids rewriting native select options while a picker
+     * is open. After a real change, the selection is complete, so release focus
+     * before applying localization. This prevents the old "click somewhere else
+     * before labels update" behavior without mutating an open mobile picker.
+     */
+    if (document.activeElement === select) select.blur();
+
+    const sync = () => {
+      window.BibleI18n?.apply?.();
+      enforceStableUiDirection();
+      writeUiTitle();
+    };
+
+    requestAnimationFrame(sync);
+    setTimeout(sync, 60);
+    setTimeout(sync, 180);
+  }
+
+  /* Scripture direction is handled on reader/compare content itself. */
   const dirObserver = new MutationObserver(enforceStableUiDirection);
   dirObserver.observe(document.documentElement, {attributes:true, attributeFilter:['dir']});
   enforceStableUiDirection();
 
-  /*
-   * Some older runtime paths still try to write a Scripture-language title.
-   * Intercept document.title so the browser title has one effective owner:
-   * the current UI language. This prevents title tug-of-war/flicker.
-   */
+  /* Browser title has one effective owner: the current UI language. */
   if (titleDescriptor?.get && titleDescriptor?.set) {
     Object.defineProperty(document, 'title', {
       configurable: true,
@@ -69,11 +82,8 @@
   }
 
   ['translationSelect','bookSelect','chapterSelect','verseSelect','languageSelect'].forEach(id => {
-    document.querySelector(`#${id}`)?.addEventListener('change', () => {
-      requestAnimationFrame(() => {
-        enforceStableUiDirection();
-        writeUiTitle();
-      });
+    document.querySelector(`#${id}`)?.addEventListener('change', event => {
+      syncAfterSelection(event.currentTarget);
     });
   });
 
