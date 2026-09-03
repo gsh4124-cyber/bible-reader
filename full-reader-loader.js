@@ -14,6 +14,17 @@
     pt:{title:'Bíblia online grátis · Almeida 1819',description:'Leia e compare a Bíblia Almeida 1819 e outras traduções bíblicas em domínio público.'},
     ar:{title:'الكتاب المقدس على الإنترنت · ترجمة فان دايك',description:'اقرأ وقارن ترجمة فان دايك وترجمات الكتاب المقدس المتاحة لإعادة التوزيع.'}
   };
+  const failure = {
+    ko:['성경 읽기','불러오지 못했습니다.','메인 성경 리더 열기'],
+    en:['Bible Reader','Loading failed.','Open the main reader'],
+    fr:['Bible en ligne','Échec du chargement.','Ouvrir le lecteur principal'],
+    de:['Online-Bibel','Laden fehlgeschlagen.','Hauptleser öffnen'],
+    zh:['在线圣经','加载失败。','打开主阅读器'],
+    ru:['Библия онлайн','Не удалось загрузить.','Открыть основной ридер'],
+    la:['Biblia Sacra','Oneratio defecit.','Lectorem principalem aperi'],
+    pt:['Bíblia online','Falha ao carregar.','Abrir o leitor principal'],
+    ar:['الكتاب المقدس','تعذر التحميل.','فتح القارئ الرئيسي']
+  };
   const base = '/bible-reader/';
 
   let selected = defaults[lang] || 'krv1961';
@@ -29,7 +40,7 @@
       const canonical = `https://gsh4124-cyber.github.io/bible-reader/${lang === 'ko' ? '' : lang + '/'}`;
       const bootstrap = `<script>window.__BIBLE_LANG__=${JSON.stringify(lang)};window.__BIBLE_TRANSLATION__=${JSON.stringify(selected)};</`+`script>`;
       html = html
-        .replace(/<html lang="[^"]*"(?: dir="[^"]*")?>/i, `<html lang="${lang}"${lang==='ar'?' dir="rtl"':''}>`)
+        .replace(/<html lang="[^"]*"(?: dir="[^"]*")?>/i, `<html lang="${lang}" dir="ltr">`)
         .replace('<head>', `<head><base href="${base}">${bootstrap}`)
         .replace(/<link rel="canonical"[^>]*>/i, `<link rel="canonical" href="${canonical}" />`);
       if (seo[lang]) {
@@ -41,6 +52,8 @@
     })
     .catch(err => {
       console.error(err);
-      document.body.innerHTML='<main style="font-family:system-ui;padding:32px"><h1>Bible Reader</h1><p>Loading failed. <a href="/bible-reader/">Open the main reader</a></p></main>';
+      const [title,message,link] = failure[lang] || failure.en;
+      document.documentElement.dir='ltr';
+      document.body.innerHTML=`<main style="font-family:system-ui;padding:32px"><h1>${title}</h1><p>${message} <a href="/bible-reader/">${link}</a></p></main>`;
     });
 })();
