@@ -32,9 +32,17 @@
         <select id="translationSelect" class="translation-select" aria-label="성경 버전"><option value="krv1961">개역한글</option><option value="kjv">KJV</option><option value="web">WEB</option><option value="asv">ASV</option><option value="lsg">Louis Segond 1910</option><option value="luth1912">Lutherbibel 1912</option><option value="cuv">和合本 CUV</option><option value="synodal">Синодальный</option><option value="vulg">Vulgata</option></select>
         <select id="bookSelect" aria-label="성경책"></select>
         <select id="chapterSelect" aria-label="장" hidden></select>
-        <input id="chapterNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="장 번호" />
+        <div id="chapterNumberControl" class="number-jump-control">
+          <input id="chapterNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="장 번호" />
+          <button id="chapterOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="장 목록">▾</button>
+          <div id="chapterOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
+        </div>
         <select id="verseSelect" aria-label="절" hidden><option value="1">1절</option></select>
-        <input id="verseNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="절 번호" />
+        <div id="verseNumberControl" class="number-jump-control">
+          <input id="verseNumberInput" class="number-jump-input" type="number" min="1" step="1" inputmode="numeric" value="1" aria-label="절 번호" />
+          <button id="verseOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="절 목록">▾</button>
+          <div id="verseOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
+        </div>
         <form id="searchForm" class="top-search" role="search"><input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="검색" aria-label="성경 검색" /><datalist id="bookList"></datalist><button id="searchButton" type="submit">검색</button></form>
       </div>
       <div class="toolbar" aria-label="읽기 도구"><button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false">비교</button><button id="fontDown" class="quick-tool">가−</button><button id="fontUp" class="quick-tool">가+</button><button id="widthToggle" class="quick-tool">↔</button><button id="themeToggle" class="quick-tool" aria-label="테마">◐</button></div>
