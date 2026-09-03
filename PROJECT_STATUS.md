@@ -91,6 +91,7 @@ UI 컨트롤의 물리적 위치는 언어마다 뒤집지 않는다. Arabic도 
 - 66권·장·절 이동
 - 번역본 / UI 언어 / 성경책 선택
 - 장·절 숫자 직접 입력 + 숫자 목록 드롭다운
+- 장·절 입력 중 현재 최대 장/절보다 큰 값은 즉시 최대값으로 표시 제한
 - 성경책 직접 이동 및 본문 전체검색
 - 이전/다음 장
 - 글자 크기, 본문 폭, 라이트/다크 모드
@@ -107,6 +108,16 @@ UI 컨트롤의 물리적 위치는 언어마다 뒤집지 않는다. Arabic도 
 
 구약/신약/전체 선택기는 제거 완료했으며 숨김 runtime으로 남기지 않는다.
 난하주·관주는 현재 runtime에서 제외하고 미래 참고 자산만 보존한다.
+
+## 장·절 직접입력 — 최신
+
+- visible input은 `type="text" + inputmode="numeric"`로 두어 기존 숫자를 지우고 여러 자리 숫자를 직접 입력할 수 있다.
+- 편집 중 빈 값은 허용한다.
+- 숫자가 아닌 문자는 제거한다.
+- 현재 성경책의 최대 장 또는 현재 장의 최대 절을 초과하는 값은 입력 즉시 최대값으로 표시한다.
+- 실제 장/절 이동과 최소값 보정, 빈 값 복구는 Enter 또는 blur에서 확정한다.
+- 드롭다운 숫자 선택과 직접입력을 모두 유지한다.
+- `tools/validate-number-jump.mjs`가 이 구조의 회귀조건을 자동 검사한다.
 
 ## 복사 형식 — 최신
 
@@ -159,7 +170,7 @@ UI 컨트롤의 물리적 위치는 언어마다 뒤집지 않는다. Arabic도 
 - `ui-language-sync.js` — 공개 언어 URL 이동, 언어별 기본 역본, UI title, 고정 LTR 셸
 - `runtime-ui-i18n.js` — 동적 UI·접근성·기록 현지화
 - `full-reader-loader.js` — 언어별 고정 URL에서 동일 본체 로드
-- `number-jump.js` — 장/절 숫자 입력 및 숫자 드롭다운
+- `number-jump.js` — 장/절 숫자 입력, 입력 중 최대값 제한, 숫자 드롭다운
 - `verse-picker.js` — 절 이동 상태
 - `reference.js` / `book-finder.js` — 현 역본 언어 성경명 직접 이동
 - `exact-search.js` — 현재 역본 전체검색
@@ -211,6 +222,7 @@ GitHub Actions `Final QA and Deploy Pages`에서 다음을 검사한다.
 - 로컬 언어 변경 → query 기반 이동
 - Arabic 페이지 셸 비반전
 - 장 제목 띄어쓰기 회귀 방지
+- 장·절 직접입력: 편집 가능한 빈 상태, 숫자 필터, 입력 중 최대값 제한, Enter/blur 확정, 상태 동기화
 - 복사 형식: 역본명 + 현지화 페이지 이름 + URL 한 줄 서명
 - native mobile select 회귀 방지
 - 9개 언어 SEO entry / hreflang / canonical / sitemap / robots / IndexNow key
@@ -257,6 +269,7 @@ GitHub Actions `Final QA and Deploy Pages`에서 다음을 검사한다.
 
 - 실제 PC 브라우저에서 최신 복사 형식 직접 붙여넣기 확인
 - 실제 PC에서 공개 언어 전환 9개와 기본 역본 전환 확인
+- 실제 PC/모바일에서 장·절 직접입력과 입력 중 최대값 제한 확인
 - 실제 모바일에서 상단 컨트롤/숫자 장절 메뉴 터치 확인
 - KJV/WEB/CUV/Almeida/SVD 등 복수 역본 본문 로딩 확인
 - 기록/검색/비교/백업복원의 실제 상호작용 확인
