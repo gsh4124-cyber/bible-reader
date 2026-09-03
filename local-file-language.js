@@ -26,6 +26,7 @@
     url.pathname = url.pathname.replace(/(?:\/(?:en|fr|de|zh|ru|la|pt|ar))?\/?(?:index\.html)?$/i, '/index.html');
     if (code === 'ko') url.searchParams.delete('lang');
     else url.searchParams.set('lang', code);
+    if (translation) url.searchParams.set('translation', translation);
     location.href = url.href;
   }, true);
 })();
