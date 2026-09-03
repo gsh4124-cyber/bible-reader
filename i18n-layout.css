@@ -8,6 +8,7 @@
 
 /* Primary navigation selects share one quiet visual rhythm. */
 .location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
+.centered-nav #chapterSelect,.centered-nav #verseSelect{padding-inline-start:9px;padding-inline-end:24px}
 .toolbar{gap:2px!important}
 .toolbar #compareToggle{margin-inline:4px 7px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
 .toolbar .quick-tool{min-width:36px!important;padding-inline:7px!important}
@@ -19,31 +20,24 @@
 .chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
 .chapter-heading h1{word-spacing:-.16em}
 
-/* Keep previous/next controls visually grouped with the centered Scripture title on desktop. */
-@media(min-width:761px){
-  .chapter-heading .title-chapter-nav{position:absolute!important;bottom:16px!important;margin:0!important}
-  .chapter-heading #prevChapterTitle{left:calc(50% - 300px)!important;right:auto!important}
-  .chapter-heading #nextChapterTitle{right:calc(50% - 300px)!important;left:auto!important}
-}
-
 @media(min-width:1360px){
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
-  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.82fr) minmax(126px,.68fr) minmax(178px,1fr) minmax(118px,.55fr) minmax(104px,.5fr) minmax(240px,1.35fr)!important;gap:10px!important;width:100%!important;min-width:0;align-items:center}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(148px,.82fr) minmax(126px,.68fr) minmax(178px,1fr) 112px 88px minmax(240px,1.35fr)!important;gap:10px!important;width:100%!important;min-width:0;align-items:center}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
 @media(min-width:1041px) and (max-width:1359px){
   .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
-  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.82fr) minmax(120px,.68fr) minmax(170px,1fr) minmax(112px,.55fr) minmax(100px,.5fr) minmax(220px,1.25fr)!important;gap:10px!important;width:auto!important;min-width:780px}
+  .centered-nav .location-controls{order:1;flex:1 1 calc(100% - 330px);display:grid!important;grid-template-columns:minmax(140px,.82fr) minmax(120px,.68fr) minmax(170px,1fr) 110px 86px minmax(220px,1.25fr)!important;gap:10px!important;width:auto!important;min-width:780px}
   .centered-nav .top-search{grid-column:6!important;width:100%!important}
   .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
   .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
-  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) minmax(112px,.7fr) minmax(100px,.65fr)!important;gap:10px!important;width:100%}
+  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:minmax(140px,1fr) minmax(120px,.8fr) minmax(180px,1.15fr) 110px 86px!important;gap:10px!important;width:100%}
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
   .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
   .toolbar{order:2;align-self:flex-end}
