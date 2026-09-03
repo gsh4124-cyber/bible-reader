@@ -2,6 +2,8 @@
   const versesRoot = document.querySelector('#verses');
   if (!versesRoot || typeof BOOKS === 'undefined' || typeof state === 'undefined') return;
 
+  const SITE_URL = 'https://gsh4124-cyber.github.io/bible-reader/';
+
   function currentBookName() {
     try { return window.BibleI18n?.bookName?.(state.bookIndex) || BOOKS[state.bookIndex]?.ko || 'Bible'; }
     catch (_) { return BOOKS[state.bookIndex]?.ko || 'Bible'; }
@@ -38,12 +40,11 @@
     const verseNumber = Number(verseEl?.dataset.verse);
     const text = (overrideText ?? verseEl?.querySelector('.verse-text')?.textContent ?? '').trim();
     if (!verseNumber || !text) return '';
-    const lang = scriptureLang();
-    if (lang === 'ko') return `${verseNumber}절 ${text}`;
-    if (lang === 'zh') return `${verseNumber}节 ${text}`;
-    if (lang === 'ru') return `${verseNumber} ${text}`;
-    if (lang === 'ar') return `${verseNumber} ${text}`;
     return `${verseNumber} ${text}`;
+  }
+
+  function buildCopyText(startVerse, endVerse, lines) {
+    return `${refParts(startVerse, endVerse)}\n${lines.join('\n')}\n\n${SITE_URL}`;
   }
 
   versesRoot.addEventListener('copy', (event) => {
@@ -63,7 +64,7 @@
     }
     if (!lines.length) return;
     event.preventDefault();
-    event.clipboardData.setData('text/plain', `${refParts(startVerse, endVerse)}\n${lines.join('\n')}`);
+    event.clipboardData.setData('text/plain', buildCopyText(startVerse, endVerse, lines));
   });
 
   versesRoot.addEventListener('click', async (event) => {
@@ -72,7 +73,7 @@
     const verseEl = textEl.closest('.verse');
     const verseNumber = Number(verseEl?.dataset.verse);
     if (!verseNumber) return;
-    const copyText = `${refParts(verseNumber)}\n${verseLine(verseEl)}`;
+    const copyText = buildCopyText(verseNumber, verseNumber, [verseLine(verseEl)]);
     try { await navigator.clipboard.writeText(copyText); }
     catch (_) {
       const textarea = document.createElement('textarea');
