@@ -53,10 +53,6 @@
     const select=document.createElement('select'); select.id='languageSelect'; select.className='language-select'; select.setAttribute('aria-label','Language');
     LANGS.forEach(code=>{const o=document.createElement('option');o.value=code;o.textContent=LANGUAGE_LABEL[code];select.append(o)});
     select.value=uiLang;
-    select.addEventListener('change',()=>{
-      const code=select.value;
-      location.href=code==='ko'?'/bible-reader/':`/bible-reader/${code}/`;
-    });
     wrap.append(select); translation.insertAdjacentElement('afterend',wrap);
   }
 
@@ -87,7 +83,7 @@
   }
 
   function applyStatic(){
-    document.documentElement.lang=uiLang; document.documentElement.dir=uiLang==='ar'?'rtl':'ltr';
+    document.documentElement.lang=uiLang;
     const map={'#searchButton':'search','#compareToggle':'compare','#prevChapterTitle':'prev','#nextChapterTitle':'next','#prevChapterBottom':'prev','#nextChapterBottom':'next','#singlePageView':'single','#dualPageView':'dual','#fontDown':'fontDown','#fontUp':'fontUp','#widthToggle':null,'#notebookToggle':'notes','#closeSearch':'close'};
     Object.entries(map).forEach(([sel,key])=>{const el=document.querySelector(sel);if(el&&key)el.textContent=text(key)});
     const input=document.querySelector('#searchInput'); if(input){input.placeholder=text('search');input.setAttribute('aria-label',text('search'));}
@@ -105,12 +101,10 @@
     const verses=document.querySelector('#verseSelect');if(verses)[...verses.options].forEach(o=>{const next=scriptureText('verse')(Number(o.value)||1);if(o.textContent!==next)o.textContent=next});
   }
 
-  function applyTitle(){
+  function applyScriptureTitle(){
     if(typeof state==='undefined')return;
     const label=scriptureText('title')(bookName(state.bookIndex),state.chapter);
     const h=document.querySelector('#chapterTitle');if(h&&h.textContent!==label)h.textContent=label;
-    const tr=TRANSLATIONS[document.querySelector('#translationSelect')?.value]||TRANSLATIONS.krv1961;
-    document.title=`${label} · ${tr.name}`;
     const meta=document.querySelector('meta[name="description"]');if(meta)meta.content=text('description');
   }
 
@@ -129,7 +123,7 @@
   }
 
   function selectPickerOpen(){return document.activeElement?.tagName==='SELECT';}
-  function applyAll(){applyStatic();if(!selectPickerOpen()){applySelects();applyTitle();}applyReadingDirection();localizeDynamicTree();}
+  function applyAll(){applyStatic();if(!selectPickerOpen()){applySelects();applyScriptureTitle();}applyReadingDirection();localizeDynamicTree();}
   window.BibleI18n={lang:()=>uiLang,scriptureLang,text:()=>UI[uiLang]||UI.en,ui:text,bookName,bookNames:BOOK_NAMES,localizeReference,apply:applyAll,defaultTranslation:code=>DEFAULT_TRANSLATION[code]};
 
   const nativeConfirm=window.confirm.bind(window),nativeAlert=window.alert.bind(window);
