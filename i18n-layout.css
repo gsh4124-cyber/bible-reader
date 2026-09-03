@@ -5,7 +5,6 @@
 .location-controls .top-search input,.location-controls .top-search input:focus{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important}
 .location-controls .top-search button{border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding-inline:13px!important}
 .location-controls .top-search button:hover{background:var(--hover)!important}
-html[dir="rtl"] .location-controls .top-search button{border-left:0!important;border-right:1px solid var(--line)!important}
 
 /* Primary navigation selects share one quiet visual rhythm. */
 .location-controls>select,.language-selector-wrap select{height:42px;background:color-mix(in srgb,var(--panel) 74%,transparent)}
@@ -18,6 +17,7 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 /* The heading starts after main/heading top spacing, so 50% makes the visible top gap larger.
    Place title and bookmark at the actual visual midpoint between the topbar and heading rule. */
 .chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
+.chapter-heading h1{word-spacing:-.16em}
 
 @media(min-width:1360px){
   .topbar{padding-block:9px}
@@ -63,4 +63,8 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
   .location-controls select{padding-inline:9px;font-size:14px}.language-select{font-size:12px!important}
 }
 
-html[dir="rtl"] .toolbar,html[dir="rtl"] .location-controls{direction:rtl}html[dir="rtl"] #singleReader{direction:ltr}html[dir="rtl"] #singleReader[dir="rtl"]{direction:rtl}html[dir="rtl"] .notebook-panel{right:auto;left:0;border-left:0;border-right:1px solid var(--line);box-shadow:14px 0 44px rgba(0,0,0,.16)}html[dir="rtl"] .top-search{direction:rtl}html[dir="rtl"] .chapter-heading,html[dir="rtl"] .chapter-nav{direction:rtl}
+/* UI controls keep the same physical positions in every language.
+   RTL is applied only to Scripture/compare content by runtime code. */
+html[dir="rtl"] .topbar-inner,html[dir="rtl"] .toolbar,html[dir="rtl"] .location-controls,html[dir="rtl"] .top-search,html[dir="rtl"] .chapter-heading,html[dir="rtl"] .chapter-nav,html[dir="rtl"] .reader-view-controls{direction:ltr!important}
+html[dir="rtl"] .notebook-panel{right:0!important;left:auto!important;border-right:0!important;border-left:1px solid var(--line)!important;box-shadow:-14px 0 44px rgba(0,0,0,.16)!important}
+html[dir="rtl"] #singleReader{direction:ltr}html[dir="rtl"] #singleReader[dir="rtl"]{direction:rtl}
