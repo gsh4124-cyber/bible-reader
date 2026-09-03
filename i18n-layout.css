@@ -15,8 +15,9 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
 .toolbar .notebook-button{margin-inline-start:6px;border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
 .toolbar-divider{display:none!important}
 
-/* Match the visual space above and below the chapter heading 1:1. */
-.chapter-heading{margin-bottom:46px!important}
+/* The heading starts after main/heading top spacing, so 50% makes the visible top gap larger.
+   Place title and bookmark at the actual visual midpoint between the topbar and heading rule. */
+.chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
 
 @media(min-width:1360px){
   .topbar{padding-block:9px}
@@ -39,7 +40,6 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
   .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterSelect{grid-column:4}.centered-nav #verseSelect{grid-column:5}
   .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:100%!important}
   .toolbar{order:2;align-self:flex-end}
-  .chapter-heading{margin-bottom:38px!important}
 }
 
 @media(max-width:760px){
@@ -56,11 +56,6 @@ html[dir="rtl"] .location-controls .top-search button{border-left:0!important;bo
   .language-select{padding-inline:8px;font-size:13px}
   .toolbar{width:100%;justify-content:flex-end!important;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
   .toolbar #compareToggle{margin-inline:0 4px}.toolbar .notebook-button{margin-inline-start:3px}
-  .chapter-heading{margin-bottom:36px!important}
-}
-
-@media(max-width:520px){
-  .chapter-heading{margin-bottom:32px!important}
 }
 
 @media(max-width:420px){
