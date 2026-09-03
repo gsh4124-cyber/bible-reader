@@ -38,9 +38,9 @@
 .toolbar #compareToggle{border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}
 .toolbar .notebook-button{border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
 
-/* Keep the chapter title visually centered and give it a little more presence. */
+/* Keep the chapter title visually centered, larger, and preserve the book/chapter gap. */
 .chapter-heading h1,.chapter-heading .chapter-bookmark-button{top:34%!important}
-.chapter-heading h1{word-spacing:-.16em;font-size:clamp(40px,2.6vw,48px)!important;line-height:1.15!important}
+.chapter-heading h1{word-spacing:normal!important;font-size:clamp(46px,3vw,56px)!important;line-height:1.15!important}
 
 @media(min-width:1360px){
   .topbar{padding-block:9px}
@@ -79,7 +79,7 @@
   .centered-nav #bookSelect,.centered-nav #chapterNumberControl,.centered-nav #verseNumberControl,.centered-nav #translationSelect,.centered-nav .language-selector-wrap{margin:0!important;box-sizing:border-box}
   .language-select{padding-inline:8px;font-size:13px}
   .number-jump-control{grid-template-columns:minmax(0,1fr) 28px}
-  .chapter-heading h1{font-size:clamp(34px,9vw,42px)!important}
+  .chapter-heading h1{font-size:clamp(38px,10vw,46px)!important}
   .toolbar{width:100%;justify-content:flex-end!important;overflow-x:auto;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
   .toolbar #compareToggle{margin-inline:0 4px}.toolbar .notebook-button{margin-inline-start:3px}
 }
