@@ -41,26 +41,26 @@
   function applyAccess(){
     const a=access();
     const labels={translationSelect:a.translation,languageSelect:a.language,bookSelect:a.book,chapterSelect:a.chapter,verseSelect:a.verse,searchInput:a.search,leftTranslation:a.left,rightTranslation:a.right,themeToggle:a.theme};
-    Object.entries(labels).forEach(([id,label])=>document.querySelector('#'+id)?.setAttribute('aria-label',label));
-    document.querySelector('.location-controls')?.setAttribute('aria-label',a.search);
-    document.querySelector('.toolbar')?.setAttribute('aria-label',a.tools);
-    document.querySelector('.reader-view-controls')?.setAttribute('aria-label',a.view);
-    document.querySelector('#comparePanel')?.setAttribute('aria-label',a.compare);
-    const swap=document.querySelector('#swapTranslations');if(swap){swap.title=a.swap;swap.setAttribute('aria-label',a.swap);}
-    document.querySelectorAll('.verse-actions-trigger').forEach(el=>el.setAttribute('aria-label',a.verseActions));
-    document.querySelectorAll('.verse-text').forEach(el=>el.title=a.copyHint);
+    Object.entries(labels).forEach(([id,label])=>{const el=document.querySelector('#'+id);if(el&&el.getAttribute('aria-label')!==label)el.setAttribute('aria-label',label);});
+    const location=document.querySelector('.location-controls');if(location&&location.getAttribute('aria-label')!==a.search)location.setAttribute('aria-label',a.search);
+    const toolbar=document.querySelector('.toolbar');if(toolbar&&toolbar.getAttribute('aria-label')!==a.tools)toolbar.setAttribute('aria-label',a.tools);
+    const view=document.querySelector('.reader-view-controls');if(view&&view.getAttribute('aria-label')!==a.view)view.setAttribute('aria-label',a.view);
+    const compare=document.querySelector('#comparePanel');if(compare&&compare.getAttribute('aria-label')!==a.compare)compare.setAttribute('aria-label',a.compare);
+    const swap=document.querySelector('#swapTranslations');if(swap){if(swap.title!==a.swap)swap.title=a.swap;if(swap.getAttribute('aria-label')!==a.swap)swap.setAttribute('aria-label',a.swap);}
+    document.querySelectorAll('.verse-actions-trigger').forEach(el=>{if(el.getAttribute('aria-label')!==a.verseActions)el.setAttribute('aria-label',a.verseActions);});
+    document.querySelectorAll('.verse-text').forEach(el=>{if(el.title!==a.copyHint)el.title=a.copyHint;});
   }
 
   function localizeNotebook(){
     const t=text();const panel=document.querySelector('.notebook-panel');if(!panel)return;
-    panel.setAttribute('aria-label',t.recordsTitle || access().tools);
-    const title=panel.querySelector('.notebook-title');if(title)title.textContent=t.recordsTitle || title.textContent;
-    const close=panel.querySelector('.notebook-close');if(close)close.textContent=t.close || close.textContent;
+    const panelLabel=t.recordsTitle || access().tools;if(panel.getAttribute('aria-label')!==panelLabel)panel.setAttribute('aria-label',panelLabel);
+    const title=panel.querySelector('.notebook-title');if(title&&title.textContent!==t.recordsTitle)title.textContent=t.recordsTitle || title.textContent;
+    const close=panel.querySelector('.notebook-close');if(close&&close.textContent!==t.close)close.textContent=t.close || close.textContent;
     const tabMap={highlights:'highlights',saved:'savedVerses',chapters:'savedChapters'};
-    Object.entries(tabMap).forEach(([tab,key])=>{const el=panel.querySelector(`[data-tab="${tab}"]`);if(el&&!el.hidden)el.textContent=t[key] || el.textContent;});
+    Object.entries(tabMap).forEach(([tab,key])=>{const el=panel.querySelector(`[data-tab="${tab}"]`);const next=t[key];if(el&&!el.hidden&&next&&el.textContent!==next)el.textContent=next;});
     const tools=panel.querySelector('.notebook-data-tools');
-    if(tools){const buttons=tools.querySelectorAll('button');if(buttons[0])buttons[0].textContent=t.backup||buttons[0].textContent;if(buttons[1])buttons[1].textContent=t.restore||buttons[1].textContent;}
-    panel.querySelectorAll('textarea').forEach(el=>el.placeholder=t.notePlaceholder || el.placeholder);
+    if(tools){const buttons=tools.querySelectorAll('button');if(buttons[0]&&t.backup&&buttons[0].textContent!==t.backup)buttons[0].textContent=t.backup;if(buttons[1]&&t.restore&&buttons[1].textContent!==t.restore)buttons[1].textContent=t.restore;}
+    panel.querySelectorAll('textarea').forEach(el=>{if(t.notePlaceholder&&el.placeholder!==t.notePlaceholder)el.placeholder=t.notePlaceholder;});
   }
 
   function localizeRecordButtons(){
@@ -120,7 +120,7 @@
     return `${book} ${chapter}`;
   }
 
-  function syncScriptureAndBrowserTitles(){
+  function syncScriptureHeading(){
     const bible=window.BibleI18n;
     const bookSelect=document.querySelector('#bookSelect');
     const chapterSelect=document.querySelector('#chapterSelect');
@@ -131,15 +131,13 @@
       const scriptureLang=bible.scriptureLang?.()||'ko';
       if(book){const next=scriptureHeading(book,chapter,scriptureLang);if(heading.textContent!==next)heading.textContent=next;}
     }
-    const pageTitle=text().pageTitle;
-    if(pageTitle&&document.title!==pageTitle)document.title=pageTitle;
   }
 
   function apply(){
-    applyAccess();localizeNotebook();localizeRecordButtons();localizeSearchSummary();localizeAttribution();replaceEnglishFallbacks();syncScriptureAndBrowserTitles();
+    applyAccess();localizeNotebook();localizeRecordButtons();localizeSearchSummary();localizeAttribution();replaceEnglishFallbacks();syncScriptureHeading();
   }
   let timer;const schedule=()=>{clearTimeout(timer);timer=setTimeout(apply,35)};
-  new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['aria-label','title']});
+  new MutationObserver(schedule).observe(document.body,{subtree:true,childList:true,characterData:true});
   ['translationSelect','bookSelect','chapterSelect','verseSelect','leftTranslation','rightTranslation'].forEach(id=>document.querySelector('#'+id)?.addEventListener('change',schedule));
   [0,120,450,1000,1800].forEach(ms=>setTimeout(apply,ms));
 })();
