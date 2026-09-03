@@ -107,6 +107,10 @@
     input.addEventListener('input',() => {
       const digits = input.value.replace(/\D+/g,'');
       if (input.value !== digits) input.value = digits;
+      if (!digits) return;
+      const max = Math.max(1, Number(input.dataset.max) || 1);
+      const value = Number.parseInt(digits,10);
+      if (Number.isFinite(value) && value > max) input.value = String(max);
     });
     input.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
