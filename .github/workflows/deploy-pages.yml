@@ -15,7 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  qa:
+  static-guardrails:
+    name: Static Guardrails
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,12 +32,6 @@ jobs:
             [ -e "$file" ] || continue
             node --check "$file"
           done
-
-      - name: Validate multilingual integrity
-        run: node tools/validate-i18n.mjs
-
-      - name: Validate chapter and verse input behavior
-        run: node tools/validate-number-jump.mjs
 
       - name: Check required runtime files
         run: |
@@ -84,12 +79,41 @@ jobs:
           ! grep -q 'src="focus-mode.js"' index.html
           ! grep -q 'notebook-tabs-fix.css' index.html
 
+  behavior-qa:
+    name: Behavior QA
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate multilingual integrity
+        run: node tools/validate-i18n.mjs
+
+      - name: Validate chapter and verse input behavior
+        run: node tools/validate-number-jump.mjs
+
+  quality-gate:
+    name: Combined Quality Gate
+    if: always()
+    needs: [static-guardrails, behavior-qa]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require both independent checks to pass
+        env:
+          STATIC_RESULT: ${{ needs.static-guardrails.result }}
+          BEHAVIOR_RESULT: ${{ needs.behavior-qa.result }}
+        run: |
+          echo "static=$STATIC_RESULT"
+          echo "behavior=$BEHAVIOR_RESULT"
+          test "$STATIC_RESULT" = "success"
+          test "$BEHAVIOR_RESULT" = "success"
+
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: qa
+    needs: quality-gate
     steps:
       - name: Checkout
         uses: actions/checkout@v4
