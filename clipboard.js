@@ -62,7 +62,7 @@
   }
 
   function buildCopyText(startVerse, endVerse, lines) {
-    return `[${translationName()}] ${refParts(startVerse, endVerse)}\n${lines.join('\n')}\n\n${siteLabel()}\n${SITE_URL}`;
+    return `[${translationName()}] ${refParts(startVerse, endVerse)}\n\n${lines.join('\n')}\n\n${siteLabel()}\n${SITE_URL}`;
   }
 
   versesRoot.addEventListener('copy', (event) => {
