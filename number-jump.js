@@ -3,6 +3,7 @@
   const verseSelect = document.querySelector('#verseSelect');
   const chapterInput = document.querySelector('#chapterNumberInput');
   const verseInput = document.querySelector('#verseNumberInput');
+  const verses = document.querySelector('#verses');
   if (!chapterSelect || !verseSelect || !chapterInput || !verseInput) return;
 
   const LABELS = {
@@ -67,9 +68,10 @@
     input.addEventListener('wheel',event => { if (document.activeElement === input) event.preventDefault(); },{passive:false});
   });
 
-  const observer = new MutationObserver(syncAll);
-  observer.observe(chapterSelect,{childList:true,subtree:true,attributes:true,attributeFilter:['value']});
-  observer.observe(verseSelect,{childList:true,subtree:true,attributes:true,attributeFilter:['value']});
+  const observer = new MutationObserver(() => requestAnimationFrame(syncAll));
+  observer.observe(chapterSelect,{childList:true,subtree:true});
+  observer.observe(verseSelect,{childList:true,subtree:true});
+  if (verses) observer.observe(verses,{childList:true,subtree:true});
   chapterSelect.addEventListener('change',() => requestAnimationFrame(syncAll));
   verseSelect.addEventListener('change',() => requestAnimationFrame(syncAll));
   document.querySelector('#bookSelect')?.addEventListener('change',() => setTimeout(syncAll,0));
