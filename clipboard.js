@@ -2,7 +2,7 @@
   const versesRoot = document.querySelector('#verses');
   if (!versesRoot || typeof BOOKS === 'undefined' || typeof state === 'undefined') return;
 
-  const SITE_URL = 'https://gsh4124-cyber.github.io/bible-reader/';
+  const SITE_URL = 'https://bible-reader-1iz.pages.dev/';
 
   function currentBookName() {
     try { return window.BibleI18n?.bookName?.(state.bookIndex) || BOOKS[state.bookIndex]?.ko || 'Bible'; }
