@@ -21,7 +21,8 @@
       window.__BIBLE_TRANSLATION__ = translation;
 
       if (location.protocol !== 'file:') {
-        const target = code === 'ko' ? '/bible-reader/' : `/bible-reader/${code}/`;
+        const projectBase = location.hostname === 'gsh4124-cyber.github.io' ? '/bible-reader/' : '/';
+        const target = code === 'ko' ? projectBase : `${projectBase}${code}/`;
         if (location.pathname !== target) location.assign(target);
       }
     }, true);
