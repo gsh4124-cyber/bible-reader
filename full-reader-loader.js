@@ -1,6 +1,7 @@
 (() => {
   const parts = location.pathname.split('/').filter(Boolean);
-  const candidate = parts[parts.indexOf('bible-reader') + 1];
+  const onProjectPages = location.hostname === 'gsh4124-cyber.github.io' && parts[0] === 'bible-reader';
+  const candidate = onProjectPages ? parts[1] : parts[0];
   const lang = ['en','fr','de','zh','ru','la','pt','ar'].includes(candidate) ? candidate : 'ko';
   const defaults = {ko:'krv1961',en:'kjv',fr:'lsg',de:'luth1912',zh:'cuv',ru:'synodal',la:'vulg',pt:'almeida1819',ar:'svd'};
   const allowed = new Set(['krv1961','kjv','web','asv','lsg','luth1912','cuv','synodal','vulg','almeida1819','svd']);
@@ -25,7 +26,7 @@
     pt:['Bíblia online','Falha ao carregar.','Abrir o leitor principal'],
     ar:['الكتاب المقدس','تعذر التحميل.','فتح القارئ الرئيسي']
   };
-  const base = '/bible-reader/';
+  const base = onProjectPages ? '/bible-reader/' : '/';
 
   let selected = defaults[lang] || 'krv1961';
   try {
@@ -37,7 +38,7 @@
   fetch(`${base}index.html`, {cache:'no-store'})
     .then(r => { if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
     .then(html => {
-      const canonical = `https://gsh4124-cyber.github.io/bible-reader/${lang === 'ko' ? '' : lang + '/'}`;
+      const canonical = `https://bible-reader-1iz.pages.dev/${lang === 'ko' ? '' : lang + '/'}`;
       const bootstrap = `<script>window.__BIBLE_LANG__=${JSON.stringify(lang)};window.__BIBLE_TRANSLATION__=${JSON.stringify(selected)};</`+`script>`;
       html = html
         .replace(/<html lang="[^"]*"(?: dir="[^"]*")?>/i, `<html lang="${lang}" dir="ltr">`)
@@ -54,6 +55,6 @@
       console.error(err);
       const [title,message,link] = failure[lang] || failure.en;
       document.documentElement.dir='ltr';
-      document.body.innerHTML=`<main style="font-family:system-ui;padding:32px"><h1>${title}</h1><p>${message} <a href="/bible-reader/">${link}</a></p></main>`;
+      document.body.innerHTML=`<main style="font-family:system-ui;padding:32px"><h1>${title}</h1><p>${message} <a href="${base}">${link}</a></p></main>`;
     });
 })();
