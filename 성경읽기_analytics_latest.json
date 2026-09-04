@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-03T20:10:00+09:00",
+  "source": "Supabase public.bible_page_views_daily queried through authorized project connection",
+  "project_ref": "afiqaibosavbjzkffggr",
+  "metric_type": "aggregate_page_views",
+  "privacy": "daily aggregate only; no user identity or unique-user claim",
+  "metrics": {
+    "rolling_14d_total_page_views": 31,
+    "latest_view_date": "2026-09-03",
+    "daily": [
+      {"view_date": "2026-09-03", "view_count": 22},
+      {"view_date": "2026-09-02", "view_count": 9}
+    ]
+  },
+  "note": "테스트·운영자 접속이 포함될 수 있는 페이지뷰 집계다. 고유 방문자 수나 외부 시장수요로 해석하지 않는다."
+}
