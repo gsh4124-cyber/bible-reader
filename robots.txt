@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bible-reader-1iz.pages.dev/sitemap.xml
+Sitemap: https://gsh4124-cyber.github.io/bible-reader/sitemap.xml
