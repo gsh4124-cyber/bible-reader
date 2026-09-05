@@ -1,6 +1,6 @@
 import { chromium } from 'playwright';
 
-const base = 'https://gsh4124-cyber.github.io/bible-reader';
+const base = 'https://bible-reader-1iz.pages.dev';
 const browser = await chromium.launch({ headless: true });
 const problems = [];
 function assert(ok, message) { if (!ok) problems.push(message); }
@@ -51,7 +51,7 @@ async function open(path) {
   assert((await page.locator('html').getAttribute('dir')) === 'ltr', 'ar: UI shell direction must stay ltr');
   assert((await page.locator('#translationSelect').inputValue()) === 'svd', 'ar: default Arabic Bible version must be SVD');
   const title = (await page.locator('#chapterTitle').innerText()).trim();
-  assert(/[\u0600-\u06ff]/.test(title), `ar: SVD should control chapter heading language, got ${title}`);
+  assert(/[\u0600-\u06ff]/.test(title), `ar: SVD should control Scripture heading language, got ${title}`);
   assert(pageErrors.length === 0, `ar: page errors: ${pageErrors.join(' | ')}`);
   await page.close();
 }
@@ -61,4 +61,4 @@ if (problems.length) {
   console.error(problems.join('\n'));
   process.exit(1);
 }
-console.log('Production browser QA passed: Korean/English UI stayed independent from selected Bible version; Arabic kept the stable LTR UI shell while SVD controlled Scripture heading language.');
+console.log('Cloudflare production browser QA passed: Korean/English UI stayed independent from selected Bible version; Arabic kept the stable LTR UI shell while SVD controlled Scripture heading language.');
