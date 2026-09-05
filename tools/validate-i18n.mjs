@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 
 const langs=['ko','en','fr','de','zh','ru','la','pt','ar'];
+const PROD='https://bible-reader-1iz.pages.dev';
 const requiredUiKeys=['chapter','verse','title','search','compare','prev','next','single','dual','notes','fontDown','fontUp','fontDownTitle','fontUpTitle','widthTitle','close','ad','loading','loadError','recordsTitle','highlights','savedVerses','savedChapters','backup','restore','goVerse','goChapter','addNote','editNote','deleteHighlight','deleteSaved','save','deleteNote','cancel','notePlaceholder','emptyHighlights','emptySaved','emptyChapters','backupConfirm','backupInvalid','source','description','pageTitle'];
 const src=fs.readFileSync('i18n.js','utf8');
 const bookBlock=src.match(/const BOOK_NAMES = \{([\s\S]*?)\n  \};\n\n  const UI/);
@@ -33,23 +34,31 @@ for(const lang of langs.filter(l=>l!=='ko')){
   const html=fs.readFileSync(`${lang}/index.html`,'utf8');
   if(!html.includes(`<html lang="${lang}"`)) throw new Error(`${lang}: html lang mismatch`);
   if(lang==='ar'&&html.includes('dir="rtl"')) throw new Error('ar: page shell must not force global RTL layout');
-  if(!html.includes(`rel="canonical" href="https://gsh4124-cyber.github.io/bible-reader/${lang}/"`)) throw new Error(`${lang}: canonical mismatch`);
+  if(!html.includes(`rel="canonical" href="${PROD}/${lang}/"`)) throw new Error(`${lang}: canonical mismatch`);
   if(!html.match(/<title>[^<]+<\/title>/)) throw new Error(`${lang}: title missing`);
   if(!html.match(/name="description" content="[^"]+"/)) throw new Error(`${lang}: description missing`);
+  if(!html.includes('src="/full-reader-loader.js"')) throw new Error(`${lang}: Cloudflare loader path mismatch`);
+  if(html.includes('/bible-reader/')) throw new Error(`${lang}: retired GitHub project path remains`);
   for(const alt of langs){
-    const href=alt==='ko'?'https://gsh4124-cyber.github.io/bible-reader/':`https://gsh4124-cyber.github.io/bible-reader/${alt}/`;
+    const href=alt==='ko'?`${PROD}/`:`${PROD}/${alt}/`;
     if(!html.includes(`hreflang="${alt}" href="${href}"`)) throw new Error(`${lang}: hreflang ${alt} missing`);
   }
 }
 for(const lang of langs){
-  const href=lang==='ko'?'https://gsh4124-cyber.github.io/bible-reader/':`https://gsh4124-cyber.github.io/bible-reader/${lang}/`;
+  const href=lang==='ko'?`${PROD}/`:`${PROD}/${lang}/`;
   if(!index.includes(`hreflang="${lang}" href="${href}"`)) throw new Error(`root hreflang ${lang} missing`);
 }
+if(!index.includes(`rel="canonical" href="${PROD}/"`)) throw new Error('root canonical mismatch');
 
 const sitemap=fs.readFileSync('sitemap.xml','utf8');
 for(const lang of langs){
-  const url=lang==='ko'?'https://gsh4124-cyber.github.io/bible-reader/':`https://gsh4124-cyber.github.io/bible-reader/${lang}/`;
+  const url=lang==='ko'?`${PROD}/`:`${PROD}/${lang}/`;
   if(!sitemap.includes(`<loc>${url}</loc>`)) throw new Error(`sitemap missing ${url}`);
+}
+const robots=fs.readFileSync('robots.txt','utf8');
+if(!robots.includes(`Sitemap: ${PROD}/sitemap.xml`)) throw new Error('robots sitemap mismatch');
+for(const body of [index,sitemap,robots]){
+  if(body.includes('https://gsh4124-cyber.github.io/bible-reader')) throw new Error('retired GitHub Pages origin remains in SEO surface');
 }
 
 const finder=fs.readFileSync('book-finder.js','utf8');
@@ -92,7 +101,6 @@ for(const lang of langs){if(!exactSearch.includes(`${lang}:{prepare:`))throw new
 const compare=fs.readFileSync('compare.js','utf8');
 for(const lang of langs){if(!compare.includes(`${lang}:{loading:`))throw new Error(`comparison runtime messages missing for ${lang}`);}
 
-// Regression guard: native mobile select pickers must not be rebuilt while open.
 if(!src.includes("['SCRIPT','STYLE','SELECT','OPTION']")) throw new Error('i18n dynamic walker must skip SELECT/OPTION text nodes');
 if(!src.includes("document.activeElement?.tagName==='SELECT'")) throw new Error('i18n must defer select option rewrites while a native picker is active');
 const versePicker=fs.readFileSync('verse-picker.js','utf8');
@@ -104,4 +112,4 @@ for(const file of ['features.css','ui-fix.css']){
   if(body.includes('daily-strip')||body.includes('daily-card')||body.includes('focus-reading')||body.includes('focus-tool')) throw new Error(`retired daily/focus CSS remains in ${file}`);
 }
 
-console.log('Multilingual integrity OK: 9 locales, 66 localized books each, Scripture/UI language separation, localized language routing with default translations, stable UI layout direction, local/public routing, navigation/search/records/compare hooks, copied scripture attribution, SEO entry points, and mobile native-select regression guards present.');
+console.log('Multilingual integrity OK: 9 locales, Cloudflare production SEO origin, stable language routing, Scripture/UI separation, and mobile native-select regression guards present.');
