@@ -1,15 +1,15 @@
 # PROJECT STATUS — bible-reader
 
-- 마지막 갱신: 2026-09-04
+- 마지막 갱신: 2026-09-05
 - 저장소 역할: 성경 읽기 웹서비스의 실제 코드·배포·기술상태 원본
 - 상위 사업상태: 황제 Vault `직장/바이브코딩/_INDEX.md` 및 `직장/바이브코딩/페이지형/_INDEX.md`
 - ChatGPT 실행창: `성경 홈페이지 본부`
 - 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/직장/바이브코딩/페이지형/bible-reader`
-- 운영 주소: https://gsh4124-cyber.github.io/bible-reader/
+- 운영 주소: https://bible-reader-1iz.pages.dev/
 
 ## 현재 단계
 
-**공개 운영 / 유지보수 / 실제 사용 검증 / 검색 유통 관찰 단계**
+**Cloudflare 공개 운영 / 유지보수 / 실제 사용 검증 / 검색 유통 관찰 단계**
 
 > 구현 완료 ≠ 자동 QA PASS ≠ 배포 성공 ≠ 실제 브라우저 PASS ≠ 실제 모바일 PASS ≠ 검색·시장 성공
 
@@ -21,15 +21,15 @@
 
 ## 지원 UI 언어 / URL
 
-- ko: `/bible-reader/`
-- en: `/bible-reader/en/`
-- fr: `/bible-reader/fr/`
-- de: `/bible-reader/de/`
-- zh: `/bible-reader/zh/`
-- ru: `/bible-reader/ru/`
-- la: `/bible-reader/la/`
-- pt: `/bible-reader/pt/`
-- ar: `/bible-reader/ar/`
+- ko: `/`
+- en: `/en/`
+- fr: `/fr/`
+- de: `/de/`
+- zh: `/zh/`
+- ru: `/ru/`
+- la: `/la/`
+- pt: `/pt/`
+- ar: `/ar/`
 
 IP 강제 리다이렉트는 사용하지 않는다.
 
@@ -85,7 +85,7 @@ UI 언어를 바꾸면 해당 언어의 고정 URL로 이동하고 기본 역본
 
 운영관제 snapshot은 코드 저장소에 복제하지 않고 황제 Vault:
 `직장/바이브코딩/페이지형/bible-reader_analytics_latest.json`
-에 둔다.
+및 공통 `직장/바이브코딩/제품_헬스_latest.json`에 둔다.
 
 ## 모바일·실기기 재발방지
 
@@ -99,28 +99,34 @@ UI 언어를 바꾸면 해당 언어의 고정 URL로 이동하고 기본 역본
 
 ## SEO / 운영 호스트
 
-현재 주 운영·검색 주소는 **GitHub Pages**다.
+현재 주 운영·검색 주소는 **Cloudflare Pages production**이다.
 
-`https://gsh4124-cyber.github.io/bible-reader/`
+`https://bible-reader-1iz.pages.dev/`
 
 9개 언어 URL에 `html lang / title / description / canonical / reciprocal hreflang / x-default / sitemap / robots`를 이 호스트와 일치하게 유지한다.
 
-2026-09-04 전수점검에서 root와 언어별 entry 일부가 다시 `bible-reader-1iz.pages.dev`를 가리키는 host drift가 확인됐다. 확정 운영선과 충돌하므로 root + 8개 언어 entry + sitemap + robots를 GitHub Pages 기준으로 닫았다. Naver verification 최신값은 보존했다.
+2026-09-05 GitHub Pages 운영선을 폐기하고 Cloudflare production으로 전환했다. root + 8개 언어 entry, canonical·hreflang, sitemap, robots, locale loader 경로, production QA, IndexNow가 Cloudflare origin을 기준으로 정규화됐다. 폐기된 `https://gsh4124-cyber.github.io/bible-reader/`를 SEO surface와 운영관제 기준으로 다시 사용하지 않는다.
+
+최신 검증 기준선:
+- Bible main: `c17eb7bc776df82f77a34138167ef625f0b13207`
+- workflow: `.github/workflows/deploy-pages.yml` — `Final QA and Cloudflare Production Check`
+- Static Guardrails / Behavior QA / Combined Quality Gate / Cloudflare Production Browser QA 기준
+- 중앙 Product Health Monitor는 Cloudflare production을 직접 검사하며, 2026-09-05 새 snapshot에서 Cloudflare HTTP 200 + Bible main/latest run `c17eb7bc...` + CI success/pass를 확인했다.
 
 재발 방지:
 > **운영 호스트 변경은 canonical 한 줄 교체가 아니라 인프라 전환이다.**
 
-운영 주소 확정 → 모든 언어 canonical/hreflang → sitemap/robots → runtime base path → analytics/API origin → 배포 pipeline → 새 호스트 Production QA → 검색엔진 등록까지 범위를 닫기 전에는 SEO 신호 일부만 선행 변경하지 않는다.
+운영 주소 확정 → 모든 언어 canonical/hreflang → sitemap/robots → runtime base path → analytics/API origin → 배포 pipeline → 새 호스트 Production QA → 중앙 관제 주소 → 검색엔진 등록까지 범위를 닫는다.
 
 제출 성공 ≠ 크롤링 ≠ 색인 ≠ 검색 노출 ≠ 실제 유입이다.
 
 ## 자동 QA
 
-GitHub Actions `Final QA and Deploy Pages`는 JavaScript 문법, 필수 runtime, 다국어 무결성, UI/역본 언어 분리, 장·절 직접입력, 복사 형식, 모바일 select 회귀, 9개 언어 SEO entry, 제거된 runtime 재유입 등을 검사한다.
+GitHub Actions `Final QA and Cloudflare Production Check`는 JavaScript 문법, 필수 runtime, Cloudflare SEO origin, 다국어 무결성, UI/역본 언어 분리, 장·절 직접입력, 복사 형식, 모바일 select 회귀, 제거된 runtime 재유입, 실제 Cloudflare production sitemap/robots 및 브라우저 동작을 검사한다.
 
 상태 표현:
 - `CODE/CI PASS`
-- `DEPLOY PASS`
+- `PRODUCTION QA PASS`
 - `BROWSER PASS`
 - `MOBILE REAL-USE PASS`
 - `FULL QA PASS`
@@ -134,7 +140,8 @@ GitHub Actions `Final QA and Deploy Pages`는 JavaScript 문법, 필수 runtime,
 - 더 많은 UI 언어 × 다른 역본 조합
 - 기존 저장 성구·하이라이트·메모 보존의 장기 회귀
 - Search Console·IndexNow 이후 실제 언어별 색인·검색 노출·유입
-- GitHub Pages 경로형 주소의 AdSense addressability
+- Google Search Console에서 Cloudflare sitemap 처리 상태 1회 재확인
+- Cloudflare production 주소의 AdSense addressability 재검증
 
 황제 확인 전 실제 광고/AdSense 도입, 새 비용·유료도구, 유료 역본 라이선스는 진행하지 않는다.
 
@@ -143,7 +150,7 @@ GitHub Actions `Final QA and Deploy Pages`는 JavaScript 문법, 필수 runtime,
 1. 실제 PC/모바일 기능 오류·레이아웃 회귀
 2. 역본 언어와 UI 언어 혼합 오류
 3. 외부 성경 데이터 로딩 문제
-4. 배포/SEO host drift
+4. Cloudflare production/SEO host drift 및 중앙 관제 불일치
 5. localStorage/백업 복원
 6. 검색엔진 실제 색인·노출·유입
 7. 익명 page view
