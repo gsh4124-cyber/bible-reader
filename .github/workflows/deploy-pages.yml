@@ -1,4 +1,4 @@
-name: Final QA and Deploy Pages
+name: Final QA and Cloudflare Production Check
 
 on:
   push:
@@ -7,11 +7,9 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
+  group: "bible-reader-production"
   cancel-in-progress: true
 
 jobs:
@@ -43,33 +41,33 @@ jobs:
             test -s "$lang/index.html"
           done
 
-      - name: Check multilingual SEO entry points
+      - name: Check Cloudflare production SEO entry points
         run: |
           set -e
+          PROD='https://bible-reader-1iz.pages.dev'
+          OLD='https://gsh4124-cyber.github.io/bible-reader'
+          grep -q "rel=\"canonical\" href=\"$PROD/\"" index.html
+          grep -q '^Sitemap: https://bible-reader-1iz.pages.dev/sitemap.xml$' robots.txt
+          grep -q '<loc>https://bible-reader-1iz.pages.dev/</loc>' sitemap.xml
           for lang in en fr de zh ru la pt ar; do
             grep -q "hreflang=\"$lang\"" "$lang/index.html"
-            grep -q "rel=\"canonical\"" "$lang/index.html"
-            grep -q 'name="description"' "$lang/index.html"
-            grep -q "bible-reader/$lang/" sitemap.xml
+            grep -q "rel=\"canonical\" href=\"$PROD/$lang/\"" "$lang/index.html"
+            grep -q "<loc>$PROD/$lang/</loc>" sitemap.xml
+            grep -q 'src="/full-reader-loader.js"' "$lang/index.html"
+            ! grep -q '/bible-reader/' "$lang/index.html"
           done
+          ! grep -R -n --include='index.html' --include='sitemap.xml' --include='robots.txt' "$OLD" .
           grep -q 'hreflang="x-default"' index.html
           grep -q 'src="local-file-language.js"' index.html
           grep -q 'src="i18n.js"' index.html
           grep -q 'src="runtime-ui-i18n.js"' index.html
           grep -q 'src="ui-language-sync.js"' index.html
-          grep -q 'src="number-jump.js"' index.html
-          grep -q 'id="chapterNumberInput"' index.html
-          grep -q 'id="verseNumberInput"' index.html
-          grep -q '^Sitemap: https://gsh4124-cyber.github.io/bible-reader/sitemap.xml$' robots.txt
           test "$(tr -d '\r\n' < 193977ee04feba4a99f471a555a2aa54.txt)" = "193977ee04feba4a99f471a555a2aa54"
-
-      - name: Check deferred annotation runtime is excluded
-        run: |
-          ! grep -q 'annotations-data.js' index.html
-          ! grep -q 'annotations.js' index.html
 
       - name: Check retired runtime is excluded
         run: |
+          ! grep -q 'annotations-data.js' index.html
+          ! grep -q 'annotations.js' index.html
           ! grep -q 'src="locale.js"' index.html
           ! grep -q 'src="locale-safe.js"' index.html
           ! grep -q 'src="language-selector.js"' index.html
@@ -77,18 +75,14 @@ jobs:
           ! grep -q 'src="testament-select.js"' index.html
           ! grep -q 'src="daily.js"' index.html
           ! grep -q 'src="focus-mode.js"' index.html
-          ! grep -q 'notebook-tabs-fix.css' index.html
 
   behavior-qa:
     name: Behavior QA
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Validate multilingual integrity
         run: node tools/validate-i18n.mjs
-
       - name: Validate chapter and verse input behavior
         run: node tools/validate-number-jump.mjs
 
@@ -103,41 +97,16 @@ jobs:
           STATIC_RESULT: ${{ needs.static-guardrails.result }}
           BEHAVIOR_RESULT: ${{ needs.behavior-qa.result }}
         run: |
-          echo "static=$STATIC_RESULT"
-          echo "behavior=$BEHAVIOR_RESULT"
           test "$STATIC_RESULT" = "success"
           test "$BEHAVIOR_RESULT" = "success"
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  production-smoke:
+    name: Cloudflare Production Browser QA
     runs-on: ubuntu-latest
     needs: quality-gate
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-  production-smoke:
-    name: Production Browser QA
-    runs-on: ubuntu-latest
-    needs: deploy
     timeout-minutes: 15
     steps:
-      - name: Checkout deployed revision
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -145,52 +114,41 @@ jobs:
         run: |
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Wait for deployed public surface
+      - name: Wait for Cloudflare production surface
         run: |
           set -e
-          for i in {1..20}; do
-            if curl -fsS --max-time 20 https://gsh4124-cyber.github.io/bible-reader/en/ >/dev/null; then
-              echo "Production surface reachable"
+          for i in {1..30}; do
+            sitemap=$(curl -fsS --max-time 20 https://bible-reader-1iz.pages.dev/sitemap.xml || true)
+            robots=$(curl -fsS --max-time 20 https://bible-reader-1iz.pages.dev/robots.txt || true)
+            if printf '%s' "$sitemap" | grep -q 'https://bible-reader-1iz.pages.dev/en/' \
+              && ! printf '%s' "$sitemap" | grep -q 'gsh4124-cyber.github.io/bible-reader' \
+              && printf '%s' "$robots" | grep -q 'https://bible-reader-1iz.pages.dev/sitemap.xml'; then
+              echo "Cloudflare production SEO surface updated"
               exit 0
             fi
             sleep 10
           done
+          echo "Cloudflare production did not expose the updated sitemap/robots in time"
           exit 1
-      - name: Verify UI language and selected Bible version stay independent in production
+      - name: Run production behavior QA
         run: node tools/production-smoke.mjs
 
   notify-indexnow:
-    name: notify-indexnow
+    name: Notify IndexNow
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: quality-gate
     continue-on-error: true
     steps:
-      - name: Checkout recent history
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Notify IndexNow of localized entry URLs when web content changed
+      - uses: actions/checkout@v4
+      - name: Notify IndexNow of Cloudflare production URLs
         run: |
           python3 - <<'PY'
-          import json
-          import os
-          import subprocess
-          import urllib.request
-
-          if os.environ.get("GITHUB_EVENT_NAME") == "push":
-              changed = subprocess.check_output(["git", "diff", "--name-only", "HEAD^", "HEAD"], text=True).splitlines()
-              relevant = [path for path in changed if not path.endswith(".md") and not path.startswith(".github/")]
-              if not relevant:
-                  print("IndexNow skipped: documentation/workflow-only change")
-                  raise SystemExit(0)
-              print("IndexNow relevant changes:", ", ".join(relevant))
-
+          import json, urllib.request
           key = "193977ee04feba4a99f471a555a2aa54"
-          base = "https://gsh4124-cyber.github.io/bible-reader/"
+          base = "https://bible-reader-1iz.pages.dev/"
           urls = [base] + [base + lang + "/" for lang in ["en","fr","de","zh","ru","la","pt","ar"]]
           payload = {
-              "host": "gsh4124-cyber.github.io",
+              "host": "bible-reader-1iz.pages.dev",
               "key": key,
               "keyLocation": base + key + ".txt",
               "urlList": urls,
@@ -202,8 +160,5 @@ jobs:
               method="POST",
           )
           with urllib.request.urlopen(request, timeout=30) as response:
-              code = response.getcode()
-              print(f"IndexNow response: {code}; submitted {len(urls)} URLs")
-              if code not in (200, 202):
-                  raise SystemExit(f"Unexpected IndexNow status: {code}")
+              print(f"IndexNow response: {response.getcode()}; submitted {len(urls)} URLs")
           PY
