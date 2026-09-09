@@ -157,3 +157,7 @@ GitHub Actions `Final QA and Cloudflare Production Check`는 JavaScript 문법, 
 8. 번역본 권리·출처 변화
 
 새 기능을 근거 없이 계속 붙이지 않는다.
+
+## AdSense 실행 상태 — 2026-09-10
+
+`ADSENSE_REVIEW_SUBMITTED` — AdSense 사이트 추가, 공식 코드와 ads.txt 반영, Production 소유확인 통과, 검토 요청 제출. 자동 광고는 인페이지 중심으로 사용하며 앵커·사이드레일·모바일 전면광고는 비활성화. ads.txt UI 재탐색 대기 중.
