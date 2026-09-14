@@ -26,34 +26,16 @@
   <link rel="stylesheet" href="ui-fix.css" />
   <link rel="stylesheet" href="i18n-layout.css" />
   <link rel="stylesheet" href="records-enhancements.css" />
-  <link rel="stylesheet" href="book-picker.css" />
   <link rel="stylesheet" href="title-navigator.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="topbar-inner centered-nav">
-      <div class="location-controls" aria-label="성경 위치 선택">
+      <div class="location-controls" aria-label="성경 읽기 설정">
         <select id="translationSelect" class="translation-select" aria-label="성경 버전"><option value="krv1961">개역한글</option><option value="kjv">KJV</option><option value="web">WEB</option><option value="asv">ASV</option><option value="lsg">Louis Segond 1910</option><option value="luth1912">Lutherbibel 1912</option><option value="cuv">和合本 CUV</option><option value="synodal">Синодальный</option><option value="vulg">Vulgata</option></select>
-        <select id="bookSelect" class="book-picker-native" aria-label="성경책"></select>
-        <div id="bookPickerControl" class="book-picker-control">
-          <button id="bookPickerButton" class="book-picker-button" type="button" aria-haspopup="dialog" aria-expanded="false"><span id="bookPickerLabel" class="book-picker-label">성경책</span><span class="book-picker-arrow" aria-hidden="true">▾</span></button>
-          <div id="bookPickerPanel" class="book-picker-panel" role="dialog" aria-modal="false" hidden>
-            <div id="bookPickerTabs" class="book-picker-tabs" role="tablist"></div>
-            <div id="bookPickerList" class="book-picker-list" role="listbox"></div>
-          </div>
-        </div>
+        <select id="bookSelect" aria-label="성경책" hidden></select>
         <select id="chapterSelect" aria-label="장" hidden></select>
-        <div id="chapterNumberControl" class="number-jump-control">
-          <input id="chapterNumberInput" class="number-jump-input" type="text" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="장 번호" />
-          <button id="chapterOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="장 목록">▾</button>
-          <div id="chapterOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
-        </div>
         <select id="verseSelect" aria-label="절" hidden><option value="1">1절</option></select>
-        <div id="verseNumberControl" class="number-jump-control">
-          <input id="verseNumberInput" class="number-jump-input" type="text" inputmode="numeric" pattern="[0-9]*" value="1" aria-label="절 번호" />
-          <button id="verseOptionsButton" class="number-jump-options" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="절 목록">▾</button>
-          <div id="verseOptionsMenu" class="number-jump-menu" role="listbox" hidden></div>
-        </div>
         <form id="searchForm" class="top-search" role="search"><input id="searchInput" list="bookList" type="search" autocomplete="off" placeholder="검색" aria-label="성경 검색" /><datalist id="bookList"></datalist><button id="searchButton" type="submit">검색</button></form>
       </div>
       <div class="toolbar" aria-label="읽기 도구"><button id="compareToggle" class="text-button primary-tool" type="button" aria-pressed="false">비교</button><button id="fontDown" class="quick-tool">가−</button><button id="fontUp" class="quick-tool">가+</button><button id="widthToggle" class="quick-tool">↔</button><button id="themeToggle" class="quick-tool" aria-label="테마">◐</button></div>
@@ -72,5 +54,5 @@
     <nav class="chapter-nav"><button id="prevChapterBottom">← 이전 장</button><button id="nextChapterBottom">다음 장 →</button></nav>
     <aside class="ad-slot ad-slot-bottom" data-ad-slot="bottom" aria-label="광고 영역"><span>광고</span></aside>
   </section></main><footer><p id="translationAttribution">개역한글 · 대한성서공회</p><p class="source-note">외국어 역본은 공개 도메인 또는 자유 재배포가 확인된 데이터만 제공합니다.</p></footer>
-  <script src="app.js" defer></script><script src="extra-translations.js" defer></script><script src="local-file-language.js" defer></script><script src="i18n.js" defer></script><script src="reference.js" defer></script><script src="book-finder.js" defer></script><script src="compare.js" defer></script><script src="verse-picker.js" defer></script><script src="number-jump.js" defer></script><script src="book-picker.js" defer></script><script src="title-navigator.js" defer></script><script src="clipboard.js" defer></script><script src="title-nav.js" defer></script><script src="exact-search.js" defer></script><script src="verse-tools.js" defer></script><script src="records-enhancements.js" defer></script><script src="runtime-ui-i18n.js" defer></script><script src="analytics.js" defer></script><script src="ui-language-sync.js" defer></script>
+  <script src="app.js" defer></script><script src="extra-translations.js" defer></script><script src="local-file-language.js" defer></script><script src="i18n.js" defer></script><script src="reference.js" defer></script><script src="book-finder.js" defer></script><script src="compare.js" defer></script><script src="verse-picker.js" defer></script><script src="title-navigator.js" defer></script><script src="clipboard.js" defer></script><script src="title-nav.js" defer></script><script src="exact-search.js" defer></script><script src="verse-tools.js" defer></script><script src="records-enhancements.js" defer></script><script src="runtime-ui-i18n.js" defer></script><script src="analytics.js" defer></script><script src="ui-language-sync.js" defer></script>
 </body></html>
