@@ -46,24 +46,26 @@
   .topbar{padding-block:9px}
   .topbar-inner.centered-nav{display:grid!important;grid-template-columns:minmax(0,1fr) 348px!important;gap:10px!important;width:min(1740px,100%)!important;align-items:center}
   .centered-nav .location-controls{display:grid!important;grid-template-columns:220px 160px 240px 84px 74px 300px!important;gap:8px!important;width:100%!important;min-width:0;align-items:center;justify-content:start}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}.centered-nav .top-search{grid-column:6!important}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookPickerControl{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}.centered-nav .top-search{grid-column:6!important}
   .toolbar{grid-column:2;justify-self:end;align-self:center}
 }
 
 @media(min-width:1041px) and (max-width:1359px){
   .topbar-inner.centered-nav{display:flex!important;flex-wrap:wrap;align-items:center;gap:7px;width:min(1450px,100%)!important}
   .centered-nav .location-controls{order:1;flex:1 1 auto;display:grid!important;grid-template-columns:200px 145px 220px 82px 72px 260px!important;gap:8px!important;width:auto!important;min-width:1020px;align-items:center}
-  .centered-nav #translationSelect{width:200px!important;min-width:200px!important;max-width:200px!important}.centered-nav .language-selector-wrap{width:145px!important;min-width:145px!important;max-width:145px!important}.centered-nav #bookSelect{width:220px!important;min-width:220px!important;max-width:220px!important}.centered-nav #chapterNumberControl{width:82px!important;min-width:82px!important;max-width:82px!important}.centered-nav #verseNumberControl{width:72px!important;min-width:72px!important;max-width:72px!important}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:260px!important;min-width:260px!important;max-width:260px!important;justify-self:end}
+  .centered-nav #translationSelect{width:200px!important;min-width:200px!important;max-width:200px!important}.centered-nav .language-selector-wrap{width:145px!important;min-width:145px!important;max-width:145px!important}.centered-nav #bookPickerControl{width:220px!important;min-width:220px!important;max-width:220px!important}.centered-nav #chapterNumberControl{width:82px!important;min-width:82px!important;max-width:82px!important}.centered-nav #verseNumberControl{width:72px!important;min-width:72px!important;max-width:72px!important}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookPickerControl{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}.centered-nav .top-search{grid-column:6!important;width:260px!important;min-width:260px!important;max-width:260px!important;justify-self:end}
   .toolbar{order:2;margin-inline-start:auto}
 }
 
 @media(min-width:761px) and (max-width:1040px){
-  .topbar-inner.centered-nav{display:flex!important;flex-direction:column;align-items:stretch;gap:7px}
-  .centered-nav .location-controls{order:1;display:grid!important;grid-template-columns:200px 145px 220px 82px 72px!important;gap:8px!important;width:100%;align-items:center}
-  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookSelect{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}
-  .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:300px!important;min-width:300px!important;max-width:300px!important;justify-self:end}
-  .toolbar{order:2;align-self:flex-end}
+  .topbar{padding:8px 12px}
+  .topbar-inner.centered-nav{display:block!important;position:relative;width:100%!important;min-height:91px;padding-bottom:49px}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(150px,1.15fr) minmax(112px,.8fr) minmax(170px,1.15fr) 82px 72px!important;gap:7px!important;width:100%!important;align-items:center}
+  .centered-nav #translationSelect,.centered-nav .language-selector-wrap,.centered-nav #bookPickerControl,.centered-nav #chapterNumberControl,.centered-nav #verseNumberControl{width:100%!important;min-width:0!important;max-width:none!important}
+  .centered-nav #translationSelect{grid-column:1}.centered-nav .language-selector-wrap{grid-column:2}.centered-nav #bookPickerControl{grid-column:3}.centered-nav #chapterNumberControl{grid-column:4}.centered-nav #verseNumberControl{grid-column:5}
+  .centered-nav .top-search{grid-column:1/6!important;grid-row:2!important;width:calc(100% - 360px)!important;min-width:260px!important;max-width:none!important;justify-self:start;margin-top:1px}
+  .toolbar{position:absolute!important;right:0;bottom:0;align-self:auto!important;margin:0!important}
 }
 
 @media(max-width:760px){
@@ -72,11 +74,11 @@
   .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(0,1.7fr) minmax(82px,.62fr) minmax(76px,.58fr)!important;grid-template-rows:auto auto auto!important;column-gap:9px!important;row-gap:8px!important}
   .centered-nav #translationSelect{grid-column:1/3!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav .language-selector-wrap{grid-column:3!important;grid-row:1!important;width:100%!important;min-width:0!important;max-width:100%!important}
-  .centered-nav #bookSelect{grid-column:1!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
+  .centered-nav #bookPickerControl{grid-column:1!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav #chapterNumberControl{grid-column:2!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav #verseNumberControl{grid-column:3!important;grid-row:2!important;width:100%!important;min-width:0!important;max-width:100%!important}
   .centered-nav .location-controls .top-search{grid-column:1/4!important;grid-row:3!important;width:100%!important;max-width:100%!important}
-  .centered-nav #bookSelect,.centered-nav #chapterNumberControl,.centered-nav #verseNumberControl,.centered-nav #translationSelect,.centered-nav .language-selector-wrap{margin:0!important;box-sizing:border-box}
+  .centered-nav #bookPickerControl,.centered-nav #chapterNumberControl,.centered-nav #verseNumberControl,.centered-nav #translationSelect,.centered-nav .language-selector-wrap{margin:0!important;box-sizing:border-box}
   .language-select{padding-inline:8px;font-size:13px}
   .number-jump-control{grid-template-columns:minmax(0,1fr) 28px}
   .chapter-heading h1{font-size:clamp(38px,10vw,46px)!important}
