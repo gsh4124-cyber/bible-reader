@@ -37,7 +37,7 @@ jobs:
       - name: Check required runtime files
         run: |
           set -e
-          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css app.js extra-translations.js local-file-language.js i18n.js runtime-ui-i18n.js ui-language-sync.js full-reader-loader.js reference.js book-finder.js compare.js verse-picker.js number-jump.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js robots.txt sitemap.xml 193977ee04feba4a99f471a555a2aa54.txt; do
+          for file in index.html styles.css features.css ui-fix.css i18n-layout.css records-enhancements.css title-navigator.css app.js extra-translations.js local-file-language.js i18n.js runtime-ui-i18n.js ui-language-sync.js full-reader-loader.js reference.js book-finder.js compare.js verse-picker.js title-navigator.js clipboard.js title-nav.js exact-search.js verse-tools.js records-enhancements.js analytics.js robots.txt sitemap.xml 193977ee04feba4a99f471a555a2aa54.txt; do
             test -s "$file"
           done
           for lang in en fr de zh ru la pt ar; do
@@ -65,6 +65,8 @@ jobs:
           grep -q 'src="i18n.js"' index.html
           grep -q 'src="runtime-ui-i18n.js"' index.html
           grep -q 'src="ui-language-sync.js"' index.html
+          grep -q 'src="title-navigator.js"' index.html
+          grep -q 'href="title-navigator.css"' index.html
           test "$(tr -d '\r\n' < 193977ee04feba4a99f471a555a2aa54.txt)" = "193977ee04feba4a99f471a555a2aa54"
 
       - name: Check retired runtime is excluded
@@ -78,6 +80,8 @@ jobs:
           ! grep -q 'src="testament-select.js"' index.html
           ! grep -q 'src="daily.js"' index.html
           ! grep -q 'src="focus-mode.js"' index.html
+          ! grep -q 'src="book-picker.js"' index.html
+          ! grep -q 'src="number-jump.js"' index.html
 
   behavior-qa:
     name: Behavior QA
@@ -86,8 +90,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate multilingual integrity
         run: node tools/validate-i18n.mjs
-      - name: Validate chapter and verse input behavior
-        run: node tools/validate-number-jump.mjs
+      - name: Validate current title navigation behavior
+        run: node tools/validate-navigation.mjs
 
   quality-gate:
     name: Combined Quality Gate
