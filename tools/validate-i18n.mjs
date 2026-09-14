@@ -18,11 +18,10 @@ if(!root.includes('id="bookSelect" aria-label="성경책" hidden')||!root.includ
 for(const lang of langs){
   const html=fs.readFileSync(`${lang}/index.html`,'utf8');
   if(!html.includes(`lang="${lang}"`))throw new Error(`${lang} html lang mismatch`);
-  if(!html.includes('full-reader-loader.js'))throw new Error(`${lang} loader missing`);
-  if(!html.includes('ui-language-sync.js'))throw new Error(`${lang} UI language sync missing`);
-  if(!html.includes('exact-search.js'))throw new Error(`${lang} exact search missing`);
-  if(!html.includes('clipboard.js'))throw new Error(`${lang} clipboard missing`);
-  if(!html.includes('i18n-layout.css'))throw new Error(`${lang} layout CSS missing`);
+  if(!html.includes('src="/full-reader-loader.js"'))throw new Error(`${lang} shared reader loader missing`);
+  if(html.includes('src="ui-language-sync.js"')||html.includes('src="exact-search.js"')||html.includes('src="clipboard.js"')){
+    throw new Error(`${lang} entry should stay lightweight and let full-reader-loader inject the shared root runtime`);
+  }
 }
 
 const app=fs.readFileSync('app.js','utf8');
@@ -38,6 +37,7 @@ if(!localRoute.includes("url.searchParams.set('translation', translation)")) thr
 const loader=fs.readFileSync('full-reader-loader.js','utf8');
 if(loader.includes("lang==='ar'?' dir=\"rtl\"'")) throw new Error('localized entry loader must not force global RTL');
 if(!loader.includes('const failure =')) throw new Error('localized loader failure messages missing');
+if(!loader.includes("fetch(`${base}index.html`, {cache:'no-store'})")) throw new Error('localized entries must load the current root reader without stale caching');
 
 const layout=fs.readFileSync('i18n-layout.css','utf8');
 if(!layout.includes('.centered-nav .location-controls{display:grid!important')||!layout.includes('grid-template-rows:42px!important')||!layout.includes('@media(min-width:761px)')||!layout.includes('@media(max-width:760px)')) throw new Error('responsive multilingual header single-row contract missing');
@@ -60,4 +60,4 @@ const exactSearch=fs.readFileSync('exact-search.js','utf8');
 if(!exactSearch.includes('BibleI18n?.bookName')) throw new Error('search result references must follow translation language');
 for(const lang of langs){if(!exactSearch.includes(`${lang}:{prepare:`))throw new Error(`search runtime messages missing for ${lang}`);}
 
-console.log('i18n validation passed for the current shared reader and title-navigation architecture');
+console.log('i18n validation passed for the current shared reader and loader-based localized entries');
