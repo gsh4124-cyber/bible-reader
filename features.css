@@ -7,4 +7,7 @@ body[data-ads="enabled"] .ad-slot { display:flex; }
 .section-heading { margin:30px 0 13px; padding-left:42px; color:var(--text); font-size:15px; font-weight:700; }
 .verse-note-marker { display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; margin-left:5px; padding:0 4px; border:1px solid var(--line); border-radius:999px; color:var(--muted); font:10px/1 system-ui,sans-serif; vertical-align:super; cursor:pointer; }
 .verse-note { margin:6px 0 2px 42px; padding:9px 11px; border-left:2px solid var(--line); color:var(--muted); font-size:13px; line-height:1.6; }
-@media(max-width:760px){#verseSelect{min-width:70px}.section-heading{padding-left:34px}.verse-note{margin-left:34px}}
+.page-view-toggle{min-width:42px!important;padding-inline:7px!important;font-family:system-ui,sans-serif;font-size:16px;line-height:1;letter-spacing:-2px}
+.page-view-toggle.active{color:var(--text)!important;border-color:var(--line)!important;background:var(--hover)!important}
+.verse-number{top:11px!important}
+@media(max-width:760px){#verseSelect{min-width:70px}.section-heading{padding-left:34px}.verse-note{margin-left:34px}.verse-number{top:12px!important}}
