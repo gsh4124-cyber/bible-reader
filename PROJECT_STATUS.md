@@ -1,6 +1,6 @@
 # PROJECT STATUS — bible-reader
 
-- 마지막 갱신: 2026-09-10
+- 마지막 갱신: 2026-09-14
 - 저장소 역할: 성경 읽기 웹서비스의 실제 코드·배포·기술상태 원본
 - 상위 사업상태: 황제 Vault `직장/바이브코딩/_INDEX.md`, `직장/바이브코딩/페이지형/_INDEX.md`, `직장/바이브코딩/운영본부_상태.json`
 - 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/직장/바이브코딩/페이지형/bible-reader`
@@ -8,11 +8,28 @@
 
 ## 현재 단계
 
-**PUBLIC CLOUDFLARE PRODUCTION / 9 UI LANGUAGES / PRODUCTION QA ACTIVE / CLEAN PAGE-VIEW OBSERVATION / SEARCH DISTRIBUTION OBSERVATION / ADSENSE_REVIEW_SUBMITTED**
+**PUBLIC CLOUDFLARE PRODUCTION / 9 UI LANGUAGES / CURRENT-REVISION PRODUCTION QA PASS / CLEAN PAGE-VIEW OBSERVATION / SEARCH DISTRIBUTION OBSERVATION / ADSENSE_REVIEW_SUBMITTED**
 
 현재 바이브코딩 Portfolio Mode는 `WAITING_EXTERNAL`이다. 실제 기술 FAIL이나 의미 있는 외부 신호 없이 새 기능개발·실기기 Gate·깊은 QA를 반복하지 않는다.
 
 > 구현 완료 ≠ 자동 QA PASS ≠ 배포 성공 ≠ 실제 브라우저 PASS ≠ 실제 외부사용 ≠ 검색노출 ≠ 수익
+
+## 현재 검증 identity — 2026-09-14
+
+현재 main head는 `073802b084eeb88d2028f6863c4a94d455a8678d`다.
+
+이 identity에서:
+- Security Guardrails #33: **PASS**
+- Final QA and Cloudflare Production Check #291: **PASS**
+- Static Guardrails: **PASS**
+- Behavior QA: **PASS**
+- Combined Quality Gate: **PASS**
+- Cloudflare Production Browser QA: **PASS**
+- IndexNow notify: **PASS**
+
+2026-09-14의 상단 단일행 내비게이션·제목 기반 장/절 선택 구조 변경 뒤, 과거 구조를 전제로 한 validator/Production QA 조건이 연속으로 드러났다. 최종적으로 현재 loader 기반 다국어 진입구조와 제목 내비게이션 구조를 실제 계약으로 검사하도록 QA가 갱신되었고, 최신 production identity에서 전체 자동검증이 통과했다.
+
+이 PASS는 자동·production browser 기준이다. 새 UX의 장시간 독서감이나 인간 체감을 자동 PASS로 과장하지 않는다.
 
 ## 핵심 목적
 
