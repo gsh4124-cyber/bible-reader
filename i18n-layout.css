@@ -2,9 +2,9 @@
 
 /* Top row: translation, language, search only. */
 .location-controls>select,.language-selector-wrap select{height:42px!important;padding-top:0!important;padding-bottom:0!important;line-height:40px!important;text-align:center;text-align-last:center;vertical-align:middle}.location-controls>select option,.language-selector-wrap select option{text-align:start}.location-controls .top-search input{text-align:left!important}
-.location-controls .top-search{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:0!important;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--panel) 82%,transparent);align-items:stretch}
-.location-controls .top-search input,.location-controls .top-search input:focus{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;height:42px!important;line-height:42px!important;padding:0 14px!important}
-.location-controls .top-search button{border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding-inline:12px!important;height:42px!important;display:flex!important;align-items:center!important;justify-content:center!important}.location-controls .top-search button:hover{background:var(--hover)!important}
+.location-controls .top-search{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:0!important;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:color-mix(in srgb,var(--panel) 82%,transparent);align-items:stretch;height:42px!important}
+.location-controls .top-search input,.location-controls .top-search input:focus{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;height:40px!important;line-height:40px!important;padding:0 14px!important}
+.location-controls .top-search button{border:0!important;border-left:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding-inline:12px!important;height:40px!important;display:flex!important;align-items:center!important;justify-content:center!important}.location-controls .top-search button:hover{background:var(--hover)!important}
 .location-controls>select,.language-selector-wrap select{background:color-mix(in srgb,var(--panel) 74%,transparent)}
 .toolbar #compareToggle{border-color:var(--line);background:color-mix(in srgb,var(--panel) 76%,transparent);font-weight:700}.toolbar .notebook-button{border-color:var(--line);background:color-mix(in srgb,var(--panel) 64%,transparent)}
 
@@ -21,11 +21,16 @@
   .toolbar #compareToggle{min-width:86px!important}.toolbar .quick-tool{min-width:36px!important;padding-inline:0!important}.toolbar .notebook-button{min-width:76px!important}
 }
 
+/* Tablet landscape: keep translation, language and search on ONE row. */
 @media(min-width:761px) and (max-width:1040px){
-  .topbar-inner.centered-nav{grid-template-columns:1fr!important;gap:8px!important}
-  .centered-nav .location-controls{grid-template-columns:minmax(180px,1fr) minmax(130px,.75fr) minmax(260px,1.5fr)!important}
-  .centered-nav #translationSelect,.centered-nav .language-selector-wrap,.centered-nav .top-search{width:100%!important;min-width:0!important;max-width:none!important}
-  .toolbar{justify-self:end!important}
+  .topbar{padding:8px 10px}
+  .topbar-inner.centered-nav{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:7px!important;width:100%!important}
+  .centered-nav .location-controls{display:grid!important;grid-template-columns:minmax(150px,1.1fr) minmax(105px,.72fr) minmax(260px,1.9fr)!important;gap:8px!important;width:100%!important;min-width:0!important;align-items:center!important}
+  .centered-nav #translationSelect,.centered-nav .language-selector-wrap,.centered-nav .top-search{width:100%!important;min-width:0!important;max-width:none!important;margin:0!important}
+  .centered-nav #translationSelect{grid-column:1!important;grid-row:1!important}
+  .centered-nav .language-selector-wrap{grid-column:2!important;grid-row:1!important}
+  .centered-nav .top-search{grid-column:3!important;grid-row:1!important;justify-self:stretch!important}
+  .toolbar{align-self:flex-end!important;justify-self:auto!important;max-width:100%!important;overflow-x:auto!important;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}
 }
 
 @media(max-width:760px){
