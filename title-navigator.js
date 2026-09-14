@@ -19,6 +19,8 @@
     ar:{title:'تنقل سريع',old:'العهد القديم',new:'العهد الجديد',book:'السفر',chapter:'الأصحاح',verse:'الآية',close:'إغلاق',hint:'اضغط على عنوان الكتاب المقدس لتغيير السفر أو الأصحاح أو الآية'}
   };
 
+  let activeTestament = Number(bookSelect.selectedIndex) > OT_END_INDEX ? 'new' : 'old';
+
   const overlay = document.createElement('div');
   overlay.className = 'title-navigator-overlay';
   overlay.hidden = true;
@@ -30,10 +32,11 @@
       </div>
       <section class="title-navigator-section title-navigator-book-section">
         <div class="title-navigator-section-label" data-label="book"></div>
-        <div class="title-navigator-testaments">
-          <section class="title-navigator-testament" data-testament="old"><h2></h2><div class="title-navigator-grid title-navigator-books"></div></section>
-          <section class="title-navigator-testament" data-testament="new"><h2></h2><div class="title-navigator-grid title-navigator-books"></div></section>
+        <div class="title-navigator-testament-switch" role="tablist">
+          <button type="button" data-switch="old" role="tab"></button>
+          <button type="button" data-switch="new" role="tab"></button>
         </div>
+        <div class="title-navigator-grid title-navigator-books"></div>
       </section>
       <section class="title-navigator-section">
         <div class="title-navigator-section-label" data-label="chapter"></div>
@@ -56,10 +59,9 @@
   const dialog = overlay.querySelector('.title-navigator');
   const heading = overlay.querySelector('#titleNavigatorHeading');
   const closeButton = overlay.querySelector('.title-navigator-close');
-  const oldGroup = overlay.querySelector('[data-testament="old"]');
-  const newGroup = overlay.querySelector('[data-testament="new"]');
-  const oldBooks = oldGroup.querySelector('.title-navigator-books');
-  const newBooks = newGroup.querySelector('.title-navigator-books');
+  const switchOld = overlay.querySelector('[data-switch="old"]');
+  const switchNew = overlay.querySelector('[data-switch="new"]');
+  const books = overlay.querySelector('.title-navigator-books');
   const chapters = overlay.querySelector('.title-navigator-chapters');
   const verses = overlay.querySelector('.title-navigator-verses');
 
@@ -91,12 +93,24 @@
     return b;
   }
 
+  function renderSwitch(){
+    const l = labels();
+    switchOld.textContent = l.old;
+    switchNew.textContent = l.new;
+    [switchOld,switchNew].forEach((button,index) => {
+      const key = index === 0 ? 'old' : 'new';
+      const selected = activeTestament === key;
+      button.setAttribute('aria-selected', String(selected));
+      button.classList.toggle('active', selected);
+    });
+  }
+
   function renderBooks(){
-    oldBooks.replaceChildren();
-    newBooks.replaceChildren();
+    books.replaceChildren();
     selectOptions(bookSelect).forEach((option,index) => {
-      const target = index <= OT_END_INDEX ? oldBooks : newBooks;
-      target.append(makeChoice(option.textContent.trim(), option.value === bookSelect.value, () => {
+      const belongs = activeTestament === 'old' ? index <= OT_END_INDEX : index > OT_END_INDEX;
+      if (!belongs) return;
+      books.append(makeChoice(option.textContent.trim(), option.value === bookSelect.value, () => {
         if (bookSelect.value !== option.value) {
           bookSelect.value = option.value;
           bookSelect.dispatchEvent(new Event('change',{bubbles:true}));
@@ -127,9 +141,8 @@
     overlay.querySelector('[data-label="book"]').textContent = l.book;
     overlay.querySelector('[data-label="chapter"]').textContent = l.chapter;
     overlay.querySelector('[data-label="verse"]').textContent = l.verse;
-    oldGroup.querySelector('h2').textContent = l.old;
-    newGroup.querySelector('h2').textContent = l.new;
     if (!hint.hidden) hint.textContent = l.hint;
+    renderSwitch();
     renderBooks();
     renderNumberGrid(chapterSelect,chapters);
     renderNumberGrid(verseSelect,verses);
@@ -137,13 +150,13 @@
 
   function open(){
     markHintSeen();
+    activeTestament = Number(bookSelect.selectedIndex) > OT_END_INDEX ? 'new' : 'old';
     overlay.hidden = false;
     document.body.classList.add('title-navigator-open');
     renderAll();
     requestAnimationFrame(() => {
       dialog.focus({preventScroll:true});
-      const selected = overlay.querySelector('.title-navigator-books [aria-pressed="true"]');
-      selected?.scrollIntoView({block:'nearest'});
+      books.querySelector('[aria-pressed="true"]')?.scrollIntoView({block:'nearest'});
     });
   }
   function close(){
@@ -151,6 +164,9 @@
     document.body.classList.remove('title-navigator-open');
     title.focus?.({preventScroll:true});
   }
+
+  switchOld.addEventListener('click',()=>{activeTestament='old';renderSwitch();renderBooks();});
+  switchNew.addEventListener('click',()=>{activeTestament='new';renderSwitch();renderBooks();});
 
   title.setAttribute('role','button');
   title.setAttribute('tabindex','0');
