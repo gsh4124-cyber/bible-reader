@@ -21,8 +21,6 @@
     ar:{books:'السفر',old:'العهد القديم',new:'العهد الجديد',oldBooks:'أسفار العهد القديم',newBooks:'أسفار العهد الجديد'}
   };
 
-  let activeTestament = Number(bookSelect.value) > OT_END_INDEX ? 'new' : 'old';
-
   function uiLang(){ return window.BibleI18n?.lang?.() || window.__BIBLE_LANG__ || document.documentElement.lang || 'ko'; }
   function labels(){ return LABELS[uiLang()] || LABELS.en; }
   function options(){ return [...bookSelect.options]; }
@@ -33,7 +31,6 @@
     button.setAttribute('aria-expanded', String(open));
     control.classList.toggle('open', open);
     if (open) {
-      activeTestament = Number(bookSelect.value) > OT_END_INDEX ? 'new' : 'old';
       render();
       requestAnimationFrame(() => list.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'}));
     }
@@ -47,56 +44,51 @@
     button.title = l.books;
   }
 
-  function renderTabs(){
-    const l = labels();
-    tabs.replaceChildren();
-    [['old',l.old],['new',l.new]].forEach(([key,text]) => {
-      const tab = document.createElement('button');
-      tab.type = 'button';
-      tab.className = 'book-picker-tab';
-      tab.textContent = text;
-      tab.setAttribute('role','tab');
-      tab.setAttribute('aria-selected', String(activeTestament === key));
-      tab.addEventListener('click', event => {
-        event.stopPropagation();
-        activeTestament = key;
-        render();
-      });
-      tabs.append(tab);
+  function makeGroup(name, ariaLabel){
+    const group = document.createElement('section');
+    group.className = 'book-picker-group';
+    group.setAttribute('aria-label', ariaLabel);
+    const heading = document.createElement('div');
+    heading.className = 'book-picker-group-title';
+    heading.textContent = name;
+    const grid = document.createElement('div');
+    grid.className = 'book-picker-group-grid';
+    group.append(heading,grid);
+    return {group,grid};
+  }
+
+  function makeBookItem(option){
+    const item = document.createElement('button');
+    item.type = 'button';
+    item.className = 'book-picker-item';
+    item.setAttribute('role','option');
+    item.dataset.value = option.value;
+    item.textContent = option.textContent.trim();
+    item.setAttribute('aria-selected', String(option.value === bookSelect.value));
+    item.addEventListener('click', () => {
+      if (bookSelect.value !== option.value) {
+        bookSelect.value = option.value;
+        bookSelect.dispatchEvent(new Event('change',{bubbles:true}));
+      }
+      syncButton();
+      setOpen(false);
     });
+    return item;
   }
 
   function renderList(){
     const l = labels();
-    const start = activeTestament === 'old' ? 0 : OT_END_INDEX + 1;
-    const end = activeTestament === 'old' ? OT_END_INDEX : options().length - 1;
+    tabs.replaceChildren();
+    tabs.hidden = true;
     list.replaceChildren();
-    list.setAttribute('aria-label', activeTestament === 'old' ? l.oldBooks : l.newBooks);
-    const fragment = document.createDocumentFragment();
-    options().forEach((option,index) => {
-      if (index < start || index > end) return;
-      const item = document.createElement('button');
-      item.type = 'button';
-      item.className = 'book-picker-item';
-      item.setAttribute('role','option');
-      item.dataset.value = option.value;
-      item.textContent = option.textContent.trim();
-      item.setAttribute('aria-selected', String(option.value === bookSelect.value));
-      item.addEventListener('click', () => {
-        if (bookSelect.value !== option.value) {
-          bookSelect.value = option.value;
-          bookSelect.dispatchEvent(new Event('change',{bubbles:true}));
-        }
-        syncButton();
-        setOpen(false);
-      });
-      fragment.append(item);
-    });
-    list.append(fragment);
+    list.setAttribute('aria-label', l.books);
+    const old = makeGroup(l.old,l.oldBooks);
+    const fresh = makeGroup(l.new,l.newBooks);
+    options().forEach((option,index) => (index <= OT_END_INDEX ? old.grid : fresh.grid).append(makeBookItem(option)));
+    list.append(old.group,fresh.group);
   }
 
   function render(){
-    renderTabs();
     renderList();
     syncButton();
   }
@@ -116,11 +108,7 @@
     }
   });
 
-  bookSelect.addEventListener('change', () => {
-    activeTestament = Number(bookSelect.value) > OT_END_INDEX ? 'new' : 'old';
-    render();
-  });
-
+  bookSelect.addEventListener('change', render);
   const observer = new MutationObserver(() => requestAnimationFrame(render));
   observer.observe(bookSelect,{childList:true,subtree:true,attributes:true});
   window.addEventListener('pageshow',render);
