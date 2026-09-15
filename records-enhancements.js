@@ -5,6 +5,7 @@
   const BACKUP_VERSION = 2;
   const readJson = key => { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (_) { return {}; } };
   const writeJson = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+  const notifyRecordsChanged = () => window.dispatchEvent(new CustomEvent('bible-reader-records-changed'));
 
   function recordNote(id){ return String(readJson(RECORD_NOTES_KEY)[id] || '').trim(); }
   function saveRecordNote(id, text){ const notes=readJson(RECORD_NOTES_KEY); const value=String(text||'').trim(); if(value) notes[id]=value; else delete notes[id]; writeJson(RECORD_NOTES_KEY,notes); }
@@ -101,6 +102,7 @@
     else marks[item.key]=mark;
     writeJson(MARKS_KEY,marks);
     removeRecordNote(`${mode==='highlight'?'highlight':'verse'}:${item.key}`);
+    notifyRecordsChanged();
     renderVerseRecords(panel,mode);
   }
 
@@ -135,6 +137,7 @@
   function deleteChapterRecord(item,panel){
     const chapters=readJson(CHAPTERS_KEY); delete chapters[item.key]; writeJson(CHAPTERS_KEY,chapters);
     removeRecordNote(`chapter:${item.key}`);
+    notifyRecordsChanged();
     renderChapters(panel);
   }
 
