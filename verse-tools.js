@@ -23,11 +23,7 @@
   let notebookPanel = null;
   let notebookTab = 'notes';
 
-  function lang() {
-    if (window.BibleI18n?.lang) return window.BibleI18n.lang();
-    const tr = window.TRANSLATIONS?.[document.querySelector('#translationSelect')?.value];
-    return tr?.lang || (tr?.id === 'krv1961' ? 'ko' : 'en');
-  }
+  function lang() { if (window.BibleI18n?.lang) return window.BibleI18n.lang(); const tr = window.TRANSLATIONS?.[document.querySelector('#translationSelect')?.value]; return tr?.lang || (tr?.id === 'krv1961' ? 'ko' : 'en'); }
   function labels(){ return LABELS[lang()] || LABELS.en; }
   function loadJson(key){ try { return JSON.parse(localStorage.getItem(key)) || {}; } catch (_) { return {}; } }
   function saveMarks(){ localStorage.setItem(STORE_KEY, JSON.stringify(marks)); }
@@ -43,165 +39,27 @@
   function bookNameFor(index){ return window.BibleI18n?.bookName ? window.BibleI18n.bookName(index) : (BOOKS[index]?.ko || ''); }
 
   function applyMarks(){
-    verses.querySelectorAll('.verse').forEach(row => {
-      const key = currentKey(row.dataset.verse);
-      const mark = markFor(key);
-      row.classList.toggle('user-highlight', !!mark.highlight);
-      row.classList.toggle('user-bookmarked', !!mark.bookmark);
-      row.classList.toggle('user-noted', !!mark.note?.trim());
-      ensureTrigger(row);
-    });
-    ensureChapterBookmark();
-    ensureNotebookButton();
-    updateChapterBookmark();
-    if (notebookPanel) renderNotebook();
+    verses.querySelectorAll('.verse').forEach(row => { const key=currentKey(row.dataset.verse), mark=markFor(key); row.classList.toggle('user-highlight',!!mark.highlight); row.classList.toggle('user-bookmarked',!!mark.bookmark); row.classList.toggle('user-noted',!!mark.note?.trim()); ensureTrigger(row); });
+    ensureChapterBookmark(); ensureNotebookButton(); updateChapterBookmark(); if(notebookPanel) renderNotebook();
   }
 
-  function ensureTrigger(row){
-    if (row.querySelector('.verse-actions-trigger')) return;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'verse-actions-trigger';
-    button.textContent = '⋯';
-    button.setAttribute('aria-label', 'Verse actions');
-    button.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); openToolbar(row, button); });
-    row.append(button);
-  }
-
-  function ensureChapterBookmark(){
-    if (!heading || heading.querySelector('.chapter-bookmark-button')) return;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'chapter-bookmark-button';
-    button.addEventListener('click', event => {
-      event.preventDefault(); event.stopPropagation();
-      const key = currentChapterKey();
-      if (chapterBookmarks[key]) delete chapterBookmarks[key];
-      else chapterBookmarks[key] = {translation:translation(),bookIndex:bookIndex(),chapter:chapterNumber(),label:`${currentBookName()} ${chapterNumber()}장`,savedAt:Date.now()};
-      saveChapterBookmarks(); updateChapterBookmark();
-    });
-    heading.querySelector('h1')?.insertAdjacentElement('afterend', button);
-  }
-
-  function ensureNotebookButton(){
-    if (!toolbar || toolbar.querySelector('.notebook-button')) return;
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = 'text-button notebook-button'; button.textContent = labels().notebook;
-    button.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); notebookPanel ? closeNotebook() : openNotebook(); });
-    toolbar.append(button);
-  }
-
-  function updateChapterBookmark(){
-    const button = heading?.querySelector('.chapter-bookmark-button'); if (!button) return;
-    const saved = !!chapterBookmarks[currentChapterKey()]; const l = labels();
-    button.textContent = saved ? '★' : '☆'; button.classList.toggle('active', saved);
-    button.title = saved ? l.removeChapterBookmark : l.chapterBookmark;
-    button.setAttribute('aria-label', saved ? l.removeChapterBookmark : l.chapterBookmark);
-    button.setAttribute('aria-pressed', saved ? 'true' : 'false');
-  }
-
-  function closeToolbar(){ activeToolbar?.remove(); activeToolbar = null; }
-  function closeNoteEditor(){ noteEditor?.remove(); noteEditor = null; }
-  function closeNotebook(){ notebookPanel?.remove(); notebookPanel = null; document.body.classList.remove('notebook-open'); }
-  function actionButton(text, handler){ const b=document.createElement('button'); b.type='button'; b.textContent=text; b.addEventListener('click', e=>{e.preventDefault();e.stopPropagation();handler();}); return b; }
-
-  function openNoteEditor(row, key){
-    closeToolbar(); closeNoteEditor(); const l = labels(); const mark = markFor(key);
-    const editor = document.createElement('div'); editor.className = 'verse-note-editor';
-    const title = document.createElement('strong'); title.textContent = `${l.noteTitle} · ${currentReference(Number(row.dataset.verse))}`;
-    const textarea = document.createElement('textarea'); textarea.value = mark.note || ''; textarea.placeholder = l.note;
-    const actions = document.createElement('div'); actions.className = 'verse-note-actions';
-    const save = actionButton(l.save, ()=>{ const next = markFor(key); next.note = textarea.value.trim(); marks[key] = next; saveMarks(); applyMarks(); closeNoteEditor(); });
-    const remove = actionButton(l.removeNote, ()=>{ const next = markFor(key); next.note = ''; marks[key] = next; saveMarks(); applyMarks(); closeNoteEditor(); });
-    actions.append(save, remove, actionButton(l.cancel, closeNoteEditor)); editor.append(title, textarea, actions);
-    document.body.append(editor); noteEditor = editor; requestAnimationFrame(()=>textarea.focus());
-  }
-
-  function allEntries(){
-    return Object.entries(marks).map(([key,mark])=>{ const [tr,book,chapter,verse] = key.split(':'); return {key,mark,tr,bookIndex:Number(book),chapter:Number(chapter),verse:Number(verse)}; })
-      .sort((a,b)=>a.bookIndex-b.bookIndex || a.chapter-b.chapter || a.verse-b.verse);
-  }
-  function noteEntries(){ return allEntries().filter(item=>item.mark?.note?.trim()); }
-  function savedEntries(){ return allEntries().filter(item=>item.mark?.bookmark); }
-  function highlightedEntries(){ return allEntries().filter(item=>item.mark?.highlight); }
-
-  async function goToEntry(item, editNote=false){
-    activeTranslationId = TRANSLATIONS[item.tr] ? item.tr : activeTranslationId;
-    if (translationSelect) translationSelect.value = activeTranslationId;
-    state.bookIndex = item.bookIndex; state.chapter = item.chapter;
-    await loadCurrent({scrollTop:false}); closeNotebook();
-    requestAnimationFrame(()=>{
-      const row=verses.querySelector(`[data-verse="${item.verse}"]`); if(!row) return;
-      if(editNote) openNoteEditor(row,item.key);
-      else { row.classList.add('searched'); row.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>row.classList.remove('searched'),1800); }
-    });
-  }
-
-  async function fillEntryText(item, target){
-    if (item.mark.savedText){ target.textContent = item.mark.savedText; return; }
-    try {
-      const data = await fetchBook(BOOKS[item.bookIndex], item.tr);
-      const ch = data.chapters.find(c=>Number(c.chapter)===item.chapter);
-      const verse = ch?.verses.find(v=>Number(v.verse)===item.verse);
-      if (verse?.text) target.textContent = verse.text;
-    } catch (_) {}
-  }
-
-  function renderNotebook(){
-    if (!notebookPanel) return;
-    const l = labels(); const list = notebookPanel.querySelector('.notebook-list');
-    notebookPanel.querySelector('.notebook-title').textContent = l.notebookTitle;
-    notebookPanel.querySelector('.notebook-close').textContent = l.close;
-    const notesTab = notebookPanel.querySelector('[data-tab="notes"]');
-    const savedTab = notebookPanel.querySelector('[data-tab="saved"]');
-    const highlightTab = notebookPanel.querySelector('[data-tab="highlights"]');
-    notesTab.textContent=l.notesTab; savedTab.textContent=l.savedTab; highlightTab.textContent=l.highlightTab;
-    [notesTab,savedTab,highlightTab].forEach(tab=>{ const active=tab.dataset.tab===notebookTab; tab.classList.toggle('active',active); tab.setAttribute('aria-selected',String(active)); });
-    list.innerHTML = '';
-    const entries = notebookTab==='notes' ? noteEntries() : notebookTab==='saved' ? savedEntries() : highlightedEntries();
-    const emptyText = notebookTab==='notes' ? l.emptyNotes : notebookTab==='saved' ? l.emptySaved : l.emptyHighlights;
-    if (!entries.length){ const empty = document.createElement('p'); empty.className='notebook-empty'; empty.textContent=emptyText; list.append(empty); return; }
-    entries.forEach(item=>{
-      const card=document.createElement('article'); card.className=`notebook-item ${notebookTab==='highlights'?'highlight-item':''}`;
-      const ref=document.createElement('strong'); ref.textContent=`${bookNameFor(item.bookIndex)} ${item.chapter}:${item.verse}`;
-      const body=document.createElement('p');
-      if(notebookTab==='notes') body.textContent=item.mark.note;
-      else { body.className='saved-verse-text'; body.textContent=item.mark.savedText || '본문을 불러오는 중…'; fillEntryText(item,body); }
-      const actions=document.createElement('div'); actions.className='notebook-item-actions';
-      actions.append(actionButton(l.go, ()=>goToEntry(item,false)));
-      if(notebookTab==='notes') actions.append(actionButton(l.note, ()=>goToEntry(item,true)));
-      card.append(ref,body,actions); list.append(card);
-    });
-  }
-
-  function openNotebook(){
-    closeToolbar(); closeNoteEditor(); closeNotebook();
-    const panel=document.createElement('aside'); panel.className='notebook-panel'; panel.setAttribute('aria-label',labels().notebookTitle);
-    const head=document.createElement('div'); head.className='notebook-head';
-    const title=document.createElement('strong'); title.className='notebook-title';
-    const close=document.createElement('button'); close.type='button'; close.className='notebook-close'; close.addEventListener('click',closeNotebook);
-    const tabs=document.createElement('div'); tabs.className='notebook-tabs'; tabs.setAttribute('role','tablist');
-    ['notes','saved','highlights'].forEach(tab=>{ const b=document.createElement('button'); b.type='button'; b.dataset.tab=tab; b.setAttribute('role','tab'); b.addEventListener('click',()=>{notebookTab=tab;renderNotebook();}); tabs.append(b); });
-    const list=document.createElement('div'); list.className='notebook-list';
-    head.append(title,close); panel.append(head,tabs,list); document.body.append(panel); notebookPanel=panel; document.body.classList.add('notebook-open'); renderNotebook();
-  }
-
-  function openToolbar(row, anchor){
-    closeToolbar(); closeNoteEditor();
-    const verse = Number(row.dataset.verse), key = currentKey(verse), mark = markFor(key), l = labels();
-    const bar=document.createElement('div'); bar.className='verse-action-popover'; const rect=anchor.getBoundingClientRect();
-    bar.style.top=`${window.scrollY + rect.bottom + 6}px`; bar.style.left=`${Math.max(12, Math.min(window.scrollX + rect.left - 220, window.scrollX + window.innerWidth - 420))}px`;
-    bar.append(
-      actionButton(l.copy, async()=>{ const text=row.querySelector('.verse-text')?.textContent?.trim() || ''; try { await navigator.clipboard.writeText(`${currentReference(verse)}\n${text}`); } catch (_) {} closeToolbar(); }),
-      actionButton(mark.highlight?l.removeHighlight:l.highlight, ()=>{ const next=markFor(key); next.highlight=!next.highlight; if(next.highlight) next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||''; marks[key]=next; saveMarks(); applyMarks(); closeToolbar(); }),
-      actionButton(l.note, ()=>openNoteEditor(row,key)),
-      actionButton(mark.bookmark?l.removeVerse:l.saveVerse, ()=>{ const next=markFor(key); next.bookmark=!next.bookmark; if(next.bookmark) next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||''; marks[key]=next; saveMarks(); applyMarks(); closeToolbar(); })
-    );
-    document.body.append(bar); activeToolbar=bar;
-  }
-
-  document.addEventListener('click', e=>{ if(activeToolbar && !activeToolbar.contains(e.target)) closeToolbar(); if(noteEditor && !noteEditor.contains(e.target)) closeNoteEditor(); });
-  window.addEventListener('scroll', closeToolbar, {passive:true}); window.addEventListener('resize', closeToolbar);
-  ['translationSelect','bookSelect','chapterSelect'].forEach(id=>document.querySelector(`#${id}`)?.addEventListener('change', ()=>setTimeout(applyMarks, 350)));
-  const observer=new MutationObserver(()=>requestAnimationFrame(applyMarks)); observer.observe(verses,{childList:true}); applyMarks();
+  function ensureTrigger(row){ if(row.querySelector('.verse-actions-trigger'))return; const button=document.createElement('button'); button.type='button'; button.className='verse-actions-trigger'; button.textContent='⋯'; button.setAttribute('aria-label','Verse actions'); button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();openToolbar(row,button);}); row.append(button); }
+  function ensureChapterBookmark(){ if(!heading||heading.querySelector('.chapter-bookmark-button'))return; const button=document.createElement('button'); button.type='button'; button.className='chapter-bookmark-button'; button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();const key=currentChapterKey();if(chapterBookmarks[key])delete chapterBookmarks[key];else chapterBookmarks[key]={translation:translation(),bookIndex:bookIndex(),chapter:chapterNumber(),label:`${currentBookName()} ${chapterNumber()}장`,savedAt:Date.now()};saveChapterBookmarks();updateChapterBookmark();}); heading.querySelector('h1')?.insertAdjacentElement('afterend',button); }
+  function ensureNotebookButton(){ if(!toolbar||toolbar.querySelector('.notebook-button'))return; const button=document.createElement('button');button.type='button';button.className='text-button notebook-button';button.textContent=labels().notebook;button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();notebookPanel?closeNotebook():openNotebook();});toolbar.append(button); }
+  function updateChapterBookmark(){ const button=heading?.querySelector('.chapter-bookmark-button');if(!button)return;const saved=!!chapterBookmarks[currentChapterKey()],l=labels();button.textContent=saved?'★':'☆';button.classList.toggle('active',saved);button.title=saved?l.removeChapterBookmark:l.chapterBookmark;button.setAttribute('aria-label',saved?l.removeChapterBookmark:l.chapterBookmark);button.setAttribute('aria-pressed',saved?'true':'false'); }
+  function closeToolbar(){activeToolbar?.remove();activeToolbar=null;} function closeNoteEditor(){noteEditor?.remove();noteEditor=null;} function closeNotebook(){notebookPanel?.remove();notebookPanel=null;document.body.classList.remove('notebook-open');}
+  function actionButton(text,handler){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();handler();});return b;}
+  function openNoteEditor(row,key){closeToolbar();closeNoteEditor();const l=labels(),mark=markFor(key),editor=document.createElement('div');editor.className='verse-note-editor';const title=document.createElement('strong');title.textContent=`${l.noteTitle} · ${currentReference(Number(row.dataset.verse))}`;const textarea=document.createElement('textarea');textarea.value=mark.note||'';textarea.placeholder=l.note;const actions=document.createElement('div');actions.className='verse-note-actions';const save=actionButton(l.save,()=>{const next=markFor(key);next.note=textarea.value.trim();marks[key]=next;saveMarks();applyMarks();closeNoteEditor();});const remove=actionButton(l.removeNote,()=>{const next=markFor(key);next.note='';marks[key]=next;saveMarks();applyMarks();closeNoteEditor();});actions.append(save,remove,actionButton(l.cancel,closeNoteEditor));editor.append(title,textarea,actions);document.body.append(editor);noteEditor=editor;requestAnimationFrame(()=>textarea.focus());}
+  function allEntries(){return Object.entries(marks).map(([key,mark])=>{const[tr,book,chapter,verse]=key.split(':');return{key,mark,tr,bookIndex:Number(book),chapter:Number(chapter),verse:Number(verse)}}).sort((a,b)=>a.bookIndex-b.bookIndex||a.chapter-b.chapter||a.verse-b.verse);}
+  function noteEntries(){return allEntries().filter(item=>item.mark?.note?.trim());} function savedEntries(){return allEntries().filter(item=>item.mark?.bookmark);} function highlightedEntries(){return allEntries().filter(item=>item.mark?.highlight);}
+  async function goToEntry(item,editNote=false){activeTranslationId=TRANSLATIONS[item.tr]?item.tr:activeTranslationId;if(translationSelect)translationSelect.value=activeTranslationId;state.bookIndex=item.bookIndex;state.chapter=item.chapter;await loadCurrent({scrollTop:false});closeNotebook();requestAnimationFrame(()=>{const row=verses.querySelector(`[data-verse="${item.verse}"]`);if(!row)return;if(editNote)openNoteEditor(row,item.key);else{row.classList.add('searched');row.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>row.classList.remove('searched'),1800);}});}
+  async function fillEntryText(item,target){if(item.mark.savedText){target.textContent=item.mark.savedText;return;}try{const data=await fetchBook(BOOKS[item.bookIndex],item.tr);const ch=data.chapters.find(c=>Number(c.chapter)===item.chapter);const verse=ch?.verses.find(v=>Number(v.verse)===item.verse);if(verse?.text)target.textContent=verse.text;}catch(_){}}
+  function renderNotebook(){if(!notebookPanel)return;const l=labels(),list=notebookPanel.querySelector('.notebook-list');notebookPanel.querySelector('.notebook-title').textContent=l.notebookTitle;notebookPanel.querySelector('.notebook-close').textContent=l.close;const notesTab=notebookPanel.querySelector('[data-tab="notes"]'),savedTab=notebookPanel.querySelector('[data-tab="saved"]'),highlightTab=notebookPanel.querySelector('[data-tab="highlights"]');notesTab.textContent=l.notesTab;savedTab.textContent=l.savedTab;highlightTab.textContent=l.highlightTab;[notesTab,savedTab,highlightTab].forEach(tab=>{const active=tab.dataset.tab===notebookTab;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));});list.innerHTML='';const entries=notebookTab==='notes'?noteEntries():notebookTab==='saved'?savedEntries():highlightedEntries(),emptyText=notebookTab==='notes'?l.emptyNotes:notebookTab==='saved'?l.emptySaved:l.emptyHighlights;if(!entries.length){const empty=document.createElement('p');empty.className='notebook-empty';empty.textContent=emptyText;list.append(empty);return;}entries.forEach(item=>{const card=document.createElement('article');card.className=`notebook-item ${notebookTab==='highlights'?'highlight-item':''}`;const ref=document.createElement('strong');ref.textContent=`${bookNameFor(item.bookIndex)} ${item.chapter}:${item.verse}`;const body=document.createElement('p');if(notebookTab==='notes')body.textContent=item.mark.note;else{body.className='saved-verse-text';body.textContent=item.mark.savedText||'본문을 불러오는 중…';fillEntryText(item,body);}const actions=document.createElement('div');actions.className='notebook-item-actions';actions.append(actionButton(l.go,()=>goToEntry(item,false)));if(notebookTab==='notes')actions.append(actionButton(l.note,()=>goToEntry(item,true)));card.append(ref,body,actions);list.append(card);});}
+  function openNotebook(){closeToolbar();closeNoteEditor();closeNotebook();const panel=document.createElement('aside');panel.className='notebook-panel';panel.setAttribute('aria-label',labels().notebookTitle);const head=document.createElement('div');head.className='notebook-head';const title=document.createElement('strong');title.className='notebook-title';const close=document.createElement('button');close.type='button';close.className='notebook-close';close.addEventListener('click',closeNotebook);const tabs=document.createElement('div');tabs.className='notebook-tabs';tabs.setAttribute('role','tablist');['notes','saved','highlights'].forEach(tab=>{const b=document.createElement('button');b.type='button';b.dataset.tab=tab;b.setAttribute('role','tab');b.addEventListener('click',()=>{notebookTab=tab;renderNotebook();});tabs.append(b);});const list=document.createElement('div');list.className='notebook-list';head.append(title,close);panel.append(head,tabs,list);document.body.append(panel);notebookPanel=panel;document.body.classList.add('notebook-open');renderNotebook();}
+  function openToolbar(row,anchor){closeToolbar();closeNoteEditor();const verse=Number(row.dataset.verse),key=currentKey(verse),mark=markFor(key),l=labels(),bar=document.createElement('div');bar.className='verse-action-popover';const rect=anchor.getBoundingClientRect();bar.style.top=`${window.scrollY+rect.bottom+6}px`;bar.style.left=`${Math.max(12,Math.min(window.scrollX+rect.left-220,window.scrollX+window.innerWidth-420))}px`;bar.append(actionButton(l.copy,async()=>{const text=row.querySelector('.verse-text')?.textContent?.trim()||'';try{await navigator.clipboard.writeText(`${currentReference(verse)}\n${text}`);}catch(_){}closeToolbar();}),actionButton(mark.highlight?l.removeHighlight:l.highlight,()=>{const next=markFor(key);next.highlight=!next.highlight;if(next.highlight)next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||'';marks[key]=next;saveMarks();applyMarks();closeToolbar();}),actionButton(l.note,()=>openNoteEditor(row,key)),actionButton(mark.bookmark?l.removeVerse:l.saveVerse,()=>{const next=markFor(key);next.bookmark=!next.bookmark;if(next.bookmark)next.savedText=row.querySelector('.verse-text')?.textContent?.trim()||next.savedText||'';marks[key]=next;saveMarks();applyMarks();closeToolbar();}));document.body.append(bar);activeToolbar=bar;}
+  document.addEventListener('click',e=>{if(activeToolbar&&!activeToolbar.contains(e.target))closeToolbar();if(noteEditor&&!noteEditor.contains(e.target))closeNoteEditor();});
+  window.addEventListener('scroll',closeToolbar,{passive:true});window.addEventListener('resize',closeToolbar);
+  ['translationSelect','bookSelect','chapterSelect'].forEach(id=>document.querySelector(`#${id}`)?.addEventListener('change',()=>setTimeout(applyMarks,350)));
+  window.addEventListener('bible-reader-records-changed',()=>{marks=loadJson(STORE_KEY);chapterBookmarks=loadJson(CHAPTER_KEY);applyMarks();});
+  const observer=new MutationObserver(()=>requestAnimationFrame(applyMarks));observer.observe(verses,{childList:true});applyMarks();
 })();
