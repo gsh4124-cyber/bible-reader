@@ -1,6 +1,6 @@
 # PROJECT STATUS — bible-reader
 
-- 마지막 갱신: 2026-09-15
+- 마지막 갱신: 2026-09-16
 - 저장소 역할: 성경 읽기 웹서비스의 실제 코드·배포·기술상태 원본
 - 상위 사업상태: 황제 Vault `직장/바이브코딩/_INDEX.md`, `직장/바이브코딩/페이지형/_INDEX.md`, `직장/바이브코딩/운영본부_상태.json`
 - 표준 로컬 경로: `C:/Users/gsh41/Desktop/황제/직장/바이브코딩/페이지형/bible-reader`
@@ -14,24 +14,18 @@
 
 > 구현 완료 ≠ 자동 QA PASS ≠ 배포 성공 ≠ 실제 브라우저 PASS ≠ 실제 외부사용 ≠ 검색노출 ≠ 수익
 
-## 현재 검증 identity — 2026-09-15
+## 현재 검증 identity — 2026-09-16
 
-현재 main head는 `0af07358589c5d65bbe745763f39ea90062704da`다.
+현재 검증된 제품 identity는 `f8bf8314af277cd056b0efafad05c29757691d6e`다.
 
 이 identity에서:
-- Security Guardrails #38: **PASS**
-- Final QA and Cloudflare Production Check #296: **PASS**
-- Static Guardrails: **PASS**
-- Behavior QA: **PASS**
-- Combined Quality Gate: **PASS**
+- Security Guardrails #43: **PASS**
+- Final QA and Cloudflare Production Check #301: **PASS**
 - Cloudflare Production Browser QA: **PASS**
-- IndexNow notify: **PASS**
 
-이 identity는 모바일에서 긴 장 제목이 잘리지 않도록 `ui-fix.css`의 제목 영역을 적응형 줄바꿈/크기로 조정한 최소 UI 수정이다. 제품 코드의 다른 기능계약은 바꾸지 않았으며 같은 identity의 정적·행동·production-browser 검증이 모두 통과했다.
+이 identity는 `나의 기록`에서 저장 항목을 삭제했을 때 현재 본문 화면의 하이라이트·저장 상태가 즉시 갱신되도록 reader state refresh를 보강한 최소 수정이다. 해당 identity의 Security Guardrails와 Final QA/Cloudflare Production Check가 모두 성공했다.
 
-직전 2026-09-14 상단 단일행 내비게이션·제목 기반 장/절 선택 구조 변경 뒤에는 과거 구조를 전제로 한 validator/Production QA 조건이 연속으로 드러났고, loader 기반 다국어 진입구조와 제목 내비게이션 구조를 실제 계약으로 검사하도록 QA가 갱신되어 전체 자동검증을 통과했다.
-
-이 PASS는 자동·production browser 기준이다. 새 UX의 장시간 독서감이나 인간 체감을 자동 PASS로 과장하지 않는다.
+이 PASS는 자동·production browser 기준이다. 장시간 독서감이나 인간 체감을 자동 PASS로 과장하지 않는다.
 
 ## 핵심 목적
 
